@@ -73,10 +73,13 @@ export default {
     getVideoFile(e) {
       const reader = new FileReader();
       reader.addEventListener("load", () => {
-        this.video = reader.result;
+        if (reader.result.substr(5, 5) != "video") {
+          alert("You can only upload videos!");
+        } else {
+          this.video = reader.result;
+        }
       });
       reader.readAsDataURL(e.target.files[0]);
-      console.log(this.video);
       // TODO: Add Progress bar
       //   axios.post("", this.video, {
       //     headers: {

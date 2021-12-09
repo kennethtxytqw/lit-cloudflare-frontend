@@ -28,18 +28,12 @@ const router = createRouter({
           path: "submit",
           component: () => import("./components/upload/Submit.vue"),
         },
+        {
+          path: "auth",
+          component: () => import("./components/upload/Authentication.vue"),
+        },
       ],
     },
-    // {
-    //   path: "/token-gate",
-    //   name: "Token Gate",
-    //   component: () => import("./components/AccessControl.vue"),
-    // },
-    // {
-    //   path: "/submit",
-    //   name: "Submit",
-    //   component: () => import("./components/Submit.vue"),
-    // },
   ],
 });
 

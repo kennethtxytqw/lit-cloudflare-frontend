@@ -1,23 +1,34 @@
 <template>
   <div class="mt-20">
     <div class="w-2/3 m-auto h-10 flex">
-      <div
+      <router-link
+        to="/upload/auth"
         class="
-          bg-green-500
+          bg-green-100
           flex-1 flex
           items-center
           justify-center
-          font-semibold
           cursor-pointer
         "
       >
-        <router-link to="/upload/upload">
-          <p>Upload video</p>
-        </router-link>
-      </div>
-      <div
+        <p>Log in</p>
+      </router-link>
+      <router-link
+        to="/upload/upload"
         class="
-          bg-gray-300
+          bg-green-100
+          flex-1 flex
+          items-center
+          justify-center
+          cursor-pointer
+        "
+      >
+        <p>Upload video</p>
+      </router-link>
+      <router-link
+        to="/upload/token-gate"
+        class="
+          bg-green-100
           flex-1 flex
           items-center
           justify-center
@@ -25,13 +36,13 @@
           token-gate
         "
       >
-        <router-link to="/upload/token-gate">
-          <p>Token-gate the video</p>
-        </router-link>
-      </div>
-      <div
+        <p>Token-gate the video</p>
+      </router-link>
+
+      <router-link
+        to="/upload/submit"
         class="
-          bg-gray-300
+          bg-green-100
           flex-1 flex
           items-center
           justify-center
@@ -39,11 +50,10 @@
           submit
         "
       >
-        <router-link to="/upload/submit">
-          <p>Overview & Submit</p>
-        </router-link>
-      </div>
+        <p>Overview & Submit</p>
+      </router-link>
     </div>
+
     <router-view></router-view>
   </div>
 </template>
@@ -56,5 +66,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+.router-link-active {
+  font-weight: 600;
+  background-color: rgb(16, 185, 125);
+}
 </style>
