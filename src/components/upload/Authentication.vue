@@ -67,6 +67,22 @@ export default {
       localStorage["cf_account_id"] =
         document.getElementById("cf_account_id").value;
     },
+    //
+    // turn blob data to data URI
+    // @param { Blob } blob
+    // @return { Promise<String> } blob data in data URI
+    //
+    async blobToDataURI(blob) {
+      return new Promise((resolve, reject) => {
+        var reader = new FileReader();
+
+        reader.onload = (e) => {
+          var data = e.target.result;
+          resolve(data);
+        };
+        reader.readAsDataURL(blob);
+      });
+    },
     buf2hex(buffer) {
       // buffer is an ArrayBuffer
       return [...new Uint8Array(buffer)]
@@ -109,47 +125,10 @@ export default {
           chain: "ethereum",
         });
       localStorage.setItem("encryptedSymmKey", encryptedSymmetricKey);
-
-      // Decrypt
-      const symmKey = window.litNodeClient.getEncryptionKey({
-        accessControlConditions, // from a db
-        toDecrypt: this.buf2hex(encryptedSymmetricKey.buffer), // from local storage
-        chain: "ethereum",
-        authSig,
-      });
-      const decryptedFiles = await LitJsSdk.decryptZip(
-        encryptedZip,
-        await symmKey
-      );
-      console.log(decryptedFiles);
-      const decryptedString = await decryptedFiles["string.txt"].async("text");
-      console.log(JSON.parse(atob(decryptedString)));
+      localStorage.setItem("encryptedZipBlob", encryptedZip);
     },
   },
   async mounted() {
-    // const email = localStorage["cf_username"];
-    // const globalAPI = localStorage["cf_global_api"];
-    // const accountId = "9b47beba2f167662ac16b81572ee529d"; //change this
-    // const videoId = "0ae2a3f6e7f1a57d0bdfb0ba11be4521"; //change this
-    // const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/stream/${videoId}`;
-
-    // // -- prepare request header
-    // const options = {
-    //   method: "GET",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "X-Auth-Email": email,
-    //     "X-Auth-Key": globalAPI,
-    //   },
-    // };
-
-    // // -- execute
-    // const res = await fetch(url, options);
-    // const result = await res.json();
-    // console.log(result);
-    // if (result.success === true) {
-    //   this.loggedIn = true;
-    // }
     await this.loadJsScript("https://jscdn.litgateway.com/index.web.js");
 
     setTimeout(() => {
@@ -160,8 +139,44 @@ export default {
 
     document.addEventListener(
       "lit-ready",
-      function () {
+      async function () {
         console.log("LIT network is ready");
+        // Login data decryption (reading from localstorage) not working
+        // const authSig = await LitJsSdk.checkAndSignAuthMessage({
+        //   chain: "ethereum",
+        // });
+        // const accessControlConditions = [
+        //   {
+        //     contractAddress: "",
+        //     standardContractType: "",
+        //     chain: "ethereum",
+        //     method: "",
+        //     parameters: [":userAddress"],
+        //     returnValueTest: {
+        //       comparator: "=",
+        //       value: "0x32934dA17622faEb1F8c9fAb354fc194cF8e4378",
+        //     },
+        //   },
+        // ];
+        // const encryptedSymmetricKey = localStorage.getItem("encryptedSymmKey");
+        // const encryptedZip = localStorage.getItem("encryptedZipBlob");
+        // console.log(await this.blobToDataURI(await encryptedZip)); // TypeError: Failed to execute 'readAsDataURL' on 'FileReader': parameter 1 is not of type 'Blob'.
+        // // Decrypt
+        // const symmKey = window.litNodeClient.getEncryptionKey({
+        //   accessControlConditions, // from a db
+        //   toDecrypt: this.buf2hex(encryptedSymmetricKey.buffer), // from local storage
+        //   chain: "ethereum",
+        //   authSig,
+        // });
+        // const decryptedFiles = await LitJsSdk.decryptZip(
+        //   encryptedZip,
+        //   await symmKey
+        // );
+        // console.log(decryptedFiles);
+        // const decryptedString = await decryptedFiles["string.txt"].async(
+        //   "text"
+        // );
+        // console.log(JSON.parse(atob(decryptedString)));
       }.bind(this),
       false
     );
