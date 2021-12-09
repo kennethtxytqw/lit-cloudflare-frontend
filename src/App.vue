@@ -9,16 +9,46 @@
         </p>
       </div>
       <div>
-        <p>Login with Metamask</p>
+        <p @click="authMetamask">Login with Metamask</p>
       </div>
     </nav>
     <router-view></router-view>
+    <h1>{{ authSig }}</h1>
   </div>
 </template>
 
 <script>
 export default {
   name: "App",
+  data() {
+    return {
+      authSig: Object,
+      client: undefined,
+    };
+  },
+  methods: {
+    async authMetamask() {
+      const authSig = await LitJsSdk.checkAndSignAuthMessage({
+        chain: "ethereum",
+      });
+      this.authSig = authSig;
+    },
+  },
+  async mounted() {
+    var litNodeClient = new LitJsSdk.LitNodeClient();
+    litNodeClient.connect();
+    this.client = litNodeClient;
+    console.log(litNodeClient);
+    console.log(this.client);
+
+    document.addEventListener(
+      "lit-ready",
+      function (e) {
+        console.log("LIT network is ready");
+      },
+      false
+    );
+  },
   // watch: {
   //   $route(to, from) {
   //     if (this.$route.name === "Upload") {

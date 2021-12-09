@@ -2,7 +2,6 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import "./index.css";
 import { createRouter, createWebHistory } from "vue-router";
-// import Upload from "./components/Upload.vue";
 
 const router = createRouter({
   history: createWebHistory(),
