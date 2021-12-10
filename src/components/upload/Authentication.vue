@@ -182,6 +182,11 @@ export default {
       "lit-ready",
       async function () {
         console.log("LIT network is ready");
+        const address = "0x32934dA17622faEb1F8c9fAb354fc194cF8e4378";
+        const res = await fetch(`http://127.0.0.1:8787/wallet/${address}`);
+        const data = await res.json();
+        console.log(data);
+
         // Login data decryption (reading from localstorage) not working
         // const authSig = await LitJsSdk.checkAndSignAuthMessage({
         //   chain: "ethereum",
