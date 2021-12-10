@@ -10,6 +10,9 @@
       </div>
       <div>
         <p @click="authMetamask">Login with Metamask</p>
+        <div id="shareModal"></div>
+        <button @click="openShareModal">Open Share Modal</button>
+
       </div>
     </nav>
     <div class="mt-12">
@@ -36,6 +39,49 @@ export default {
     async fetchVideos() {
       console.log("TODO");
     },
+    loadJs(path){
+      var tag = document.createElement('script')
+      tag.setAttribute('src', path)
+      document.head.appendChild(tag)
+    },
+    loadCss(path){
+      var tag = document.createElement('link')
+      tag.setAttribute('rel', 'stylesheet')
+      tag.setAttribute('href', path)
+      document.head.appendChild(tag)
+    },
+    closeModal() {
+      console.log("close share modal");
+      ACCM.ReactContentRenderer.unmount(document.getElementById("shareModal"));
+    },
+    openShareModal() {
+      console.log("open share modal");
+      ACCM.ReactContentRenderer.render(
+        ACCM.ShareModal,
+        // props to be passed to the ShareModal component.  These are documented here: https://github.com/LIT-Protocol/lit-access-control-conditions-modal#props
+        {
+          sharingItems: [],
+          onAccessControlConditionsSelected: function (accessControlConditions) {
+            console.log(
+              "accessControlConditions from ShareModal: ",
+              accessControlConditions
+            );
+            this.closeModal();
+            // now, use the accessControlConditions to provision access using one of the methods below:
+            // https://github.com/LIT-Protocol/lit-js-sdk#dynamic-content---provisoning-access-to-a-resource
+            // or https://github.com/LIT-Protocol/lit-js-sdk#static-content---storing-any-static-content-and-manually-storing-the-metadata
+          },
+          onClose: this.closeModal,
+          getSharingLink: function (sharingItem) {
+            console.log("getSharingLink", sharingItem);
+            return "";
+          },
+          showStep: "ableToAccess",
+        },
+        // target DOM node
+        document.getElementById("shareModal")
+      );
+    }
   },
   async mounted() {
 
@@ -51,6 +97,9 @@ export default {
       }.bind(this),
       false
     );
+
+    this.loadJs('https://cdn.jsdelivr.net/npm/lit-access-control-conditions-modal-vanilla-js/dist/index.js');
+    this.loadCss('https://cdn.jsdelivr.net/npm/lit-access-control-conditions-modal-vanilla-js/dist/main.css');
   },
 };
 </script>
