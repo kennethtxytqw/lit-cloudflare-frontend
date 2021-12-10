@@ -44,7 +44,9 @@
       </div>
       <div class="flex flex-row-reverse">
         <button class="text-black" v-if="video != undefined">
-          <router-link to="/upload/token-gate">Next</router-link>
+          <router-link to="/upload/token-gate"
+            ><p class="font-semibold">Next</p></router-link
+          >
         </button>
       </div>
     </div>

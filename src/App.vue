@@ -27,6 +27,11 @@ export default {
     };
   },
   methods: {
+    async loadJsScript(path) {
+      var litJsScriptTags = document.createElement("script");
+      litJsScriptTags.setAttribute("src", path);
+      document.head.appendChild(litJsScriptTags);
+    },
     async authMetamask() {
       const authSig = await LitJsSdk.checkAndSignAuthMessage({
         chain: "ethereum",
@@ -38,11 +43,13 @@ export default {
     },
   },
   async mounted() {
+    await this.loadJsScript("https://jscdn.litgateway.com/index.web.js");
 
-    var litNodeClient = new LitJsSdk.LitNodeClient();
-    litNodeClient.connect();
-    window.litNodeClient = litNodeClient;
-
+    setTimeout(() => {
+      var litNodeClient = new LitJsSdk.LitNodeClient();
+      litNodeClient.connect();
+      window.litNodeClient = litNodeClient;
+    }, 100);
 
     document.addEventListener(
       "lit-ready",
