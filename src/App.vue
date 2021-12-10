@@ -11,7 +11,8 @@
       <div>
         <p @click="authMetamask">Login with Metamask</p>
         <div id="shareModal"></div>
-        <button @click="openShareModal">Open Share Modal</button>
+        <button @click="openShareModal">Open Share Modal</button><br>
+        <button @click="testFetch">Test fetch</button>
 
       </div>
     </nav>
@@ -49,6 +50,11 @@ export default {
       tag.setAttribute('rel', 'stylesheet')
       tag.setAttribute('href', path)
       document.head.appendChild(tag)
+    },
+    async testFetch(){
+      const res = await fetch('http://127.0.0.1:8787/wallet/test');
+      const data = await res.json();
+      console.log(data);
     },
     closeModal() {
       console.log("close share modal");
