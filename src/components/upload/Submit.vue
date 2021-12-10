@@ -5,7 +5,6 @@
       w-2/3
       h-60
       rounded-b-3xl
-      border-4 border-white
       text-black
       font-semibold
       m-auto

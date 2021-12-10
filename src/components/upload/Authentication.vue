@@ -5,7 +5,6 @@
       w-2/3
       h-60
       rounded-b-3xl
-      border-4 border-white
       text-black
       font-semibold
       m-auto
@@ -14,27 +13,83 @@
       items-center
     "
   >
-    <fieldset>
-      <legend>CloudFlare Settings</legend>
-      <div class="settings__row">
-        <p>Username</p>
-        <input id="cf_username" type="text" v-model="email" />
+    <fieldset class="w-full flex flex-col items-center">
+      <div class="settings__row w-2/5">
+        <p>E-Mail</p>
+        <input
+          id="cf_username"
+          type="text"
+          v-model="email"
+          class="
+            px-2
+            py-1
+            placeholder-gray-400
+            text-gray-600
+            relative
+            rounded
+            text-sm
+            border border-gray-400
+            outline-none
+            focus:outline-none focus:ring
+            w-full
+          "
+        />
       </div>
-      <div class="settings__row">
+      <div class="settings__row mt-4 w-2/5">
         <p>Global API</p>
-        <input id="cf_global_api" type="text" v-model="global_api" />
+        <input
+          id="cf_global_api"
+          type="text"
+          v-model="global_api"
+          class="
+            px-2
+            py-1
+            placeholder-gray-400
+            text-gray-600
+            relative
+            rounded
+            text-sm
+            border border-gray-400
+            outline-none
+            focus:outline-none focus:ring
+            w-full
+          "
+        />
       </div>
-      <div class="settings__row">
+      <!-- <div class="settings__row">
         <p>Account ID</p>
         <input
           id="cf_account_id"
           type="text"
           value="9b47beba2f167662ac16b81572ee529d"
         />
-      </div>
-      <div class="settings__save">
-        <button @click="saveConfig">Save to Local Storage</button> <br />
-        <button @click="login">Save to LIT Network</button>
+      </div> -->
+      <div class="settings__save mt-4">
+        <button
+          @click="login"
+          class="
+            bg-green-500
+            text-white
+            active:bg-purple-600
+            font-bold
+            uppercase
+            text-sm
+            px-6
+            py-3
+            rounded-full
+            shadow
+            hover:shadow-lg
+            outline-none
+            focus:outline-none
+            mr-1
+            mb-1
+            ease-linear
+            transition-all
+            duration-150
+          "
+        >
+          Save to LIT Network
+        </button>
       </div>
     </fieldset>
     <div>
@@ -54,19 +109,6 @@ export default {
     };
   },
   methods: {
-    async loadJsScript(path) {
-      var litJsScriptTags = document.createElement("script");
-      litJsScriptTags.setAttribute("src", path);
-      document.head.appendChild(litJsScriptTags);
-    },
-    saveConfig() {
-      localStorage["cf_username"] =
-        document.getElementById("cf_username").value;
-      localStorage["cf_global_api"] =
-        document.getElementById("cf_global_api").value;
-      localStorage["cf_account_id"] =
-        document.getElementById("cf_account_id").value;
-    },
     //
     // turn blob data to data URI
     // @param { Blob } blob
@@ -113,7 +155,7 @@ export default {
           parameters: [":userAddress"],
           returnValueTest: {
             comparator: "=",
-            value: "0x32934dA17622faEb1F8c9fAb354fc194cF8e4378",
+            value: "0x32934dA17622faEb1F8c9fAb354fc194cF8e4378", // Get users wallet
           },
         },
       ];
@@ -126,11 +168,10 @@ export default {
         });
       localStorage.setItem("encryptedSymmKey", encryptedSymmetricKey);
       localStorage.setItem("encryptedZipBlob", encryptedZip);
+      if (encryptedZip && encryptedSymmetricKey) this.loggedIn = true;
     },
   },
   async mounted() {
-    await this.loadJsScript("https://jscdn.litgateway.com/index.web.js");
-
     setTimeout(() => {
       var litNodeClient = new LitJsSdk.LitNodeClient();
       litNodeClient.connect();

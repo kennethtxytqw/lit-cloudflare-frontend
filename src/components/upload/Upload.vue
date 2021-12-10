@@ -1,18 +1,9 @@
 <template>
   <div
-    class="
-      bg-gray-50
-      w-2/3
-      h-60
-      rounded-b-3xl
-      border-4 border-white
-      text-white
-      font-semibold
-      m-auto
-    "
+    class="bg-gray-50 w-2/3 h-60 rounded-b-3xl text-white font-semibold m-auto"
   >
-    <h1 class="mt-4">Upload your video here</h1>
     <div class="bg-gray-50 p7 rounded w-9/12 mx-auto">
+      <h1 class="pt-4 pb-2 text-black">Upload your video here</h1>
       <div
         x-ref="dnd"
         class="
