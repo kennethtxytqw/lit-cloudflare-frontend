@@ -38,11 +38,11 @@ export default {
     },
   },
   async mounted() {
-    setTimeout(() => {
-      var litNodeClient = new LitJsSdk.LitNodeClient();
-      litNodeClient.connect();
-      window.litNodeClient = litNodeClient;
-    }, 100);
+
+    var litNodeClient = new LitJsSdk.LitNodeClient();
+    litNodeClient.connect();
+    window.litNodeClient = litNodeClient;
+
 
     document.addEventListener(
       "lit-ready",
