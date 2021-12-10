@@ -35,7 +35,7 @@
         text-sm
         px-6
         py-3
-        rounded-full
+        rounded-3xl
         shadow
         hover:shadow-lg
         outline-none

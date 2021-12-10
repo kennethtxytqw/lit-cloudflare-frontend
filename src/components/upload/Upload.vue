@@ -1,8 +1,8 @@
 <template>
   <div
-    class="bg-gray-50 w-2/3 h-72 rounded-b-3xl text-white font-semibold m-auto"
+    class="bg-gray-50 w-2/3 h-60 rounded-b-3xl text-white font-semibold m-auto"
   >
-    <div class="bg-gray-50 p7 rounded w-9/12 mx-auto">
+    <div class="bg-gray-50 p7 w-9/12 mx-auto">
       <h1 class="pt-4 pb-2 text-black">Upload your video here</h1>
       <div
         x-ref="dnd"
@@ -12,7 +12,6 @@
           text-gray-400
           bg-gray-50
           border border-gray-400 border-dashed
-          rounded
           cursor-pointer
         "
       >
@@ -37,10 +36,12 @@
 
         <div
           class="flex flex-row items-center justify-center py-10 text-center"
+          v-if="video === undefined"
         >
           <img src="../../assets/arrow-down.svg" />
           <p class="m-0">Drag your files here or click in this area.</p>
         </div>
+        <video :src="video" class="w-36" v-else></video>
       </div>
       <div class="flex flex-row-reverse">
         <div class="settings__save mt-4">
@@ -55,7 +56,7 @@
               text-sm
               px-6
               py-3
-              rounded-full
+              rounded-3xl
               shadow
               hover:shadow-lg
               outline-none
@@ -82,7 +83,6 @@ export default {
   data() {
     return {
       video: undefined,
-      uploadPercentage: 0,
     };
   },
   methods: {
