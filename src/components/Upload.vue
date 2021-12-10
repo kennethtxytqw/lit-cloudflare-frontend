@@ -4,7 +4,7 @@
       <router-link
         to="/upload/auth"
         class="
-          bg-green-100
+          bg-lit-secondary
           flex-1 flex
           items-center
           justify-center
@@ -16,7 +16,7 @@
       <router-link
         to="/upload/upload"
         class="
-          bg-green-100
+          bg-lit-secondary
           flex-1 flex
           items-center
           justify-center
@@ -28,7 +28,7 @@
       <router-link
         to="/upload/token-gate"
         class="
-          bg-green-100
+          bg-lit-secondary
           flex-1 flex
           items-center
           justify-center
@@ -43,7 +43,7 @@
       <router-link
         to="/upload/submit"
         class="
-          bg-green-100
+          bg-lit-secondary
           flex-1 flex
           items-center
           justify-center
@@ -147,6 +147,6 @@ export default {
 <style scoped>
 .router-link-active {
   font-weight: 600;
-  background-color: rgb(16, 185, 125);
+  background-color: #5f35b8;
 }
 </style>

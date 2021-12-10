@@ -68,7 +68,7 @@
         <button
           @click="login"
           class="
-            bg-green-500
+            bg-lit-primary
             text-white
             active:bg-purple-600
             font-bold
