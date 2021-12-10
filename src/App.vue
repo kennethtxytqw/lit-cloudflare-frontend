@@ -43,7 +43,6 @@ export default {
     litNodeClient.connect();
     window.litNodeClient = litNodeClient;
 
-
     document.addEventListener(
       "lit-ready",
       function () {

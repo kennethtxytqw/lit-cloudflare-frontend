@@ -1,0 +1,13 @@
+name = "cf-worker"
+type = "webpack"
+account_id = "9b47beba2f167662ac16b81572ee529d"
+route = ''
+zone_id = ''
+usage_model = ''
+compatibility_flags = []
+workers_dev = true
+site = {bucket = "./dist",entry-point = "workers-site"}
+compatibility_date = "2021-12-10"
+kv_namespaces = [ 
+    { binding = "LIT_KV", preview_id = "75ae5daf6a5342a09401091e81568af7", id = "6bc472654d6b4184ae76546a1b4b3e5b" }
+]
