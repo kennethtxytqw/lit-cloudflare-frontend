@@ -39,7 +39,7 @@
         <p>Global API</p>
         <input
           id="cf_global_api"
-          type="text"
+          type="password"
           v-model="global_api"
           class="
             px-2
@@ -168,7 +168,10 @@ export default {
         });
       localStorage.setItem("encryptedSymmKey", encryptedSymmetricKey);
       localStorage.setItem("encryptedZipBlob", encryptedZip);
-      if (encryptedZip && encryptedSymmetricKey) this.loggedIn = true;
+      if (encryptedZip && encryptedSymmetricKey) {
+        this.loggedIn = true;
+        this.$emit("loginInfo", loginDataObject);
+      }
     },
   },
   async mounted() {

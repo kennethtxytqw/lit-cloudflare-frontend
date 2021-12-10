@@ -27,6 +27,7 @@ const router = createRouter({
         {
           path: "submit",
           component: () => import("./components/upload/Submit.vue"),
+          props: true,
         },
         {
           path: "auth",

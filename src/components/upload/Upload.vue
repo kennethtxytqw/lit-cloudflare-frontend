@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gray-50 w-2/3 h-60 rounded-b-3xl text-white font-semibold m-auto"
+    class="bg-gray-50 w-2/3 h-72 rounded-b-3xl text-white font-semibold m-auto"
   >
     <div class="bg-gray-50 p7 rounded w-9/12 mx-auto">
       <h1 class="pt-4 pb-2 text-black">Upload your video here</h1>
@@ -43,9 +43,34 @@
         </div>
       </div>
       <div class="flex flex-row-reverse">
-        <button class="text-black" v-if="video != undefined">
-          <router-link to="/upload/token-gate">Next</router-link>
-        </button>
+        <div class="settings__save mt-4">
+          <button
+            @click="login"
+            class="
+              bg-green-500
+              text-white
+              active:bg-purple-600
+              font-bold
+              uppercase
+              text-sm
+              px-6
+              py-3
+              rounded-full
+              shadow
+              hover:shadow-lg
+              outline-none
+              focus:outline-none
+              mr-1
+              mb-1
+              ease-linear
+              transition-all
+              duration-150
+            "
+            v-if="video != undefined"
+          >
+            <router-link to="/upload/token-gate">Next</router-link>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -68,20 +93,10 @@ export default {
           alert("You can only upload videos!");
         } else {
           this.video = reader.result;
+          this.$emit("videoUploaded", reader.result);
         }
       });
       reader.readAsDataURL(e.target.files[0]);
-      // TODO: Add Progress bar
-      //   axios.post("", this.video, {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //     onUploadProgress: function (progressEvent) {
-      //       this.uploadPercentage = parseInt(
-      //         Math.round((progressEvent.loaded / progressEvent.total) * 100)
-      //       );
-      //     }.bind(this),
-      //   });
     },
   },
 };

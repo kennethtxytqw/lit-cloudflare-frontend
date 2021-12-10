@@ -35,8 +35,9 @@
           cursor-pointer
           token-gate
         "
+        @click="openShareModal"
       >
-        <p @click="openShareModal">Token-gate the video</p>
+        <p>Token-gate the video</p>
       </router-link>
 
       <router-link
@@ -50,11 +51,19 @@
           submit
         "
       >
-        <p @click="test">Overview & Submit</p>
+        <p>Overview & Submit</p>
       </router-link>
     </div>
 
-    <router-view></router-view>
+    <router-view
+      @videoUploaded="saveVideo"
+      @openShareModal="openShareModal"
+      @loginInfo="saveLoginInfo"
+      :acc="accessControlConditions"
+      :video="video"
+      :email="email"
+      :global_api="global_api"
+    ></router-view>
   </div>
 </template>
 
@@ -64,14 +73,19 @@ export default {
   data() {
     return {
       accessControlConditions: "",
+      video: "",
+      email: "",
+      global_api: "",
     };
   },
   methods: {
-    async test() {
-      // console.log(await this.accessControlConditions);
-      console.log(
-        JSON.parse(JSON.stringify(await this.accessControlConditions))[0]
-      );
+    saveVideo(e) {
+      this.video = e;
+    },
+    saveLoginInfo(e) {
+      console.log(JSON.parse(atob(e)));
+      this.email = JSON.parse(atob(e)).email;
+      this.global_api = JSON.parse(atob(e)).global_api;
     },
     loadJs(path) {
       var tag = document.createElement("script");
