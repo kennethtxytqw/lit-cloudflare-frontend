@@ -145,7 +145,7 @@ export default {
       const { encryptedZip, symmetricKey } = await LitJsSdk.zipAndEncryptString(
         loginDataObject
       );
-
+      const userWalletAddress = await window.ethereum.selectedAddress;
       const accessControlConditions = [
         {
           contractAddress: "",
@@ -155,7 +155,7 @@ export default {
           parameters: [":userAddress"],
           returnValueTest: {
             comparator: "=",
-            value: "0x32934dA17622faEb1F8c9fAb354fc194cF8e4378", // Get users wallet
+            value: userWalletAddress,
           },
         },
       ];
