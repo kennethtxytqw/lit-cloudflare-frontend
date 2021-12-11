@@ -28,6 +28,7 @@ async function handleEvent(event) {
 
   const url = new URL(event.request.url)
   const path = url.pathname;
+  const json = await event.request.json();
 
   let options = {}
 
@@ -44,6 +45,46 @@ async function handleEvent(event) {
       options.cacheControl = {
         bypassCache: true,
       };
+    }
+
+    // If path is /account
+    if((path.match(/\/account$/) || [])[0] === path){
+      // -- prepare
+      const accountId = path.split('/')[2];
+      const method = event.request['method'];
+
+      const header = {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
+          "Access-Control-Max-Age": "86400",
+        }
+      };
+
+      // -- handle GET request
+      if(method == 'POST'){
+
+        // -- prepare params
+        const url = `https://api.cloudflare.com/client/v4/accounts`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Auth-Email': json.email,
+                'X-Auth-Key': json.globalAPI,
+            },
+        };
+
+        const res = await fetch(url, options);
+        const result = await res.json();
+
+        const jsonData = JSON.stringify({
+          id: result['result'][0]['id']
+        }, null, 2)
+
+        return new Response(jsonData, header);
+      }
+
     }
 
     // If path is /wallet

@@ -32,6 +32,7 @@
           @change="getVideoFile($event)"
         />
 
+
         <div
           class="flex flex-row items-center justify-center py-10 text-center"
           v-if="video === undefined"
@@ -77,6 +78,7 @@
 <script>
 
 import { fileToBlob } from '../../utils.js';
+import { getCloudFlareAccountId, requestCloudflareDirectUploadAuth } from '../../cloudflare.js';
 
 export default {
   name: "Upload",
@@ -90,15 +92,36 @@ export default {
     async getVideoFile(e) {
 
       const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+      // console.log(formData);
 
       if(file.type.split('/')[0] != 'video'){
         alert("You can only upload videos!");
         return;
       }
 
-      this.video = await fileToBlob(file);
+      this.video = formData;;
 
       this.$emit("onVideoUploaded", this.video);
+      
+      // test
+      const email = "lightanson@protonmail.com";
+      const globalAPI = '9e71cdc773da780e5059efe41ee0887d86b08';
+
+      // get account id
+      const accountId = await getCloudFlareAccountId(email,globalAPI);
+
+      console.log("AccountId:", accountId);
+      
+      const oneTimeUploadUrl = await requestCloudflareDirectUploadAuth(email, globalAPI, accountId);
+
+      console.log(oneTimeUploadUrl);
+
+      const uploadResult = await fetch(oneTimeUploadUrl, {
+        method: "POST",
+        body: formData,
+      });
 
     },
   },
