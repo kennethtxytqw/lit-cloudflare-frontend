@@ -38,4 +38,4 @@ const router = createRouter({
   ],
 });
 
-createApp(App).use(router).mount("#app");
+const app = createApp(App).use(router).mount("#app");

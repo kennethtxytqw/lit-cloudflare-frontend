@@ -20,6 +20,7 @@
 </template>
 
 <script>
+
 export default {
   name: "App",
   data() {
@@ -47,6 +48,7 @@ export default {
       "lit-ready",
       function () {
         console.log("LIT network is ready");
+        window.networkIsReady = true;
         this.authMetamask();
       }.bind(this),
       false
