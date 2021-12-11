@@ -38,7 +38,7 @@
       "
       v-if="acc"
     >
-      <router-link to="/upload/submit">Next</router-link>
+      <router-link to="/stream/submit">Next</router-link>
     </button>
   </div>
 </template>

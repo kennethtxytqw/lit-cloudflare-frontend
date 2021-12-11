@@ -300,7 +300,6 @@ export default {
 
       // the value of the key/value database
       const value = btoa(JSON.stringify({
-
           accessControlConditions,
           encryptedZip:  encryptedZip_dataURI,
           encryptedSymmetricKey: encryptedSymmetricKey_string,

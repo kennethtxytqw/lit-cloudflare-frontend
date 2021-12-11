@@ -22,17 +22,15 @@
       <div class="mt-4">
         <p class="font-light">Global API</p>
         <p class="font-medium">
-          {{ global_api.toString().substr(0, 4) }}...{{
-            global_api.toString().substr(33, 4)
-          }}
+          {{ globalAPI }}
         </p>
       </div>
 
       <label class="mt-6">Video and access details</label>
 
       <div>
-        <p class="font-light">Access control conditions</p>
-        <p class="font-medium">{{ acc }}</p>
+        <p class="font-light">User must meet the following conditions to unlock the video</p>
+        <p class="font-medium">{{ readable }}</p>
       </div>
 
       <div class="mt-4">
@@ -68,27 +66,53 @@
 </template>
 
 <script>
+
+import { getDecryptedString } from '../../crypto.js';
+
+const proxyObjectToArray = (proxyObject) => {
+  const arr = JSON.parse(JSON.stringify(proxyObject));
+  return arr;
+}
+
+const accessControlToReadable = async (value) => {
+    return await LitJsSdk.humanizeAccessControlConditions({
+        accessControlConditions: value,
+    });
+}
+
 export default {
   name: "AccessControl",
-  props: ["acc", "video", "email", "global_api"],
-  // TODO: Add human readable access control
-  // methods: {
-  //   async human() {
-  //     const accessControlConditions = JSON.parse(
-  //       JSON.stringify(await this.acc)
-  //     )[0];
-  //     console.log(accessControlConditions);
-  //     console.log(
-  //       await LitJsSdk.humanizeAccessControlConditions({
-  //         accessControlConditions,
-  //         myWalletAddress: "0x32934dA17622faEb1F8c9fAb354fc194cF8e4378",
-  //       })
-  //     );
-  //   },
-  // },
-  // async mounted() {
-  //   this.human();
-  // },
+  props: ["acc", "video"],
+  data(){
+    return {
+      readable: null,
+      email: null,
+      globalAPI: null,
+      encryptedCredential: null,
+    }
+  },
+  methods:{
+    async setReadable(acc){
+      console.log(acc);
+      const proxyReadable = await accessControlToReadable(acc);
+      const arr = proxyObjectToArray(proxyReadable);
+      const joinedString = arr.join();
+      this.readable = joinedString;
+    },
+    async getCredential(){
+      this.encryptedCredential = localStorage['lit-encrypted-cred'];
+      const decryptedString = await getDecryptedString(this.encryptedCredential);
+      return JSON.parse(atob(decryptedString));
+    }
+  },
+  async created(){
+    this.setReadable(this.acc);
+    const credential = await this.getCredential();
+    console.log("🤌  Credential:", credential);
+    this.email = credential.email;
+    this.globalAPI = credential.global_api;
+  },
+  
 };
 </script>
 
