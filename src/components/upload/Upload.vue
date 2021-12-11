@@ -87,7 +87,21 @@ export default {
   },
   methods: {
 
-  }
+    async getVideoFile(e) {
+
+      const file = e.target.files[0];
+
+      if(file.type.split('/')[0] != 'video'){
+        alert("You can only upload videos!");
+        return;
+      }
+
+      this.video = await fileToBlob(file);
+
+      this.$emit("onVideoUploaded", this.video);
+
+    },
+  },
 };
 </script>
 
