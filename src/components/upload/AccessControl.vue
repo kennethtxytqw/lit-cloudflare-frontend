@@ -14,7 +14,30 @@
     "
   >
     <p @click="openModal">Open Control Access Modal</p>
-    <button class="text-black" v-if="acc">
+
+    <button
+      class="
+        bg-lit-primary
+        text-white
+        active:bg-purple-600
+        font-bold
+        uppercase
+        text-sm
+        px-6
+        py-3
+        rounded-3xl
+        shadow
+        hover:shadow-lg
+        outline-none
+        focus:outline-none
+        mr-1
+        mb-1
+        ease-linear
+        transition-all
+        duration-150
+      "
+      v-if="acc"
+    >
       <router-link to="/upload/submit">Next</router-link>
     </button>
   </div>

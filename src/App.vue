@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-800 h-screen">
+  <div class="h-screen">
     <nav class="flex w-11/12 m-auto justify-between items-center text-white">
       <img alt="Vue logo" class="w-16 mt-4" src="./assets/logo.png" />
       <div class="flex">
@@ -60,5 +60,11 @@ export default {
 <style>
 .router-link-active {
   font-weight: 600;
+}
+body {
+  background: #150636;
+  background: -webkit-radial-gradient(center, #150636, #010008);
+  background: -moz-radial-gradient(center, #150636, #010008);
+  background: radial-gradient(ellipse at center, #150636, #010008);
 }
 </style>

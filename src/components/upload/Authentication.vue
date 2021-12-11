@@ -44,6 +44,7 @@
           CloudFlare Global API: <input type="text" placeholder="...enter your detail here" v-model="cfGlobalAPI" /><br>
           <button @click="setValueToDB()" class="btn btn-blue">Save to KV DB</button>
         </div>
+
       </div>
 
     </div>
@@ -207,6 +208,7 @@ export default {
 
       // the value of the key/value database
       const value = btoa(JSON.stringify({
+
           accessControlConditions,
           encryptedZip:  encryptedZip_dataURI,
           encryptedSymmetricKey: encryptedSymmetricKey_string,
