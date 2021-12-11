@@ -39,14 +39,13 @@
           v-if="video === undefined"
         >
           <img src="../../assets/arrow-down.svg" />
-          <p class="m-0">Drag your files here or click in this area.</p>
+          <p class="m-0">Drag your file here or click to upload.</p>
         </div>
         <video :src="video" class="w-36" v-else></video>
       </div>
       <div class="flex flex-row-reverse">
         <div class="settings__save mt-4">
           <button
-            @click="login"
             class="
               bg-lit-primary
               text-white
@@ -78,6 +77,9 @@
 </template>
 
 <script>
+
+import { fileToBlob } from '../../utils.js';
+
 export default {
   name: "Upload",
   data() {
@@ -86,17 +88,20 @@ export default {
     };
   },
   methods: {
-    getVideoFile(e) {
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        if (reader.result.substr(5, 5) != "video") {
-          alert("You can only upload videos!");
-        } else {
-          this.video = reader.result;
-          this.$emit("videoUploaded", reader.result);
-        }
-      });
-      reader.readAsDataURL(e.target.files[0]);
+
+    async getVideoFile(e) {
+
+      const file = e.target.files[0];
+
+      if(file.type.split('/')[0] != 'video'){
+        alert("You can only upload videos!");
+        return;
+      }
+
+      this.video = await fileToBlob(file);
+
+      this.$emit("onVideoUploaded", this.video);
+
     },
   },
 };

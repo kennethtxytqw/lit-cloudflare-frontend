@@ -56,7 +56,7 @@
     </div>
 
     <router-view
-      @videoUploaded="saveVideo"
+      @onVideoUploaded="saveVideo"
       @openShareModal="openShareModal"
       @loginInfo="saveLoginInfo"
       :acc="accessControlConditions"
@@ -80,6 +80,7 @@ export default {
   },
   methods: {
     saveVideo(e) {
+      console.warn("saveVideo:", e);
       this.video = e;
     },
     saveLoginInfo(e) {

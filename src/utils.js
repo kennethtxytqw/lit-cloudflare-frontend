@@ -32,6 +32,25 @@ export const dataURItoBlob = (dataURI) => {
     return blob;
 }
 
+//
+// Turn file into blob
+// @param { File } file to be converted 
+// @returns { Promise<Blob> } use await to get result
+//
+export const fileToBlob = (file) => {
+    return new Promise((resolve, reject) => {
+        var reader = new FileReader();
+
+        reader.onload = (e) => {
+            var data = e.target.result;
+            console.log(e.target);
+            resolve(data);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+
 export const arrayStringToUnit8Array = (value) =>{
     return new Uint8Array(atob(value).split(',').map((x) => parseInt(x)));
 }
