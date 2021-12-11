@@ -12,8 +12,8 @@ const router = createRouter({
       component: () => import("./components/Watch.vue"),
     },
     {
-      path: "/upload",
-      name: "Upload",
+      path: "/stream",
+      name: "Stream",
       component: () => import("./components/Upload.vue"),
       children: [
         {

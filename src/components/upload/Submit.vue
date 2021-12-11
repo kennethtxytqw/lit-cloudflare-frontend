@@ -14,16 +14,31 @@
   >
     <div class="flex flex-col w-4/5 my-8">
       <label>Account Details</label>
-      <p class="text-lg">{{ email }}</p>
-      <p class="text-lg">
-        {{ global_api.toString().substr(0, 4) }}...{{
-          global_api.toString().substr(33, 4)
-        }}
-      </p>
+      <div>
+        <p class="font-light">E-Mail</p>
+        <p class="font-medium">{{ email }}</p>
+      </div>
+
+      <div class="mt-4">
+        <p class="font-light">Global API</p>
+        <p class="font-medium">
+          {{ global_api.toString().substr(0, 4) }}...{{
+            global_api.toString().substr(33, 4)
+          }}
+        </p>
+      </div>
 
       <label class="mt-6">Video and access details</label>
-      <p class="text-lg">{{ acc }}</p>
-      <video class="w-48" :src="video"></video>
+
+      <div>
+        <p class="font-light">Access control conditions</p>
+        <p class="font-medium">{{ acc }}</p>
+      </div>
+
+      <div class="mt-4">
+        <p class="font-light">Video preview</p>
+        <video class="w-48" :src="video"></video>
+      </div>
     </div>
     <button
       class="
@@ -35,7 +50,7 @@
         text-sm
         px-6
         py-3
-        rounded-3xl
+        rounded-xl
         shadow
         hover:shadow-lg
         outline-none
@@ -56,9 +71,24 @@
 export default {
   name: "AccessControl",
   props: ["acc", "video", "email", "global_api"],
-  mounted() {
-    console.log(this.video);
-  },
+  // TODO: Add human readable access control
+  // methods: {
+  //   async human() {
+  //     const accessControlConditions = JSON.parse(
+  //       JSON.stringify(await this.acc)
+  //     )[0];
+  //     console.log(accessControlConditions);
+  //     console.log(
+  //       await LitJsSdk.humanizeAccessControlConditions({
+  //         accessControlConditions,
+  //         myWalletAddress: "0x32934dA17622faEb1F8c9fAb354fc194cF8e4378",
+  //       })
+  //     );
+  //   },
+  // },
+  // async mounted() {
+  //   this.human();
+  // },
 };
 </script>
 

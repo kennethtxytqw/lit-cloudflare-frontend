@@ -1,8 +1,8 @@
 <template>
   <div class="mt-20">
-    <div class="w-2/3 m-auto h-10 flex">
+    <div class="w-2/3 m-auto h-10 flex text-white">
       <router-link
-        to="/upload/auth"
+        to="/stream/auth"
         class="
           bg-lit-secondary
           flex-1 flex
@@ -14,7 +14,7 @@
         <p>Log in</p>
       </router-link>
       <router-link
-        to="/upload/upload"
+        to="/stream/upload"
         class="
           bg-lit-secondary
           flex-1 flex
@@ -26,7 +26,7 @@
         <p>Upload video</p>
       </router-link>
       <router-link
-        to="/upload/token-gate"
+        to="/stream/token-gate"
         class="
           bg-lit-secondary
           flex-1 flex
@@ -41,7 +41,7 @@
       </router-link>
 
       <router-link
-        to="/upload/submit"
+        to="/stream/submit"
         class="
           bg-lit-secondary
           flex-1 flex

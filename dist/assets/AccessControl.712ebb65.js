@@ -1,0 +1,1 @@
+import{_ as e}from"./index.ac831b23.js";import{o,c as s,a as t}from"./vendor.4337dce8.js";const c={name:"AccessControl"},r={class:"bg-gray-50 w-2/3 h-60 rounded-b-3xl text-black font-semibold m-auto flex justify-center items-center"},n=t("code",null,"ControlAccessModal Here",-1),a=[n];function d(l,_,i,f,m,p){return o(),s("div",r,a)}var b=e(c,[["render",d]]);export{b as default};

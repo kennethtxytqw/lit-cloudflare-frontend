@@ -1,0 +1,1 @@
+import{_ as e}from"./index.ac831b23.js";import{o as t,c as o,a as s}from"./vendor.4337dce8.js";const c={},a={class:"flex w-11/12 m-auto"},r=s("p",{class:"text-white font-semibold text-2xl"},"Videos from the creator",-1),n=[r];function _(d,i,f,p,l,m){return t(),o("div",a,n)}var u=e(c,[["render",_]]);export{u as default};

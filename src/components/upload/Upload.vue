@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="bg-gray-50 w-2/3 h-60 rounded-b-3xl text-white font-semibold m-auto"
-  >
+  <div class="bg-gray-50 w-2/3 rounded-b-3xl text-white font-semibold m-auto">
     <div class="bg-gray-50 p7 w-9/12 mx-auto">
       <h1 class="pt-4 pb-2 text-black">Upload your video here</h1>
       <div
@@ -55,7 +53,7 @@
               text-sm
               px-6
               py-3
-              rounded-3xl
+              rounded-xl
               shadow
               hover:shadow-lg
               outline-none
@@ -68,7 +66,7 @@
             "
             v-if="video != undefined"
           >
-            <router-link to="/upload/token-gate">Next</router-link>
+            <router-link to="/stream/token-gate">Next</router-link>
           </button>
         </div>
       </div>
@@ -89,21 +87,7 @@ export default {
   },
   methods: {
 
-    async getVideoFile(e) {
-
-      const file = e.target.files[0];
-
-      if(file.type.split('/')[0] != 'video'){
-        alert("You can only upload videos!");
-        return;
-      }
-
-      this.video = await fileToBlob(file);
-
-      this.$emit("onVideoUploaded", this.video);
-
-    },
-  },
+  }
 };
 </script>
 

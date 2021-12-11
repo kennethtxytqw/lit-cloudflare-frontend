@@ -5,7 +5,7 @@
       <div class="flex">
         <p class="font-light"><router-link to="/">Watch</router-link></p>
         <p class="ml-8 font-light">
-          <router-link to="/upload/auth">Upload</router-link>
+          <router-link to="/stream/auth">Upload</router-link>
         </p>
       </div>
       <div>

@@ -1,14 +1,22 @@
 <template>
-  <div class="bg-gray-50 w-2/3 h-60 rounded-b-3xl text-black font-semibold m-auto flex flex-col justify-center items-center">
-
+  <div
+    class="
+      bg-gray-50
+      w-2/3
+      rounded-b-3xl
+      text-black
+      font-semibold
+      m-auto
+      flex flex-col
+      justify-center
+      items-center
+    "
+  >
     <!-- LOADING -->
-    <div v-if="loading">
-      Loading...
-    </div>
+    <div v-if="loading">Loading...</div>
 
     <!-- LOADED -->
     <div v-if="!loading">
-    
       <!-- If not connected to Metamask -->
       <div v-if="selectedAddress == null || !hasLitAuthSignature()">
         Please connect your wallet.
@@ -32,30 +40,115 @@
       </div>
 
       <!-- If connected to Metamask -->
-      <div v-if="selectedAddress != null && networkIsReady">
-        Lit-Network is ready: {{ networkIsReady }}<br>
-        selectedAddress: {{ selectedAddress }}<br>
-        kvRegistered: {{ kvRegistered }}<br>
-        <hr>
-
-        <!-- Register Email + Global API if not KV-registered -->
-        <div v-if="!kvRegistered">
-          CloudFlare Email: <input type="text" placeholder="...enter your detail here" v-model="cfEmail" /><br>
-          CloudFlare Global API: <input type="text" placeholder="...enter your detail here" v-model="cfGlobalAPI" /><br>
-          <button @click="setValueToDB()" class="btn btn-blue">Save to KV DB</button>
+      <div v-if="selectedAddress != null && networkIsReady" class="my-6 flex">
+        <div class="flex-1">
+          Lit-Network is ready: {{ networkIsReady }}<br />
+          selectedAddress: {{ selectedAddress }}<br />
+          kvRegistered: {{ kvRegistered }}<br />
+          <hr />
+          <button
+            class="
+              bg-lit-primary
+              text-white
+              active:bg-purple-600
+              font-bold
+              uppercase
+              text-sm
+              px-6
+              py-3
+              rounded-xl
+              shadow
+              hover:shadow-lg
+              outline-none
+              focus:outline-none
+              mr-1
+              mb-1
+              ease-linear
+              transition-all
+              duration-150
+              mt-2
+            "
+            v-if="loggedIn"
+          >
+            <p>
+              <router-link to="/stream/upload">Next</router-link>
+            </p>
+          </button>
         </div>
 
+        <!-- Register Email + Global API if not KV-registered -->
+        <div v-if="!kvRegistered" class="flex-1">
+          CloudFlare Email:
+          <input
+            type="text"
+            placeholder="...enter your detail here"
+            v-model="cfEmail"
+            class="
+              px-2
+              py-1
+              placeholder-gray-400
+              text-gray-600
+              relative
+              rounded
+              text-sm
+              border border-gray-400
+              outline-none
+              focus:outline-none focus:ring
+              w-full
+            "
+          /><br />
+          CloudFlare Global API:
+          <input
+            type="text"
+            placeholder="...enter your detail here"
+            v-model="cfGlobalAPI"
+            class="
+              px-2
+              py-1
+              placeholder-gray-400
+              text-gray-600
+              relative
+              rounded
+              text-sm
+              border border-gray-400
+              outline-none
+              focus:outline-none focus:ring
+              w-full
+            "
+          /><br />
+          <button
+            @click="setValueToDB()"
+            class="
+              bg-lit-primary
+              text-white
+              active:bg-purple-600
+              font-bold
+              uppercase
+              text-sm
+              px-6
+              py-3
+              rounded-xl
+              shadow
+              hover:shadow-lg
+              outline-none
+              focus:outline-none
+              mr-1
+              mb-1
+              ease-linear
+              transition-all
+              duration-150
+              mt-2
+            "
+          >
+            Save to KV DB
+          </button>
+        </div>
       </div>
-
     </div>
 
-    
     <!-- If wallet address is found -->
-    
+
     <!-- If logged in -->
-    <div>
-      <p v-if="loggedIn"><router-link to="/upload/upload">Next</router-link></p>
-    </div>
   </div>
 </template>
 
@@ -66,7 +159,6 @@ export default {
   name: "Authentication",
   data() {
     return {
-
       // component state
       networkIsReady: false,
       loggedIn: false,
@@ -243,7 +335,6 @@ export default {
           this.init();
         }, 2000);
       }
-
     },
 
     //
@@ -376,7 +467,6 @@ export default {
     },
   },
   async mounted() {
-
     this.onLitAuthSigned(() => {
       this.initLitSdk();
       this.init();
@@ -394,14 +484,3 @@ export default {
 };
 </script>
 
-<style scoped>
-  .btn {
-    @apply font-bold py-1 px-4 rounded;
-  }
-  .btn-blue {
-    @apply bg-blue-500 text-white;
-  }
-  .btn-blue:hover {
-    @apply bg-blue-700;
-  }
-</style>
