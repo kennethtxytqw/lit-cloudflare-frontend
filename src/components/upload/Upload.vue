@@ -1,8 +1,6 @@
 <template>
-  <div
-    class="bg-gray-50 w-2/3 h-60 rounded-b-3xl text-white font-semibold m-auto"
-  >
-    <div class="bg-gray-50 p7 rounded w-9/12 mx-auto">
+  <div class="bg-gray-50 w-2/3 rounded-b-3xl text-white font-semibold m-auto">
+    <div class="bg-gray-50 p7 w-9/12 mx-auto">
       <h1 class="pt-4 pb-2 text-black">Upload your video here</h1>
       <div
         x-ref="dnd"
@@ -12,7 +10,6 @@
           text-gray-400
           bg-gray-50
           border border-gray-400 border-dashed
-          rounded
           cursor-pointer
         "
       >
@@ -37,17 +34,42 @@
 
         <div
           class="flex flex-row items-center justify-center py-10 text-center"
+          v-if="video === undefined"
         >
           <img src="../../assets/arrow-down.svg" />
           <p class="m-0">Drag your files here or click in this area.</p>
         </div>
+        <video :src="video" class="w-36" v-else></video>
       </div>
       <div class="flex flex-row-reverse">
-        <button class="text-black" v-if="video != undefined">
-          <router-link to="/upload/token-gate"
-            ><p class="font-semibold">Next</p></router-link
+        <div class="settings__save mt-4">
+          <button
+            @click="login"
+            class="
+              bg-lit-primary
+              text-white
+              active:bg-purple-600
+              font-bold
+              uppercase
+              text-sm
+              px-6
+              py-3
+              rounded-xl
+              shadow
+              hover:shadow-lg
+              outline-none
+              focus:outline-none
+              mr-1
+              mb-1
+              ease-linear
+              transition-all
+              duration-150
+            "
+            v-if="video != undefined"
           >
-        </button>
+            <router-link to="/stream/token-gate">Next</router-link>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -59,7 +81,6 @@ export default {
   data() {
     return {
       video: undefined,
-      uploadPercentage: 0,
     };
   },
   methods: {
@@ -70,20 +91,10 @@ export default {
           alert("You can only upload videos!");
         } else {
           this.video = reader.result;
+          this.$emit("videoUploaded", reader.result);
         }
       });
       reader.readAsDataURL(e.target.files[0]);
-      // TODO: Add Progress bar
-      //   axios.post("", this.video, {
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //     onUploadProgress: function (progressEvent) {
-      //       this.uploadPercentage = parseInt(
-      //         Math.round((progressEvent.loaded / progressEvent.total) * 100)
-      //       );
-      //     }.bind(this),
-      //   });
     },
   },
 };

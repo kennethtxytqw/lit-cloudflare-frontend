@@ -3,7 +3,6 @@
     class="
       bg-gray-50
       w-2/3
-      h-60
       rounded-b-3xl
       text-black
       font-semibold
@@ -13,217 +12,517 @@
       items-center
     "
   >
-    <fieldset class="w-full flex flex-col items-center">
-      <div class="settings__row w-2/5">
-        <p>E-Mail</p>
-        <input
-          id="cf_username"
-          type="text"
-          v-model="email"
-          class="
-            px-2
-            py-1
-            placeholder-gray-400
-            text-gray-600
-            relative
-            rounded
-            text-sm
-            border border-gray-400
-            outline-none
-            focus:outline-none focus:ring
-            w-full
-          "
-        />
+    <!-- LOADING -->
+    <div v-if="loading">Loading...</div>
+
+    <!-- LOADED -->
+    <div v-if="!loading">
+      <!-- If not connected to Metamask -->
+      <div v-if="selectedAddress == null || !hasLitAuthSignature()">
+        Please connect your wallet.
       </div>
-      <div class="settings__row mt-4 w-2/5">
-        <p>Global API</p>
-        <input
-          id="cf_global_api"
-          type="text"
-          v-model="global_api"
-          class="
-            px-2
-            py-1
-            placeholder-gray-400
-            text-gray-600
-            relative
-            rounded
-            text-sm
-            border border-gray-400
-            outline-none
-            focus:outline-none focus:ring
-            w-full
-          "
-        />
+
+      <!-- If Lit network is not ready, load spinner -->
+      <div v-if="selectedAddress != null && !networkIsReady">
+        <p class="text-center">Connecting to lit-protocol</p>
+        <div class="flex justify-center items-center">
+          <div
+            class="
+              animate-spin
+              rounded-full
+              h-16
+              w-16
+              my-2
+              border-t-2 border-b-2 border-purple-500
+            "
+          ></div>
+        </div>
       </div>
-      <!-- <div class="settings__row">
-        <p>Account ID</p>
-        <input
-          id="cf_account_id"
-          type="text"
-          value="9b47beba2f167662ac16b81572ee529d"
-        />
-      </div> -->
-      <div class="settings__save mt-4">
-        <button
-          @click="login"
-          class="
-            bg-green-500
-            text-white
-            active:bg-purple-600
-            font-bold
-            uppercase
-            text-sm
-            px-6
-            py-3
-            rounded-full
-            shadow
-            hover:shadow-lg
-            outline-none
-            focus:outline-none
-            mr-1
-            mb-1
-            ease-linear
-            transition-all
-            duration-150
-          "
-        >
-          Save to LIT Network
-        </button>
+
+      <!-- If connected to Metamask -->
+      <div v-if="selectedAddress != null && networkIsReady" class="my-6 flex">
+        <div class="flex-1">
+          Lit-Network is ready: {{ networkIsReady }}<br />
+          selectedAddress: {{ selectedAddress }}<br />
+          kvRegistered: {{ kvRegistered }}<br />
+          <hr />
+          <button
+            class="
+              bg-lit-primary
+              text-white
+              active:bg-purple-600
+              font-bold
+              uppercase
+              text-sm
+              px-6
+              py-3
+              rounded-xl
+              shadow
+              hover:shadow-lg
+              outline-none
+              focus:outline-none
+              mr-1
+              mb-1
+              ease-linear
+              transition-all
+              duration-150
+              mt-2
+            "
+            v-if="loggedIn"
+          >
+            <p>
+              <router-link to="/stream/upload">Next</router-link>
+            </p>
+          </button>
+        </div>
+
+        <!-- Register Email + Global API if not KV-registered -->
+        <div v-if="!kvRegistered" class="flex-1">
+          CloudFlare Email:
+          <input
+            type="text"
+            placeholder="...enter your detail here"
+            v-model="cfEmail"
+            class="
+              px-2
+              py-1
+              placeholder-gray-400
+              text-gray-600
+              relative
+              rounded
+              text-sm
+              border border-gray-400
+              outline-none
+              focus:outline-none focus:ring
+              w-full
+            "
+          /><br />
+          CloudFlare Global API:
+          <input
+            type="text"
+            placeholder="...enter your detail here"
+            v-model="cfGlobalAPI"
+            class="
+              px-2
+              py-1
+              placeholder-gray-400
+              text-gray-600
+              relative
+              rounded
+              text-sm
+              border border-gray-400
+              outline-none
+              focus:outline-none focus:ring
+              w-full
+            "
+          /><br />
+          <button
+            @click="setValueToDB()"
+            class="
+              bg-lit-primary
+              text-white
+              active:bg-purple-600
+              font-bold
+              uppercase
+              text-sm
+              px-6
+              py-3
+              rounded-xl
+              shadow
+              hover:shadow-lg
+              outline-none
+              focus:outline-none
+              mr-1
+              mb-1
+              ease-linear
+              transition-all
+              duration-150
+              mt-2
+            "
+          >
+            Save to KV DB
+          </button>
+        </div>
       </div>
-    </fieldset>
-    <div>
-      <p v-if="loggedIn"><router-link to="/upload/upload">Next</router-link></p>
     </div>
+
+    <!-- If wallet address is found -->
+
+    <!-- If logged in -->
   </div>
 </template>
 
 <script>
+import { blobToDataURI, dataURItoBlob, buf2hex } from "../../utils";
+
 export default {
   name: "Authentication",
   data() {
     return {
+      // component state
+      networkIsReady: false,
       loggedIn: false,
-      email: "lightanson@protonmail.com",
-      global_api: "9e71cdc773da780e5059efe41ee0887d86b08",
+      loading: false,
+
+      // required data
+      selectedChain: "ethereum",
+      selectedAddress: null,
+      kvRegistered: null,
+      cfEmail: "lightanson@protonmail.com",
+      cfGlobalAPI: "9e71cdc773da780e5059efe41ee0887d86b08",
     };
   },
   methods: {
-    //
-    // turn blob data to data URI
-    // @param { Blob } blob
-    // @return { Promise<String> } blob data in data URI
-    //
-    async blobToDataURI(blob) {
-      return new Promise((resolve, reject) => {
-        var reader = new FileReader();
-
-        reader.onload = (e) => {
-          var data = e.target.result;
-          resolve(data);
-        };
-        reader.readAsDataURL(blob);
-      });
+    // set states
+    setKvRegistered(value) {
+      this.kvRegistered = value;
     },
-    buf2hex(buffer) {
-      // buffer is an ArrayBuffer
-      return [...new Uint8Array(buffer)]
-        .map((x) => x.toString(16).padStart(2, "0"))
-        .join("");
+    setLoading(value) {
+      this.loading = value;
     },
-    async login() {
-      const authSig = await LitJsSdk.checkAndSignAuthMessage({
-        chain: "ethereum",
-      });
+    setLoggedIn(value) {
+      this.loggedIn = value;
+    },
 
-      const loginDataObject = btoa(
-        JSON.stringify({
-          email: this.email,
-          global_api: this.global_api,
-        })
-      );
-      const { encryptedZip, symmetricKey } = await LitJsSdk.zipAndEncryptString(
-        loginDataObject
-      );
+    // ----- Initialise LitSDK -----
+    initLitSdk() {
+      // if network is not ready
+      if (!this.networkIsReady) {
+        var litNodeClient = new LitJsSdk.LitNodeClient();
+        litNodeClient.connect();
+        window.litNodeClient = litNodeClient;
+      }
 
-      const accessControlConditions = [
+      document.addEventListener(
+        "lit-ready",
+        async function () {
+          console.log("LIT network is ready");
+          this.networkIsReady = true;
+        }.bind(this),
+        false
+      );
+    },
+
+    hasLitAuthSignature() {
+      return localStorage["lit-auth-signature"] != null;
+    },
+
+    onLitAuthSigned(callback) {
+      var litSigned = setInterval(() => {
+        if (this.hasLitAuthSignature()) {
+          console.log("Signed!");
+          callback();
+          clearInterval(litSigned);
+        }
+      }, 100); // check every 100ms
+    },
+
+    //
+    // return a fixed format of accessControlConditions
+    // base on individual wallet
+    // @param { String } chain : ethereum, polygon, etc.
+    // @param { String } addr : wallet address
+    // @returns { Object } an array of access control conditions
+    //
+    getIndividualWalletRequirement(chain, addr) {
+      return [
         {
           contractAddress: "",
           standardContractType: "",
-          chain: "ethereum",
+          chain: chain,
           method: "",
           parameters: [":userAddress"],
           returnValueTest: {
             comparator: "=",
-            value: "0x32934dA17622faEb1F8c9fAb354fc194cF8e4378", // Get users wallet
+            value: addr,
           },
         },
       ];
+    },
+
+    // ----- MetaMask -----
+    setConnectedAddress() {
+      this.selectedAddress = window.ethereum.selectedAddress;
+    },
+
+    onMetamaskAccountChanged(callback) {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        if (accounts.length >= 1) {
+          callback();
+        }
+      });
+    },
+
+    // ----- KV DB -----
+
+    //
+    // Get value from CloudFlare KV database
+    // @param { String } addr - wallet address
+    // @returns { String } base64 string consists of accessControlConditions
+    // encryptedZip, and encryptedSymmetricKey
+    //
+    async getValueFromDB(addr) {
+      console.warn("...getting value from database with addr: " + addr);
+
+      const url = DEBUG
+        ? "http://127.0.0.1:8787"
+        : "https://cf-worker.gtc-lightanson.workers.dev";
+      const res = await fetch(`${url}/wallet/${addr}`);
+      const data = await res.json();
+
+      return data.kv;
+    },
+
+    //
+    // Insert entry to DB
+    //
+    async setValueToDB() {
+      const authSig = await LitJsSdk.checkAndSignAuthMessage({
+        chain: this.selectedChain,
+      });
+
+      // -- prepare params
+      const addr = this.selectedAddress;
+      const accessControlConditions = this.getIndividualWalletRequirement(
+        this.selectedChain,
+        addr
+      );
+      const credential = {
+        email: this.cfEmail,
+        global_api: this.cfGlobalAPI,
+      };
+      const credential_base64 = btoa(JSON.stringify(credential));
+      const { encryptedZip, symmetricKey } = await LitJsSdk.zipAndEncryptString(
+        credential_base64
+      );
+
       const encryptedSymmetricKey =
         await window.litNodeClient.saveEncryptionKey({
-          accessControlConditions,
-          symmetricKey,
-          authSig,
-          chain: "ethereum",
+          accessControlConditions, // array of objects [{}]
+          symmetricKey, // Unit8Array string
+          authSig, // object
+          chain: this.selectedChain, // string
         });
-      localStorage.setItem("encryptedSymmKey", encryptedSymmetricKey);
-      localStorage.setItem("encryptedZipBlob", encryptedZip);
-      if (encryptedZip && encryptedSymmetricKey) this.loggedIn = true;
+
+      const encryptedSymmetricKey_string = btoa(encryptedSymmetricKey);
+      const encryptedZip_dataURI = await blobToDataURI(encryptedZip);
+
+      // the value of the key/value database
+      const value = btoa(
+        JSON.stringify({
+          accessControlConditions,
+          encryptedZip: encryptedZip_dataURI,
+          encryptedSymmetricKey: encryptedSymmetricKey_string,
+        })
+      );
+
+      const url = DEBUG
+        ? "http://127.0.0.1:8787"
+        : "https://cf-worker.gtc-lightanson.workers.dev";
+      const header = {
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: {
+          // 'Content-Type': 'application/json'
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        redirect: "follow", // manual, *follow, error
+        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: value, // body data type must match "Content-Type" header
+      };
+      const path = `${url}/wallet/${addr}?c=${value}`;
+
+      console.log(path);
+      const res = await fetch(path, header);
+      const data = await res.json();
+      console.log(data);
+
+      if (data.kv != null) {
+        this.setLoading(true);
+
+        setTimeout(() => {
+          this.setLoading(false);
+          this.init();
+        }, 2000);
+      }
+    },
+
+    //
+    // Decrypt the encrypted base64 string credential
+    // @params { String } base64 of "{email:'', globalAPI: ''}"
+    // @returns { String } "{email:'', globalAPI: ''}"
+    //
+    async getDecryptedString(base64EncryptedCredential) {
+      const chain = this.selectedChain;
+      const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain: chain });
+
+      const res = JSON.parse(atob(base64EncryptedCredential));
+      const accessControlConditions = res.accessControlConditions;
+      const toDecrypt = buf2hex(
+        new Uint8Array(
+          atob(res.encryptedSymmetricKey)
+            .split(",")
+            .map((x) => parseInt(x))
+        )
+      );
+      const encryptedZip = dataURItoBlob(res.encryptedZip);
+
+      await new Promise((r) => setTimeout(r, 1000));
+      const decryptedSymmetricKey = await window.litNodeClient.getEncryptionKey(
+        {
+          accessControlConditions,
+          toDecrypt,
+          chain,
+          authSig,
+        }
+      );
+
+      const decryptedFiles = await LitJsSdk.decryptZip(
+        encryptedZip,
+        decryptedSymmetricKey
+      );
+      const decryptedString = await decryptedFiles["string.txt"].async("text");
+
+      return decryptedString;
+    },
+
+    //
+    // Get the encrypted credential
+    // @returns { String } base64 of "{"email":"","globalAPI":""}"
+    //
+    async getEncryptedCredential() {
+      // Check if it exists in the local storage
+      const storedEncryptedCredential = localStorage["lit-encrypted-cred"];
+
+      // If it contains a null value in String, remove the item
+      if (storedEncryptedCredential == "null") {
+        await localStorage.removeItem("lit-encrypted-cred");
+      }
+
+      // If it is, then return the value from local storage,
+      if (
+        storedEncryptedCredential != null &&
+        storedEncryptedCredential != "null"
+      ) {
+        console.log("🤌 Storage version Credential");
+        console.log("storedEncryptedCredential: ", storedEncryptedCredential);
+        console.log(
+          "(TYPE)storedEncryptedCredential: ",
+          typeof storedEncryptedCredential
+        );
+        return storedEncryptedCredential;
+      }
+
+      // otherwise, we will try to get the value from the KV database
+      let kvVersionCredential;
+
+      try {
+        kvVersionCredential = await this.getValueFromDB(this.selectedAddress);
+        console.log("🤌 KV version Credential");
+        console.log(kvVersionCredential);
+
+        // save it to the localStorage so next time don't have to fetch from KV
+        localStorage["lit-encrypted-cred"] = kvVersionCredential;
+      } catch (e) {
+        console.error(
+          "🤌 Cannot find KV version credential, it probably doesn't exist! "
+        );
+      }
+
+      return kvVersionCredential;
+    },
+
+    //
+    // Get the decrypted credential
+    // @returns { Object } eg. {email: "foo@bar.com", globalApi: "1234567"}
+    //
+    async getCredential() {
+      // Get the encrypted credential in base64 String
+      let base64EncryptedCredential = await this.getEncryptedCredential();
+
+      // If failed to get the encrypted credential, return null
+      if (
+        base64EncryptedCredential == null ||
+        base64EncryptedCredential == undefined
+      ) {
+        return null;
+      }
+
+      console.warn("base64:", base64EncryptedCredential);
+
+      // Set if user is registered if the returned value is not null
+      this.setKvRegistered(base64EncryptedCredential != null);
+      this.setLoggedIn(base64EncryptedCredential != null);
+
+      // If user is not registered, then return null
+      if (!this.kvRegistered) {
+        return null;
+      }
+
+      // If user is registered though, then return the value
+      const encryptedCredential = await this.getDecryptedString(
+        base64EncryptedCredential
+      );
+      const credential = JSON.parse(atob(encryptedCredential));
+
+      return credential;
+    },
+
+    // ----- init -----
+
+    //
+    // 1. Everytime it initialises, first we check if user has already requested
+    // a lit-signature. If not, simply return.
+    // 2. Then, we will set the selected wallet address we found in window.ethereum
+    // 3. Then, we will try to find the credential from that wallet address
+    // 4. If the credential exists, we can now use it to send requests
+    // 5. Otherwise, save user to KV db.
+    //
+    async init() {
+      if (!this.hasLitAuthSignature()) {
+        return;
+      }
+
+      this.setConnectedAddress();
+
+      const credential = await this.getCredential();
+
+      if (credential == null) {
+        console.warn(
+          "🤌 Failed to get encrypted credential, time to store it on the KV database then!"
+        );
+        return;
+      }
+
+      console.log("🤌 Credential:", credential);
     },
   },
   async mounted() {
-    setTimeout(() => {
-      var litNodeClient = new LitJsSdk.LitNodeClient();
-      litNodeClient.connect();
-      window.litNodeClient = litNodeClient;
-    }, 100);
+    this.onLitAuthSigned(() => {
+      this.initLitSdk();
+      this.init();
 
-    document.addEventListener(
-      "lit-ready",
-      async function () {
-        console.log("LIT network is ready");
-        // Login data decryption (reading from localstorage) not working
-        // const authSig = await LitJsSdk.checkAndSignAuthMessage({
-        //   chain: "ethereum",
-        // });
-        // const accessControlConditions = [
-        //   {
-        //     contractAddress: "",
-        //     standardContractType: "",
-        //     chain: "ethereum",
-        //     method: "",
-        //     parameters: [":userAddress"],
-        //     returnValueTest: {
-        //       comparator: "=",
-        //       value: "0x32934dA17622faEb1F8c9fAb354fc194cF8e4378",
-        //     },
-        //   },
-        // ];
-        // const encryptedSymmetricKey = localStorage.getItem("encryptedSymmKey");
-        // const encryptedZip = localStorage.getItem("encryptedZipBlob");
-        // console.log(await this.blobToDataURI(await encryptedZip)); // TypeError: Failed to execute 'readAsDataURL' on 'FileReader': parameter 1 is not of type 'Blob'.
-        // // Decrypt
-        // const symmKey = window.litNodeClient.getEncryptionKey({
-        //   accessControlConditions, // from a db
-        //   toDecrypt: this.buf2hex(encryptedSymmetricKey.buffer), // from local storage
-        //   chain: "ethereum",
-        //   authSig,
-        // });
-        // const decryptedFiles = await LitJsSdk.decryptZip(
-        //   encryptedZip,
-        //   await symmKey
-        // );
-        // console.log(decryptedFiles);
-        // const decryptedString = await decryptedFiles["string.txt"].async(
-        //   "text"
-        // );
-        // console.log(JSON.parse(atob(decryptedString)));
-      }.bind(this),
-      false
-    );
+      this.onMetamaskAccountChanged(() => {
+        // clear the saved credential
+        localStorage.removeItem("lit-encrypted-cred");
+        this.kvRegistered = false;
+        this.init();
+      });
+    });
   },
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<!-- <style scoped>
+.btn {
+  @apply font-bold py-1 px-4 rounded;
+}
+.btn-blue {
+  @apply bg-blue-500 text-white;
+}
+.btn-blue:hover {
+  @apply bg-blue-700;
+}
+</style> -->

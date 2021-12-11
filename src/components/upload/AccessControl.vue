@@ -8,18 +8,81 @@
       text-black
       font-semibold
       m-auto
-      flex
+      flex flex-col
       justify-center
       items-center
     "
   >
-    <code>ControlAccessModal Here</code>
+    <p
+      @click="openModal"
+      class="
+        cursor-pointer
+        bg-lit-primary
+        text-white
+        active:bg-purple-600
+        font-bold
+        uppercase
+        text-sm
+        px-6
+        py-3
+        rounded-xl
+        shadow
+        hover:shadow-lg
+        outline-none
+        focus:outline-none
+        mr-1
+        mb-1
+        ease-linear
+        transition-all
+        duration-150
+        mt-6
+      "
+    >
+      Open Control Access Modal
+    </p>
+
+    <button
+      class="
+        bg-lit-primary
+        text-white
+        active:bg-purple-600
+        font-bold
+        uppercase
+        text-sm
+        px-6
+        py-3
+        rounded-xl
+        shadow
+        hover:shadow-lg
+        outline-none
+        focus:outline-none
+        mr-1
+        mb-1
+        ease-linear
+        transition-all
+        duration-150
+      "
+      v-if="acc"
+    >
+      <router-link to="/stream/submit">Next</router-link>
+    </button>
   </div>
 </template>
 
 <script>
 export default {
   name: "AccessControl",
+  data() {
+    return {
+      acc: false,
+    };
+  },
+  methods: {
+    openModal() {
+      this.$emit("openShareModal");
+      this.acc = true;
+    },
+  },
 };
 </script>
 
