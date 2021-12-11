@@ -40,19 +40,19 @@ export default {
     },
   },
   async mounted() {
-    var litNodeClient = new LitJsSdk.LitNodeClient();
-    litNodeClient.connect();
-    window.litNodeClient = litNodeClient;
+    // var litNodeClient = new LitJsSdk.LitNodeClient();
+    // litNodeClient.connect();
+    // window.litNodeClient = litNodeClient;
 
-    document.addEventListener(
-      "lit-ready",
-      function () {
-        console.log("LIT network is ready");
-        window.networkIsReady = true;
-        this.authMetamask();
-      }.bind(this),
-      false
-    );
+    // document.addEventListener(
+    //   "lit-ready",
+    //   function () {
+    //     console.log("LIT network is ready");
+    //     window.networkIsReady = true;
+    //     this.authMetamask();
+    //   }.bind(this),
+    //   false
+    // );
   },
 };
 </script>
