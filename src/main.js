@@ -14,7 +14,7 @@ const router = createRouter({
     {
       path: "/stream",
       name: "Stream",
-      component: () => import("./components/Upload.vue"),
+      component: () => import("./components/Stream.vue"),
       children: [
         {
           path: "upload",
