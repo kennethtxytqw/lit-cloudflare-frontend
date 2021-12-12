@@ -75,8 +75,7 @@
 </template>
 
 <script>
-
-import { fileToBlob } from '../../utils.js';
+import { fileToBlob } from "../../utils.js";
 
 export default {
   name: "Upload",
@@ -86,20 +85,17 @@ export default {
     };
   },
   methods: {
-
     async getVideoFile(e) {
-
       const file = e.target.files[0];
 
-      if(file.type.split('/')[0] != 'video'){
+      if (file.type.split("/")[0] != "video") {
         alert("You can only upload videos!");
         return;
       }
 
-      this.video = await fileToBlob(file);
+      this.video = file;
 
       this.$emit("onVideoUploaded", this.video);
-
     },
   },
 };
