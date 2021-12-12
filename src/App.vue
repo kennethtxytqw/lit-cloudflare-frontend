@@ -2,7 +2,11 @@
   <div class="h-screen">
     <nav class="flex w-11/12 m-auto items-center text-white">
       <router-link to="/" class="flex-1">
-        <img alt="Vue logo" class="w-16 mt-4" src="./assets/logo.png" />
+        <!-- logo -->
+        <div class="logo">
+          <img alt="Lit-CloudFlare" class="w-16 mt-4" src="./assets/logo.png" />
+          <span>Lit-CloudFlare</span>
+        </div>
       </router-link>
       <div class="flex flex-2">
         <p class="font-light"><router-link to="/">Watch</router-link></p>
@@ -73,5 +77,19 @@ body {
   background: -webkit-radial-gradient(center, #150636, #010008);
   background: -moz-radial-gradient(center, #150636, #010008);
   background: radial-gradient(ellipse at center, #150636, #010008);
+}
+.logo{
+  display: flex;
+  justify-content: start;
+}
+.logo span{
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-top: 18px;
+  padding-left: 8px;
+  font-size: 28px;
+  box-sizing: border-box;
+  text-shadow: 1px 0px 2px #9d3226;
+  font-weight: 500;
 }
 </style>

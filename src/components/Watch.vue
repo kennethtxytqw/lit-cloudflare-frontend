@@ -128,10 +128,8 @@ export default {
   gap: 12px;
 }
 .lit-video-wrapper {
-  width: 25%;
-}
-.lit-video-wrapper{
   width: 100%;
+  transition: all linear 1s;
 }
 
 </style>

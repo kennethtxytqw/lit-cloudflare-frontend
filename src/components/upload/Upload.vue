@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-50 w-2/3 rounded-b-3xl text-white font-semibold m-auto">
+  <div class="bg-gray-50 w-2/3 rounded-b-3xl text-white font-semibold m-auto pt-10">
     <div class="bg-gray-50 p7 w-9/12 mx-auto">
       <h1 class="pt-4 pb-2 text-black">Upload your video here</h1>
       <div
@@ -41,7 +41,7 @@
         </div>
         <video :src="video" class="w-36" v-else></video>
       </div>
-      <div class="flex flex-row-reverse">
+      <div class="flex flex-row-reverse pb-10">
         <div class="settings__save mt-4">
           <button
             class="

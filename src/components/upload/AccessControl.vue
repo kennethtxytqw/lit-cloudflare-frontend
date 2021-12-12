@@ -11,6 +11,7 @@
       flex flex-col
       justify-center
       items-center
+      h-72
     "
   >
     <p @click="openModal">Open Control Access Modal</p>

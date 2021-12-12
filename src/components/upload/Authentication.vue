@@ -10,6 +10,8 @@
       flex flex-col
       justify-center
       items-center
+      h-72
+      min-h-full
     "
   >
     <!-- LOADING -->
@@ -18,14 +20,14 @@
     <!-- LOADED -->
     <div v-if="!loading">
       <!-- If not connected to Metamask -->
-      <div v-if="selectedAddress == null || !hasLitAuthSignature()">
+      <div v-if="selectedAddress == null || !hasLitAuthSignature()" class="pt-24 pb-24">
         Please connect your wallet.
       </div>
 
       <!-- If Lit network is not ready, load spinner -->
       <div v-if="selectedAddress != null && !networkIsReady">
-        <p class="text-center">Connecting to lit-protocol</p>
-        <div class="flex justify-center items-center">
+        <p class="text-center pt-14">Connecting to lit-protocol</p>
+        <div class="flex justify-center items-center pb-14">
           <div
             class="
               animate-spin
@@ -109,6 +111,25 @@
         </div>
         <div class="flex-1 pl-6 flex flex-col justify-between">
           <p v-if="!kvRegistered">You're not registered on CloudFlare</p>
+
+          <!-- Loading account -->
+          <div v-if="kvRegistered && !loggedIn">
+            <p class="text-center pt-14">Loading account</p>
+            <div class="flex justify-center items-center pb-14">
+              <div
+                class="
+                  animate-spin
+                  rounded-full
+                  h-16
+                  w-16
+                  my-2
+                  border-t-2 border-b-2 border-purple-500
+                "
+              ></div>
+            </div>
+          </div>
+
+          <p class="text-center" v-if="kvRegistered && loggedIn">Welcome back!<br> {{ selectedAddress }}</p>
           <button
             class="
               bg-lit-primary
@@ -124,12 +145,11 @@
               hover:shadow-lg
               outline-none
               focus:outline-none
-              mr-1
-              mb-1
               ease-linear
               transition-all
               duration-150
-              mt-2
+              mt-4
+              m-auto
               w-28
             "
             v-if="loggedIn"

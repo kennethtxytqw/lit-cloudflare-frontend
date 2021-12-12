@@ -10,6 +10,7 @@
       flex flex-col
       justify-center
       items-center
+      transition-all
     "
   >
     <!-- requirements not met -->
