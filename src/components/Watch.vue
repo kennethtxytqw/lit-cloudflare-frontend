@@ -107,12 +107,16 @@ export default {
 };
 </script>
 
-<style >
+<style lang="scss">
 .lit-video-description {
   top: calc(84% - (9% / 16 * 100)) !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .lit-video-info {
   display: flex;
+  @apply break-all;
 }
 #lit-videos {
   display: grid;
