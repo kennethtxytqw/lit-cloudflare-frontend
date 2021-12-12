@@ -90,37 +90,38 @@ export default {
   methods: {
     async getVideoFile(e) {
       const file = e.target.files[0];
-      const formData = new FormData();
-      formData.append("file", file);
-      // console.log(formData);
+      const previewFileBlob = await fileToBlob(file);
+
+      const videoData = new FormData();
+      videoData.append("file", file);
 
       if (file.type.split("/")[0] != "video") {
         alert("You can only upload videos!");
         return;
       }
 
-      this.video = formData;;
+      this.video = previewFileBlob;;
 
-      this.$emit("onVideoUploaded", this.video);
+      this.$emit("onVideoUploaded", {previewFileBlob, videoData});
       
       // test
-      const email = "lightanson@protonmail.com";
-      const globalAPI = '9e71cdc773da780e5059efe41ee0887d86b08';
+      // const email = "lightanson@protonmail.com";
+      // const globalAPI = '9e71cdc773da780e5059efe41ee0887d86b08';
 
-      // get account id
-      const accountId = await getCloudFlareAccountId(email, globalAPI);
+      // // get account id
+      // const accountId = await getCloudFlareAccountId(email, globalAPI);
 
-      console.log("AccountId:", accountId);
+      // console.log("AccountId:", accountId);
       
-      const oneTimeUploadUrl = await requestCloudflareDirectUploadAuth(email, globalAPI, accountId);
+      // const oneTimeUploadUrl = await requestCloudflareDirectUploadAuth(email, globalAPI, accountId);
 
-      console.log(oneTimeUploadUrl);
+      // console.log(oneTimeUploadUrl);
 
-      const uploadResult = await fetch(oneTimeUploadUrl, {
-        method: "POST",
-        body: formData,
-      });
-      console.log(uploadResult);      
+      // const uploadResult = await fetch(oneTimeUploadUrl, {
+      //   method: "POST",
+      //   body: formData,
+      // });
+      // console.log(uploadResult);      
 
     },
   },
