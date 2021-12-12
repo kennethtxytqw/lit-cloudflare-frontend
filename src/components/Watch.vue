@@ -5,6 +5,10 @@
   <div class="w-11/12 m-auto box-border mt-16">
     <!-- all videos will be injected here -->
     <div id="lit-videos" v-html="HTMLcontent"></div>
+    <div class="text-white text-center" v-if="HTMLcontent == ''">
+      ...Oops!<br>
+      It's doesn't seem like you have upload any videos, click <a href="./stream/auth">upload</a> to begin!
+    </div>
   </div>
 </template>
 
@@ -30,12 +34,12 @@ export default {
     };
   },
   methods: {
-    loadJs(path) {
+    injectJS(path) {
       var tag = document.createElement("script");
       tag.setAttribute("src", path);
       document.head.appendChild(tag);
     },
-    loadCss(path) {
+    injectCSS(path) {
       var tag = document.createElement("link");
       tag.setAttribute("rel", "stylesheet");
       tag.setAttribute("href", path);
@@ -60,7 +64,7 @@ export default {
   },
 
   async mounted() {
-    this.loadCss(
+    this.injectCSS(
       "https://cloudflare-lit-protocol-integration.vercel.app/lit-unlock.min.css"
     );
   },
@@ -95,14 +99,11 @@ export default {
         result.data
       );
 
-
       this.HTMLcontent += snippet;
-
-  
 
       // Add the script at the end of the loop
       if (i == videos.length - 1) {
-        this.loadJs(
+        this.injectJS(
           "https://cloudflare-lit-protocol-integration.vercel.app/lit-unlock.min.js"
         );
       }

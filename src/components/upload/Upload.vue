@@ -76,7 +76,6 @@
 
 <script>
 import { fileToBlob } from "../../utils.js";
-// import { getCloudFlareAccountId, requestCloudflareDirectUploadAuth } from '../../cloudflare.js';
 
 export default {
   name: "Upload",
@@ -86,6 +85,15 @@ export default {
     };
   },
   methods: {
+
+    //
+    // Get the video file from the file input field,
+    // We will get the blob format for the video for preview, 
+    // and get the FormData type for that we can use it 
+    // to upload. Finally, we will emit the variables to the
+    // parent component
+    // @params { Object } e : event
+    // @returns { void } 
     async getVideoFile(e) {
       const file = e.target.files[0];
       const previewFileBlob = await fileToBlob(file);

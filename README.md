@@ -47,9 +47,12 @@ Setup a key/value database
 ```
 // dev
 wrangler kv:namespace create "LIT_KV" --preview
+wrangler kv:namespace create "VIDEOS" --preview
 
 // prod
 wrangler kv:namespace create "LIT_KV"
+wrangler kv:namespace create "VIDEOS" 
+
 ```
 
 # Limitations/Sponsors (If you would like to sponsor us going forward)

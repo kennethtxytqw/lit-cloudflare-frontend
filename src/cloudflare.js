@@ -1,23 +1,3 @@
-// curl \
-// -H "X-Auth-Email: lightanson@protonmail.com" \
-// -H "X-Auth-Key: 9e71cdc773da780e5059efe41ee0887d86b08" \
-// -F 
-// https://api.cloudflare.com/client/v4/accounts/9b47beba2f167662ac16b81572ee529d/stream
-
-// curl -X GET  \
-//     -H "X-Auth-Email: lightanson@protonmail.com" \
-//     -H "X-Auth-Key: 9e71cdc773da780e5059efe41ee0887d86b08" \
-//     "https://api.cloudflare.com/client/v4/accounts/9b47beba2f167662ac16b81572ee529d/stream"
-
-// curl -X POST  \
-//     -H "X-Auth-Email: lightanson@protonmail.com" \
-//     -H "X-Auth-Key: 9e71cdc773da780e5059efe41ee0887d86b08" \
-//     "https://api.cloudflare.com/client/v4/accounts/9b47beba2f167662ac16b81572ee529d/stream/direct_upload"
-
-// curl -X GET "https://api.cloudflare.com/client/v4/accounts/9b47beba2f167662ac16b81572ee529d/storage/kv/namespaces/0f2ac74b498b48028cb68387c421e279/values/My-Key" \
-//      -H "X-Auth-Email: user@example.com" \
-//      -H "X-Auth-Key: c2547eb745079dac9320b638f5e225cf483cc5cfdda41"
-     
 //
 // (POST) Request a one-time upload url to upload video
 // accounts/:account_identifier/stream/direct_upload

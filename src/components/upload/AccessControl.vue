@@ -54,6 +54,10 @@ export default {
     };
   },
   methods: {
+
+    // 
+    // Emit event name openShareModal to open the access control conditions modal
+    //
     openModal() {
       this.$emit("openShareModal");
     },

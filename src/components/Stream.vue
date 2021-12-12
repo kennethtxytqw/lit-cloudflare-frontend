@@ -78,31 +78,65 @@ export default {
     };
   },
   methods: {
+
+    //
+    // save video to the local state
+    // @params { Object } an event emitted from the child component
+    // @returns { void }
+    // 
     saveVideo(e) {
       console.warn("saveVideo:", e);
       this.video = e;
     },
+
+    // 
+    // Save the login info from base64 to the original state to local state
+    // @params { Object } an event emitted from the child component
+    // @params { void } 
+    // 
     saveLoginInfo(e) {
       console.log(JSON.parse(atob(e)));
       this.email = JSON.parse(atob(e)).email;
       this.global_api = JSON.parse(atob(e)).global_api;
     },
-    loadJs(path) {
+
+    // 
+    // Inject External Javascript
+    // @params { String } path : eg. https://cdn.jquery.com/jquery.min.js
+    // @returns { void }
+    // 
+    injectJS(path) {
       var tag = document.createElement("script");
       tag.setAttribute("src", path);
       document.head.appendChild(tag);
     },
-    loadCss(path) {
+
+    //
+    // Inject external CSS stylesheet
+    // @params { String } path : eg. http://cdn.jqeruy.com/style.css
+    // @returns { void } 
+    //
+    injectCSS(path) {
       var tag = document.createElement("link");
       tag.setAttribute("rel", "stylesheet");
       tag.setAttribute("href", path);
       document.head.appendChild(tag);
     },
+
+    // 
+    // Cloud the access control conditions modal 
+    // @returns { void } 
+    //
     closeModal() {
       console.log("close share modal");
       ACCM.ReactContentRenderer.unmount(document.getElementById("shareModal"));
       if (this.accessControlConditions) this.$router.push({ path: "submit" });
     },
+
+    // 
+    // Open the access control models 
+    // @returns { void } 
+    //
     openShareModal() {
       console.log("open share modal");
       ACCM.ReactContentRenderer.render(
@@ -135,10 +169,10 @@ export default {
     },
   },
   async mounted() {
-    this.loadJs(
+    this.injectJS(
       "https://cdn.jsdelivr.net/npm/lit-access-control-conditions-modal-vanilla-js/dist/index.js"
     );
-    this.loadCss(
+    this.injectCSS(
       "https://cdn.jsdelivr.net/npm/lit-access-control-conditions-modal-vanilla-js/dist/main.css"
     );
   },

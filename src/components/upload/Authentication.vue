@@ -196,15 +196,30 @@ export default {
     };
   },
   methods: {
-    // set states
+
+    // ================== Local Component ==================
+    // 
+    // set if user is registered on CloudFlare KV
+    // @params { Bool } true/false
+    // @returns { void } 
     setKvRegistered(value) {
       this.kvRegistered = value;
     },
+
+    //
+    // set it is loading
+    // @params { Bool } true/false
+    // @returns { void } 
+    //
     setLoading(value) {
       this.loading = value;
     },
 
-    // ----- Initialise LitSDK -----
+    // ================== Lit-Protocol ==================
+    //
+    // Initalise LIT SDK
+    // @returns { void } 
+    //
     initLitSdk() {
       // if network is not ready
       if (!this.networkIsReady) {
@@ -213,6 +228,7 @@ export default {
         window.litNodeClient = litNodeClient;
       }
 
+      // -- listen if the network is ready
       document.addEventListener(
         "lit-ready",
         async function () {
@@ -223,10 +239,19 @@ export default {
       );
     },
 
+    // 
+    // Check local storage if it hass the lit-auth signature
+    // @returns { void } 
+    //
     hasLitAuthSignature() {
       return localStorage["lit-auth-signature"] != null;
     },
 
+    // 
+    // Event:: when the lit-auth signature is signed
+    // @params { Function } callback
+    // @returns { void } 
+    //
     onLitAuthSigned(callback) {
       var litSigned = setInterval(() => {
         if (this.hasLitAuthSignature()) {
@@ -260,11 +285,21 @@ export default {
       ];
     },
 
-    // ----- MetaMask -----
+    // ================== Metamask ==================
+
+    // 
+    // Set the selected wallet address to local state
+    // @returns { void } 
+    //
     setConnectedAddress() {
       this.selectedAddress = window.ethereum.selectedAddress;
     },
-
+    
+    // 
+    // Event:: When user change its Metamask account
+    // @params { Function } 
+    // @returns { void } 
+    //
     onMetamaskAccountChanged(callback) {
       window.ethereum.on("accountsChanged", (accounts) => {
         if (accounts.length >= 1) {
@@ -273,7 +308,7 @@ export default {
       });
     },
 
-    // ----- KV DB -----
+    // ================== CloudFlare KV Databse ==================
 
     //
     // Get value from CloudFlare KV database
@@ -293,6 +328,7 @@ export default {
 
     //
     // Insert entry to DB
+    // @returns { void } 
     //
     async setValueToDB() {
       const authSig = await LitJsSdk.checkAndSignAuthMessage({
@@ -485,7 +521,7 @@ export default {
       return credential;
     },
 
-    // ----- init -----
+    // ================== Initialise ==================
 
     //
     // 1. Everytime it initialises, first we check if user has already requested
@@ -515,6 +551,8 @@ export default {
       this.loggedIn = true;
     },
   },
+
+  // ================== Mounted Hook ==================
   async mounted() {
     this.onLitAuthSigned(() => {
       this.initLitSdk();

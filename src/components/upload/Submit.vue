@@ -137,7 +137,7 @@
         transition-all
         duration-150
       "
-      @click="postVideo"
+      @click="onSubmit"
     >
       {{
         percentage <= 0
@@ -180,18 +180,9 @@
 </template>
 
 <script>
-import { blobToDataURI, makeId } from "../../utils";
+import { blobToDataURI, makeId, proxyObjectToArray } from "../../utils";
 import { getDecryptedString } from "../../crypto.js";
-import {
-  requestCloudflareDirectUploadAuth,
-  getCloudFlareAccountId,
-  saveZipToKVDB,
-} from "../../cloudflare.js";
-
-const proxyObjectToArray = (proxyObject) => {
-  const arr = JSON.parse(JSON.stringify(proxyObject));
-  return arr;
-};
+import { requestCloudflareDirectUploadAuth, getCloudFlareAccountId, saveZipToKVDB } from "../../cloudflare.js";
 
 const accessControlToReadable = async (value) => {
   return await LitJsSdk.humanizeAccessControlConditions({
@@ -216,6 +207,10 @@ export default {
     };
   },
   watch: {
+
+    // 
+    // Update the percentage when progressSteps has changed
+    //
     progressSteps: function (v1, v2) {
       this.percentage = Math.round(
         (this.progressSteps / this.totalSteps) * 100
@@ -248,21 +243,33 @@ export default {
       return JSON.parse(atob(decryptedString));
     },
 
+    // 
+    // Increment progress by 1 and update message each time it's called
+    // @params { String } msg
+    // @returns { void }
+    //
     updateProgress(msg) {
       console.log(`🔥 ${msg}`);
       this.progressText = msg;
       this.progressSteps += 1;
     },
 
+    // 
+    // Reset progress back to original state
+    // @returns { void } 
+    //
     resetProgress() {
       this.progressText = "";
       this.progressSteps = 0;
     },
 
     //
-    // submit video
+    // When submit button is clicked, it will a 9 steps pipeline that 
+    // consists of uploading a video to CloudFlare, encrypt the video
+    // id to the lit-network, and finally save it to the database.
+    // @returns { void }
     //
-    async postVideo() {
+    async onSubmit() {
       this.resetProgress();
       const chain = "ethereum";
 
@@ -350,21 +357,20 @@ export default {
       this.videoUploaded = true;
     },
   },
+
+  //
+  // Set the readable version of the accessControlCondition when component
+  // is created. Then we will get the credential from localStorage if it exists,
+  // otherwise, we will get it from the database. Finally, we will set the 
+  // email and globalAPI variables required for this component
+  //
   async created() {
     this.setReadable(this.acc);
     const credential = await this.getCredential();
-    console.log("🤌  Credential:", credential);
+    // console.log("🤌  Credential:", credential);
     this.email = credential.email;
     this.globalAPI = credential.global_api;
   },
-  // beforeRouteLeave (to, from , next) {
-  //   const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
-  //   if (answer) {
-  //     next()
-  //   } else {
-  //     next(false)
-  //   }
-  // }
 };
 </script>
 
