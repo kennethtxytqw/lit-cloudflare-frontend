@@ -153,7 +153,12 @@
 </template>
 
 <script>
-import { blobToDataURI, dataURItoBlob, arrayStringToUnit8Array, buf2hex } from '../../utils';
+import {
+  blobToDataURI,
+  dataURItoBlob,
+  arrayStringToUnit8Array,
+  buf2hex,
+} from "../../utils";
 
 export default {
   name: "Authentication",
@@ -165,7 +170,7 @@ export default {
       loading: false,
 
       // required data
-      selectedChain: 'ethereum',
+      selectedChain: "ethereum",
       selectedAddress: null,
       kvRegistered: null,
       cfEmail: "lightanson@protonmail.com",
@@ -173,20 +178,18 @@ export default {
     };
   },
   methods: {
-
     // set states
-    setKvRegistered(value){  
+    setKvRegistered(value) {
       this.kvRegistered = value;
     },
-    setLoading(value){
+    setLoading(value) {
       this.loading = value;
     },
 
     // ----- Initialise LitSDK -----
-    initLitSdk(){
-      
+    initLitSdk() {
       // if network is not ready
-      if(!this.networkIsReady){
+      if (!this.networkIsReady) {
         var litNodeClient = new LitJsSdk.LitNodeClient();
         litNodeClient.connect();
         window.litNodeClient = litNodeClient;
@@ -202,16 +205,16 @@ export default {
       );
     },
 
-    hasLitAuthSignature(){
-      return localStorage['lit-auth-signature'] != null; 
+    hasLitAuthSignature() {
+      return localStorage["lit-auth-signature"] != null;
     },
 
-    onLitAuthSigned(callback){
+    onLitAuthSigned(callback) {
       var litSigned = setInterval(() => {
         if (this.hasLitAuthSignature()) {
-            console.log("Signed!");
-            callback();
-            clearInterval(litSigned);
+          console.log("Signed!");
+          callback();
+          clearInterval(litSigned);
         }
       }, 100); // check every 100ms
     },
@@ -223,32 +226,30 @@ export default {
     // @param { String } addr : wallet address
     // @returns { Object } an array of access control conditions
     //
-    getIndividualWalletRequirement(chain, addr){
+    getIndividualWalletRequirement(chain, addr) {
       return [
         {
-          "contractAddress": "",
-          "standardContractType": "",
-          "chain": chain,
-          "method": "",
-          "parameters": [
-            ":userAddress"
-          ],
-          "returnValueTest": {
-            "comparator": "=",
-            "value": addr
-          }
-        }
+          contractAddress: "",
+          standardContractType: "",
+          chain: chain,
+          method: "",
+          parameters: [":userAddress"],
+          returnValueTest: {
+            comparator: "=",
+            value: addr,
+          },
+        },
       ];
     },
 
     // ----- MetaMask -----
-    setConnectedAddress(){
+    setConnectedAddress() {
       this.selectedAddress = window.ethereum.selectedAddress;
     },
-    
-    onMetamaskAccountChanged(callback){
-      window.ethereum.on('accountsChanged', (accounts) => {
-        if(accounts.length >= 1){
+
+    onMetamaskAccountChanged(callback) {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        if (accounts.length >= 1) {
           callback();
         }
       });
@@ -262,62 +263,76 @@ export default {
     // @returns { String } base64 string consists of accessControlConditions
     // encryptedZip, and encryptedSymmetricKey
     //
-    async getValueFromDB(addr){
+    async getValueFromDB(addr) {
       console.warn("...getting value from database with addr: " + addr);
-      
-      const url = DEBUG ? 'http://127.0.0.1:8787' : 'https://cf-worker.gtc-lightanson.workers.dev';
+
+      const url = DEBUG
+        ? "http://127.0.0.1:8787"
+        : "https://cf-worker.gtc-lightanson.workers.dev";
       const res = await fetch(`${url}/wallet/${addr}`);
       const data = await res.json();
-      
+
       return data.kv;
     },
 
     //
     // Insert entry to DB
     //
-    async setValueToDB(){
-      const authSig = await LitJsSdk.checkAndSignAuthMessage({chain: this.selectedChain});
-      
+    async setValueToDB() {
+      const authSig = await LitJsSdk.checkAndSignAuthMessage({
+        chain: this.selectedChain,
+      });
+
       // -- prepare params
       const addr = this.selectedAddress;
-      const accessControlConditions = this.getIndividualWalletRequirement(this.selectedChain, addr);
+      const accessControlConditions = this.getIndividualWalletRequirement(
+        this.selectedChain,
+        addr
+      );
       const credential = {
         email: this.cfEmail,
         global_api: this.cfGlobalAPI,
       };
       const credential_base64 = btoa(JSON.stringify(credential));
-      const { encryptedZip, symmetricKey } = await LitJsSdk.zipAndEncryptString(credential_base64);
-      
-      const encryptedSymmetricKey = await window.litNodeClient.saveEncryptionKey({
+      const { encryptedZip, symmetricKey } = await LitJsSdk.zipAndEncryptString(
+        credential_base64
+      );
+
+      const encryptedSymmetricKey =
+        await window.litNodeClient.saveEncryptionKey({
           accessControlConditions, // array of objects [{}]
           symmetricKey, // Unit8Array string
           authSig, // object
           chain: this.selectedChain, // string
-      });
+        });
 
       const encryptedSymmetricKey_string = btoa(encryptedSymmetricKey);
       const encryptedZip_dataURI = await blobToDataURI(encryptedZip);
 
       // the value of the key/value database
-      const value = btoa(JSON.stringify({
+      const value = btoa(
+        JSON.stringify({
           accessControlConditions,
-          encryptedZip:  encryptedZip_dataURI,
+          encryptedZip: encryptedZip_dataURI,
           encryptedSymmetricKey: encryptedSymmetricKey_string,
-      }));
+        })
+      );
 
-      const url = DEBUG ? 'http://127.0.0.1:8787' : 'https://cf-worker.gtc-lightanson.workers.dev';
+      const url = DEBUG
+        ? "http://127.0.0.1:8787"
+        : "https://cf-worker.gtc-lightanson.workers.dev";
       const header = {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
-        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: 'same-origin', // include, *same-origin, omit
+        method: "POST", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, *cors, same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
         headers: {
           // 'Content-Type': 'application/json'
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        redirect: 'follow', // manual, *follow, error
-        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: value // body data type must match "Content-Type" header
+        redirect: "follow", // manual, *follow, error
+        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: value, // body data type must match "Content-Type" header
       };
       const path = `${url}/wallet/${addr}?c=${value}`;
 
@@ -326,9 +341,9 @@ export default {
       const data = await res.json();
       console.log(data);
 
-      if(data.kv != null){
+      if (data.kv != null) {
         this.setLoading(true);
-        
+
         setTimeout(() => {
           this.setLoading(false);
           this.init();
@@ -341,82 +356,99 @@ export default {
     // @params { String } base64 of "{email:'', globalAPI: ''}"
     // @returns { String } "{email:'', globalAPI: ''}"
     //
-    async getDecryptedString(base64EncryptedCredential){
-      
-        const chain = this.selectedChain;
-        const authSig = await LitJsSdk.checkAndSignAuthMessage({chain: chain});
+    async getDecryptedString(base64EncryptedCredential) {
+      const chain = this.selectedChain;
+      const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain: chain });
 
-        const res = JSON.parse(atob(base64EncryptedCredential));
-        const accessControlConditions = res.accessControlConditions;
-        const toDecrypt = buf2hex(new Uint8Array(atob(res.encryptedSymmetricKey).split(',').map((x) => parseInt(x))));
-        const encryptedZip = dataURItoBlob(res.encryptedZip)
+      const res = JSON.parse(atob(base64EncryptedCredential));
+      const accessControlConditions = res.accessControlConditions;
+      const toDecrypt = buf2hex(
+        new Uint8Array(
+          atob(res.encryptedSymmetricKey)
+            .split(",")
+            .map((x) => parseInt(x))
+        )
+      );
+      const encryptedZip = dataURItoBlob(res.encryptedZip);
 
-        await new Promise(r => setTimeout(r, 1000));
-        const decryptedSymmetricKey = await window.litNodeClient.getEncryptionKey({
-            accessControlConditions,
-            toDecrypt,
-            chain,
-            authSig
-        });
+      await new Promise((r) => setTimeout(r, 1000));
+      const decryptedSymmetricKey = await window.litNodeClient.getEncryptionKey(
+        {
+          accessControlConditions,
+          toDecrypt,
+          chain,
+          authSig,
+        }
+      );
 
-        const decryptedFiles = await LitJsSdk.decryptZip(encryptedZip, decryptedSymmetricKey);
-        const decryptedString = await decryptedFiles["string.txt"].async("text");
+      const decryptedFiles = await LitJsSdk.decryptZip(
+        encryptedZip,
+        decryptedSymmetricKey
+      );
+      const decryptedString = await decryptedFiles["string.txt"].async("text");
 
-        return decryptedString;
+      return decryptedString;
     },
 
-    // 
+    //
     // Get the encrypted credential
     // @returns { String } base64 of "{"email":"","globalAPI":""}"
     //
-    async getEncryptedCredential(){
-
+    async getEncryptedCredential() {
       // Check if it exists in the local storage
-      const storedEncryptedCredential = localStorage['lit-encrypted-cred'];
+      const storedEncryptedCredential = localStorage["lit-encrypted-cred"];
 
       // If it contains a null value in String, remove the item
-      if(storedEncryptedCredential == 'null'){
-        await localStorage.removeItem('lit-encrypted-cred');
+      if (storedEncryptedCredential == "null") {
+        await localStorage.removeItem("lit-encrypted-cred");
       }
 
       // If it is, then return the value from local storage,
-      if(storedEncryptedCredential != null && storedEncryptedCredential != 'null'){
+      if (
+        storedEncryptedCredential != null &&
+        storedEncryptedCredential != "null"
+      ) {
         console.log("🤌 Storage version Credential");
         console.log("storedEncryptedCredential: ", storedEncryptedCredential);
-        console.log("(TYPE)storedEncryptedCredential: ", typeof storedEncryptedCredential);
+        console.log(
+          "(TYPE)storedEncryptedCredential: ",
+          typeof storedEncryptedCredential
+        );
         return storedEncryptedCredential;
       }
 
       // otherwise, we will try to get the value from the KV database
       let kvVersionCredential;
 
-      try{
+      try {
         kvVersionCredential = await this.getValueFromDB(this.selectedAddress);
         console.log("🤌 KV version Credential");
         console.log(kvVersionCredential);
 
         // save it to the localStorage so next time don't have to fetch from KV
-        localStorage['lit-encrypted-cred'] = kvVersionCredential;
-
-      }catch(e){
-        console.error("🤌 Cannot find KV version credential, it probably doesn't exist! ");
+        localStorage["lit-encrypted-cred"] = kvVersionCredential;
+      } catch (e) {
+        console.error(
+          "🤌 Cannot find KV version credential, it probably doesn't exist! "
+        );
       }
 
       return kvVersionCredential;
-
     },
 
     //
-    // Get the decrypted credential 
+    // Get the decrypted credential
     // @returns { Object } eg. {email: "foo@bar.com", globalApi: "1234567"}
-    // 
-    async getCredential(){
-      
+    //
+    async getCredential() {
       // Get the encrypted credential in base64 String
       let base64EncryptedCredential = await this.getEncryptedCredential();
 
       // If failed to get the encrypted credential, return null
-      if(base64EncryptedCredential == null || base64EncryptedCredential == undefined){
+      if (
+        base64EncryptedCredential == null ||
+        base64EncryptedCredential == undefined
+      ) {
         return null;
       }
 
@@ -426,30 +458,31 @@ export default {
       this.setKvRegistered(base64EncryptedCredential != null);
 
       // If user is not registered, then return null
-      if(!this.kvRegistered){
+      if (!this.kvRegistered) {
         return null;
       }
 
       // If user is registered though, then return the value
-      const encryptedCredential = await this.getDecryptedString(base64EncryptedCredential)
+      const encryptedCredential = await this.getDecryptedString(
+        base64EncryptedCredential
+      );
       const credential = JSON.parse(atob(encryptedCredential));
 
       return credential;
-
     },
 
     // ----- init -----
 
-    // 
+    //
     // 1. Everytime it initialises, first we check if user has already requested
     // a lit-signature. If not, simply return.
     // 2. Then, we will set the selected wallet address we found in window.ethereum
     // 3. Then, we will try to find the credential from that wallet address
     // 4. If the credential exists, we can now use it to send requests
     // 5. Otherwise, save user to KV db.
-    //     
-    async init(){
-      if(!this.hasLitAuthSignature()){
+    //
+    async init() {
+      if (!this.hasLitAuthSignature()) {
         return;
       }
 
@@ -457,12 +490,15 @@ export default {
 
       const credential = await this.getCredential();
 
-      if(credential == null){
-        console.warn("🤌 Failed to get encrypted credential, time to store it on the KV database then!");
+      if (credential == null) {
+        console.warn(
+          "🤌 Failed to get encrypted credential, time to store it on the KV database then!"
+        );
         return;
       }
 
       console.log("🤌 Credential:", credential);
+      this.loggedIn = true;
     },
   },
   async mounted() {
@@ -472,14 +508,12 @@ export default {
 
       this.onMetamaskAccountChanged(() => {
         // clear the saved credential
-        localStorage.removeItem('lit-encrypted-cred');
+        localStorage.removeItem("lit-encrypted-cred");
         this.kvRegistered = false;
         this.init();
       });
     });
   },
-
-
 };
 </script>
 

@@ -29,7 +29,9 @@
       <label class="mt-6">Video and access details</label>
 
       <div>
-        <p class="font-light">User must meet the following conditions to unlock the video</p>
+        <p class="font-light">
+          User must meet the following conditions to unlock the video
+        </p>
         <p class="font-medium">{{ readable }}</p>
       </div>
 
@@ -59,6 +61,7 @@
         transition-all
         duration-150
       "
+      @click="postVideo"
     >
       Submit
     </button>
@@ -66,53 +69,101 @@
 </template>
 
 <script>
-
-import { getDecryptedString } from '../../crypto.js';
+import { getDecryptedString } from "../../crypto.js";
 
 const proxyObjectToArray = (proxyObject) => {
   const arr = JSON.parse(JSON.stringify(proxyObject));
   return arr;
-}
+};
 
 const accessControlToReadable = async (value) => {
-    return await LitJsSdk.humanizeAccessControlConditions({
-        accessControlConditions: value,
-    });
-}
+  return await LitJsSdk.humanizeAccessControlConditions({
+    accessControlConditions: value,
+  });
+};
 
 export default {
   name: "AccessControl",
   props: ["acc", "video"],
-  data(){
+  data() {
     return {
       readable: null,
       email: null,
       globalAPI: null,
       encryptedCredential: null,
-    }
+    };
   },
-  methods:{
-    async setReadable(acc){
+  methods: {
+    async requestCloudflareDirectUploadAuth(email, globalAPI) {
+      const url = `https://api.cloudflare.com/client/v4/accounts/9b47beba2f167662ac16b81572ee529d/stream/direct_upload`;
+
+      // -- prepare request header
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-Auth-Email": email,
+          "X-Auth-Key": globalAPI,
+        },
+        body: JSON.stringify({
+          maxDurationSeconds: 21600,
+          requireSignedURLs: false,
+        }),
+      };
+
+      // -- execute
+      const res = await fetch(url, options);
+      const result = await res.json();
+      return result["result"]["uploadURL"];
+    },
+    async setReadable(acc) {
       console.log(acc);
       const proxyReadable = await accessControlToReadable(acc);
       const arr = proxyObjectToArray(proxyReadable);
       const joinedString = arr.join();
       this.readable = joinedString;
     },
-    async getCredential(){
-      this.encryptedCredential = localStorage['lit-encrypted-cred'];
-      const decryptedString = await getDecryptedString(this.encryptedCredential);
+    async getCredential() {
+      this.encryptedCredential = localStorage["lit-encrypted-cred"];
+      const decryptedString = await getDecryptedString(
+        this.encryptedCredential
+      );
       return JSON.parse(atob(decryptedString));
-    }
+    },
+    async postVideo() {
+      console.log(this.video);
+
+      const video = this.video;
+      const formData = new FormData();
+      formData.append("file", video);
+
+      const options = {
+        method: "POST",
+        // headers: {
+        //   "Content-Type": "multipart/form-data",
+        //   "X-Auth-Email": this.email,
+        //   "X-Auth-Key": this.globalAPI,
+        // },
+        body: formData,
+      };
+
+      const oneTimeUploadUrl = await this.requestCloudflareDirectUploadAuth(
+        this.email,
+        this.globalAPI
+      );
+      console.log(oneTimeUploadUrl);
+      const uploadResult = await fetch(oneTimeUploadUrl, options);
+
+      console.log(uploadResult);
+    },
   },
-  async created(){
+  async created() {
     this.setReadable(this.acc);
     const credential = await this.getCredential();
     console.log("🤌  Credential:", credential);
     this.email = credential.email;
     this.globalAPI = credential.global_api;
   },
-  
 };
 </script>
 

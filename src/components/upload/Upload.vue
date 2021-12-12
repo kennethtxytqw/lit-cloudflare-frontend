@@ -88,15 +88,13 @@ export default {
     };
   },
   methods: {
-
     async getVideoFile(e) {
-
       const file = e.target.files[0];
       const formData = new FormData();
       formData.append("file", file);
       // console.log(formData);
 
-      if(file.type.split('/')[0] != 'video'){
+      if (file.type.split("/")[0] != "video") {
         alert("You can only upload videos!");
         return;
       }
