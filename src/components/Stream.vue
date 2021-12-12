@@ -35,7 +35,6 @@
           cursor-pointer
           token-gate
         "
-        @click="openShareModal"
       >
         <p>Token-gate the video</p>
       </router-link>
