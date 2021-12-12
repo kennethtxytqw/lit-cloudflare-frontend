@@ -108,7 +108,7 @@
           </button>
         </div>
         <div class="flex-1 pl-6 flex flex-col justify-between">
-          <p>kvRegistered: {{ kvRegistered }}<br /></p>
+          <p v-if="!kvRegistered">You're not registered on CloudFlare</p>
           <button
             class="
               bg-lit-primary
