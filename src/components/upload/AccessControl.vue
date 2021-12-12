@@ -46,6 +46,7 @@
 <script>
 export default {
   name: "AccessControl",
+  props: ["video"],
   data() {
     return {
       acc: false,
@@ -54,8 +55,16 @@ export default {
   methods: {
     openModal() {
       this.$emit("openShareModal");
-      this.acc = true;
     },
+  },
+  mounted() {
+    if (this.video === "") {
+      alert("Please upload a video.");
+      this.$router.push({ path: "upload" });
+    } else {
+      this.$emit("openShareModal");
+      this.acc = true;
+    }
   },
 };
 </script>

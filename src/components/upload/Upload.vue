@@ -32,7 +32,6 @@
           @change="getVideoFile($event)"
         />
 
-
         <div
           class="flex flex-row items-center justify-center py-10 text-center"
           v-if="video === undefined"
@@ -76,9 +75,8 @@
 </template>
 
 <script>
-
-import { fileToBlob } from '../../utils.js';
-import { getCloudFlareAccountId, requestCloudflareDirectUploadAuth } from '../../cloudflare.js';
+import { fileToBlob } from "../../utils.js";
+// import { getCloudFlareAccountId, requestCloudflareDirectUploadAuth } from '../../cloudflare.js';
 
 export default {
   name: "Upload",
@@ -100,29 +98,9 @@ export default {
         return;
       }
 
-      this.video = previewFileBlob;;
+      this.video = previewFileBlob;
 
-      this.$emit("onVideoUploaded", {previewFileBlob, videoData});
-      
-      // test
-      // const email = "lightanson@protonmail.com";
-      // const globalAPI = '9e71cdc773da780e5059efe41ee0887d86b08';
-
-      // // get account id
-      // const accountId = await getCloudFlareAccountId(email, globalAPI);
-
-      // console.log("AccountId:", accountId);
-      
-      // const oneTimeUploadUrl = await requestCloudflareDirectUploadAuth(email, globalAPI, accountId);
-
-      // console.log(oneTimeUploadUrl);
-
-      // const uploadResult = await fetch(oneTimeUploadUrl, {
-      //   method: "POST",
-      //   body: formData,
-      // });
-      // console.log(uploadResult);      
-
+      this.$emit("onVideoUploaded", { previewFileBlob, videoData });
     },
   },
 };

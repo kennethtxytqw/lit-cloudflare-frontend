@@ -8,9 +8,18 @@
           <router-link to="/stream/auth">Upload</router-link>
         </p>
       </div>
-      <div>
+      <div v-if="!walletAddress">
         <p @click="authMetamask">Login with Metamask</p>
-        <div id="shareModal"></div>
+      </div>
+      <div v-else>
+        <p class="font-semibold text-lit-secondary">
+          {{ walletAddress.substring(0, 6) }}...{{
+            walletAddress.substring(
+              walletAddress.length - 4,
+              walletAddress.length
+            )
+          }}
+        </p>
       </div>
     </nav>
     <div class="mt-12">
@@ -20,12 +29,12 @@
 </template>
 
 <script>
-
 export default {
   name: "App",
   data() {
     return {
       authSig: Object,
+      walletAddress: "",
     };
   },
   methods: {
@@ -40,19 +49,14 @@ export default {
     },
   },
   async mounted() {
-    // var litNodeClient = new LitJsSdk.LitNodeClient();
-    // litNodeClient.connect();
-    // window.litNodeClient = litNodeClient;
-
-    // document.addEventListener(
-    //   "lit-ready",
-    //   function () {
-    //     console.log("LIT network is ready");
-    //     window.networkIsReady = true;
-    //     this.authMetamask();
-    //   }.bind(this),
-    //   false
-    // );
+    this.authMetamask();
+  },
+  watch: {
+    async authSig(newValue, oldValue) {
+      if (oldValue !== newValue) {
+        this.walletAddress = await newValue.address;
+      }
+    },
   },
 };
 </script>
