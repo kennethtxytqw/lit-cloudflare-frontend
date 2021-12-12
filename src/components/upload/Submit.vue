@@ -178,7 +178,7 @@ export default {
   },
   watch:{
     progressSteps: function(v1, v2){
-      this.percentage = (this.progressSteps / this.totalSteps) * 100;
+      this.percentage = Math.round((this.progressSteps / this.totalSteps) * 100);
     }
   },
   methods: {
@@ -237,6 +237,9 @@ export default {
       const globalAPI = this.globalAPI;
       const accountId = await getCloudFlareAccountId(email, globalAPI);
       const accessControlConditions = this.acc;
+      const NS_VIDEOS = DEBUG ? NS_VIDEO_DEV : NS_VIDEO_PROD;
+      
+      // -- 
       this.updateProgress(`Data Prepared`);
 
       // -- step 3
@@ -276,11 +279,13 @@ export default {
 
       // -- step 8
       const dataToBeSaved = btoa(JSON.stringify({
-          accessControlConditions,
-          encryptedZip,
+          accessControlConditions: btoa(JSON.stringify(accessControlConditions)),
+          encryptedZip: encryptedZip_dataURI,
           encryptedSymmetricKey: encryptedSymmetricKey_string,
       }));
-      const saveVideoResponse = await saveZipToKVDB(window.ethereum.selectedAddress + ':' + makeId(12), dataToBeSaved);
+
+      const dbKey = window.ethereum.selectedAddress + ':' + accountId + ':' + NS_VIDEOS + ':' + makeId(12);
+      const saveVideoResponse = await saveZipToKVDB(dbKey, dataToBeSaved);
       console.log(saveVideoResponse);
       this.updateProgress(`Saved to CloudFlare KV Database`);
 
