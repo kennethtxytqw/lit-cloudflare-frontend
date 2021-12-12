@@ -109,6 +109,43 @@ async function handleEvent(event) {
 
       }
     }
+
+    // If path is /newvideo
+    if((path.match(/\/newvideo$/) || [])[0] === path){
+
+      const json = await event.request.json();
+      const method = event.request['method'];
+
+      const header = {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
+          "Access-Control-Max-Age": "86400",
+        }
+      };
+      
+      // -- handle GET request
+      if(method == 'GET'){
+        const jsonData = JSON.stringify({
+          data: "Hello, Moto.",
+        });
+
+        return new Response(jsonData, header);
+      }
+
+      // -- handle POST request
+      if(method == 'POST'){
+
+        await VIDEOS.put(json.id, json.value);
+
+        const jsonData = JSON.stringify({
+          id: json.id,
+          value: json.value,
+        }, null, 2)
+
+        return new Response(jsonData, header);
+      }
+    }
     
     // If path is /account
     if((path.match(/\/account$/) || [])[0] === path){

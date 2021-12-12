@@ -9,5 +9,6 @@ workers_dev = true
 site = {bucket = "./dist",entry-point = "workers-site"}
 compatibility_date = "2021-12-10"
 kv_namespaces = [ 
-    { binding = "LIT_KV", preview_id = "75ae5daf6a5342a09401091e81568af7", id = "6bc472654d6b4184ae76546a1b4b3e5b" }
+    { binding = "LIT_KV", preview_id = "75ae5daf6a5342a09401091e81568af7", id = "6bc472654d6b4184ae76546a1b4b3e5b" },
+    { binding = "VIDEOS", id = "dde3a62fc20a4fee993d83b7baf5755d", preview_id = "0a8b02e7c74b41b09a8afee1caaed4dc" }
 ]

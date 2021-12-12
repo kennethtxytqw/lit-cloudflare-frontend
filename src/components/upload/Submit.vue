@@ -148,9 +148,9 @@
 </template>
 
 <script>
-import { blobToDataURI } from '../../utils';
+import { blobToDataURI, makeId } from '../../utils';
 import { getDecryptedString } from "../../crypto.js";
-import { requestCloudflareDirectUploadAuth, getCloudFlareAccountId } from '../../cloudflare.js';
+import { requestCloudflareDirectUploadAuth, getCloudFlareAccountId, saveZipToKVDB } from '../../cloudflare.js';
 
 const proxyObjectToArray = (proxyObject) => {
   const arr = JSON.parse(JSON.stringify(proxyObject));
@@ -225,6 +225,7 @@ export default {
     // submit video
     //
     async postVideo() {
+
       this.resetProgress();
       const chain = 'ethereum';
 
@@ -282,9 +283,11 @@ export default {
           encryptedSymmetricKey: encryptedSymmetricKey_string,
       }));
 
-      // ACTION TO SAVE TO DB
-      // saveZipToKVDB(walletAddress, dataToBeSaved)
+      const saveVideoResponse = await saveZipToKVDB(makeId(24), dataToBeSaved);
+      console.log(saveVideoResponse);
       this.updateProgress(`Saved to CloudFlare KV Database`);
+
+      
       
     },
   },

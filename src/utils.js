@@ -50,6 +50,17 @@ export const fileToBlob = (file) => {
     });
 }
 
+export const makeId = (length) => {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * 
+ charactersLength));
+   }
+   return result;
+}
+
 
 export const arrayStringToUnit8Array = (value) =>{
     return new Uint8Array(atob(value).split(',').map((x) => parseInt(x)));

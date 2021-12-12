@@ -82,3 +82,29 @@ export const getCloudFlareAccountId = async (email, globalAPI) =>  {
     // // -- return
     return accountId;
 }
+
+//
+// Save new video to VIDEO KV
+// @param { String } id
+// @param { String } value
+// @returns { Void } 
+//
+export const saveZipToKVDB = async (id, value) => {
+    // -- prepare request header
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify({
+            id: id,
+            value: value,
+        })
+    };
+
+    // -- execute
+    const url = DEBUG ? 'http://127.0.0.1:8787/newvideo' : 'https://cf-worker.gtc-lightanson.workers.dev/newvideo'; 
+    const res = await fetch(url, options);
+    const result = await res.json();
+    return result;
+}
