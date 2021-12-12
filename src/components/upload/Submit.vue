@@ -12,7 +12,6 @@
       items-center
     "
   >
-
     <!-- requirements not met -->
     <div v-if="video == ''" class="h-48 flex">
       <p class="m-auto">Please upload a video</p>
@@ -25,17 +24,17 @@
     <!-- loading -->
     <div v-else-if="email == null">
       <div class="flex justify-center items-center">
-          <div
-            class="
-              animate-spin
-              rounded-full
-              h-16
-              w-16
-              m-48
-              border-t-2 border-b-2 border-purple-500
-            "
-          ></div>
-        </div>
+        <div
+          class="
+            animate-spin
+            rounded-full
+            h-16
+            w-16
+            m-48
+            border-t-2 border-b-2 border-purple-500
+          "
+        ></div>
+      </div>
     </div>
 
     <!-- loaded -->
@@ -66,28 +65,30 @@
         <p class="font-light">Video preview</p>
         <video class="w-48" :src="video.previewFileBlob"></video>
       </div>
-    
     </div>
 
     <!-- progress bar -->
-    <div v-if="email != null && video != '' && acc != ''" class="relative pt-1 w-full px-24">
+    <div
+      v-if="email != null && video != '' && acc != ''"
+      class="relative pt-1 w-full px-24"
+    >
       <div class="flex mb-2 items-center justify-between">
-      <span
-        class="
-          text-xs
-          font-semibold
-          inline-block
-          py-1
-          px-2
-          rounded-full
-          text-purple-600
-          bg-purple-200
-          uppercase
-        "
-        v-if="progressText != ''"
-      >
-        {{ progressText }}
-      </span>
+        <span
+          class="
+            text-xs
+            font-semibold
+            inline-block
+            py-1
+            px-2
+            rounded-full
+            text-purple-600
+            bg-purple-200
+            uppercase
+          "
+          v-if="progressText != ''"
+        >
+          {{ progressText }}
+        </span>
         <div class="text-right">
           <span class="text-xs font-semibold inline-block text-purple-600">
             {{ percentage }}%
@@ -96,7 +97,7 @@
       </div>
       <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-purple-200">
         <div
-          :style="{width: percentage + '%'}"
+          :style="{ width: percentage + '%' }"
           class="
             shadow-none
             flex flex-col
@@ -110,9 +111,10 @@
         ></div>
       </div>
     </div>
-    
+
     <!-- submit button -->
-    <button v-if="email != null && video != '' && acc != ''"
+    <button
+      v-if="email != null && video != '' && acc != '' && !videoUploaded"
       class="
         bg-lit-primary
         text-white
@@ -136,19 +138,54 @@
       "
       @click="postVideo"
     >
-    {{ percentage <= 0 ? 'Submit' : percentage >= 100 ? 'Completed' : 'Processing...' }}
+      {{
+        percentage <= 0
+          ? "Submit"
+          : percentage >= 100
+          ? "Done"
+          : "Processing..."
+      }}
+    </button>
+
+    <button
+      v-else-if="videoUploaded"
+      class="
+        bg-lit-primary
+        text-white
+        active:bg-purple-600
+        font-bold
+        uppercase
+        text-sm
+        px-6
+        mt-1
+        py-3
+        rounded-xl
+        shadow
+        hover:shadow-lg
+        outline-none
+        focus:outline-none
+        mr-1
+        mb-6
+        ease-linear
+        transition-all
+        duration-150
+      "
+    >
+      <router-link to="/">Watch Video</router-link>
     </button>
 
     <!-- Progress bar -->
-    
-
   </div>
 </template>
 
 <script>
-import { blobToDataURI, makeId } from '../../utils';
+import { blobToDataURI, makeId } from "../../utils";
 import { getDecryptedString } from "../../crypto.js";
-import { requestCloudflareDirectUploadAuth, getCloudFlareAccountId, saveZipToKVDB } from '../../cloudflare.js';
+import {
+  requestCloudflareDirectUploadAuth,
+  getCloudFlareAccountId,
+  saveZipToKVDB,
+} from "../../cloudflare.js";
 
 const proxyObjectToArray = (proxyObject) => {
   const arr = JSON.parse(JSON.stringify(proxyObject));
@@ -173,20 +210,22 @@ export default {
       totalSteps: 9,
       progressSteps: 0,
       percentage: 0,
-      progressText: '',
+      progressText: "",
+      videoUploaded: false,
     };
   },
-  watch:{
-    progressSteps: function(v1, v2){
-      this.percentage = Math.round((this.progressSteps / this.totalSteps) * 100);
-    }
+  watch: {
+    progressSteps: function (v1, v2) {
+      this.percentage = Math.round(
+        (this.progressSteps / this.totalSteps) * 100
+      );
+    },
   },
   methods: {
-
-    // 
+    //
     // set readable access control conditions
     // @params { Array } a list of accessControlConditions in an array
-    // @returns { void } 
+    // @returns { void }
     //
     async setReadable(acc) {
       console.log(acc);
@@ -208,14 +247,14 @@ export default {
       return JSON.parse(atob(decryptedString));
     },
 
-    updateProgress(msg){
+    updateProgress(msg) {
       console.log(`🔥 ${msg}`);
       this.progressText = msg;
       this.progressSteps += 1;
     },
 
-    resetProgress(){
-      this.progressText = '';
+    resetProgress() {
+      this.progressText = "";
       this.progressSteps = 0;
     },
 
@@ -223,14 +262,13 @@ export default {
     // submit video
     //
     async postVideo() {
-
       this.resetProgress();
-      const chain = 'ethereum';
+      const chain = "ethereum";
 
       // -- step 1
-      const authSig = await LitJsSdk.checkAndSignAuthMessage({chain: chain});
-      this.updateProgress('Lit-network authenticated');
-      
+      const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain: chain });
+      this.updateProgress("Lit-network authenticated");
+
       // -- step 2
       const formData = this.video.videoData;
       const email = this.email;
@@ -238,8 +276,8 @@ export default {
       const accountId = await getCloudFlareAccountId(email, globalAPI);
       const accessControlConditions = this.acc;
       const NS_VIDEOS = DEBUG ? NS_VIDEO_DEV : NS_VIDEO_PROD;
-      
-      // -- 
+
+      // --
       this.updateProgress(`Data Prepared`);
 
       // -- step 3
@@ -254,22 +292,27 @@ export default {
       const uploadResult = await fetch(oneTimeUploadUrl, {
         method: "POST",
         body: formData,
-      });      
-      const videoId = uploadResult.url.split('https://upload.videodelivery.net/')[1];
+      });
+      const videoId = uploadResult.url.split(
+        "https://upload.videodelivery.net/"
+      )[1];
       this.updateProgress(`Video uploaded: ${videoId} `);
       console.log(videoId);
 
       // -- step 5
-      const { encryptedZip, symmetricKey } = await LitJsSdk.zipAndEncryptString(videoId);
+      const { encryptedZip, symmetricKey } = await LitJsSdk.zipAndEncryptString(
+        videoId
+      );
       this.updateProgress(`Video encrypted`);
 
       // -- step 6
-      const encryptedSymmetricKey = await window.litNodeClient.saveEncryptionKey({
+      const encryptedSymmetricKey =
+        await window.litNodeClient.saveEncryptionKey({
           accessControlConditions, // array of objects [{}]
           symmetricKey, // Unit8Array string
           authSig, // object
           chain, // string
-      });
+        });
       this.updateProgress(`Saved encryption key to lit-network`);
 
       // -- step 7
@@ -278,21 +321,32 @@ export default {
       this.updateProgress(`Retrived encryptedZip`);
 
       // -- step 8
-      const dataToBeSaved = btoa(JSON.stringify({
-          accessControlConditions: btoa(JSON.stringify(accessControlConditions)),
+      const dataToBeSaved = btoa(
+        JSON.stringify({
+          accessControlConditions: btoa(
+            JSON.stringify(accessControlConditions)
+          ),
           encryptedZip: encryptedZip_dataURI,
           encryptedSymmetricKey: encryptedSymmetricKey_string,
-      }));
+        })
+      );
 
-      const dbKey = window.ethereum.selectedAddress + ':' + accountId + ':' + NS_VIDEOS + ':' + makeId(12);
+      const dbKey =
+        window.ethereum.selectedAddress +
+        ":" +
+        accountId +
+        ":" +
+        NS_VIDEOS +
+        ":" +
+        makeId(12);
       const saveVideoResponse = await saveZipToKVDB(dbKey, dataToBeSaved);
       console.log(saveVideoResponse);
       this.updateProgress(`Saved to CloudFlare KV Database`);
 
       // -- step 9
-      await new Promise(r => setTimeout(r, 2000));
+      await new Promise((r) => setTimeout(r, 2000));
       this.updateProgress(`Done`);
-
+      this.videoUploaded = true;
     },
   },
   async created() {

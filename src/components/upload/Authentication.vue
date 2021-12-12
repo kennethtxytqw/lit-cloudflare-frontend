@@ -41,43 +41,7 @@
 
       <!-- If connected to Metamask -->
       <div v-if="selectedAddress != null && networkIsReady" class="my-6 flex">
-        <div class="flex-1">
-          Lit-Network is ready: {{ networkIsReady }}<br />
-          selectedAddress: {{ selectedAddress }}<br />
-          kvRegistered: {{ kvRegistered }}<br />
-          <hr />
-          <button
-            class="
-              bg-lit-primary
-              text-white
-              active:bg-purple-600
-              font-bold
-              uppercase
-              text-sm
-              px-6
-              py-3
-              rounded-xl
-              shadow
-              hover:shadow-lg
-              outline-none
-              focus:outline-none
-              mr-1
-              mb-1
-              ease-linear
-              transition-all
-              duration-150
-              mt-2
-            "
-            v-if="loggedIn"
-          >
-            <p>
-              <router-link to="/stream/upload">Next</router-link>
-            </p>
-          </button>
-        </div>
-
-        <!-- Register Email + Global API if not KV-registered -->
-        <div v-if="!kvRegistered" class="flex-1">
+        <div v-if="!kvRegistered" class="flex-1 pr-6">
           CloudFlare Email:
           <input
             type="text"
@@ -143,6 +107,40 @@
             Save to KV DB
           </button>
         </div>
+        <div class="flex-1 pl-6 flex flex-col justify-between">
+          <p>kvRegistered: {{ kvRegistered }}<br /></p>
+          <button
+            class="
+              bg-lit-primary
+              text-white
+              active:bg-purple-600
+              font-bold
+              uppercase
+              text-sm
+              px-6
+              py-3
+              rounded-xl
+              shadow
+              hover:shadow-lg
+              outline-none
+              focus:outline-none
+              mr-1
+              mb-1
+              ease-linear
+              transition-all
+              duration-150
+              mt-2
+              w-28
+            "
+            v-if="loggedIn"
+          >
+            <p>
+              <router-link to="/stream/upload">Next</router-link>
+            </p>
+          </button>
+        </div>
+
+        <!-- Register Email + Global API if not KV-registered -->
       </div>
     </div>
 

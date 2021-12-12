@@ -2,7 +2,7 @@
   <div class="flex w-11/12 m-auto">
     <p class="text-white font-semibold text-2xl">Videos from the creator</p>
   </div>
-  <div class="w-full m-auto px-16 box-border mt-16">
+  <div class="w-11/12 m-auto box-border mt-16">
     <!-- all videos will be injected here -->
     <div id="lit-videos" v-html="HTMLcontent"></div>
   </div>
@@ -119,8 +119,10 @@ export default {
   @apply break-all;
 }
 #lit-videos {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+.lit-video-wrapper {
+  width: 25%;
 }
 </style>

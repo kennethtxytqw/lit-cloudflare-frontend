@@ -101,6 +101,7 @@ export default {
     closeModal() {
       console.log("close share modal");
       ACCM.ReactContentRenderer.unmount(document.getElementById("shareModal"));
+      if (this.accessControlConditions) this.$router.push({ path: "submit" });
     },
     openShareModal() {
       console.log("open share modal");
