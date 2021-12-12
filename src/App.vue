@@ -8,6 +8,7 @@
           <router-link to="/stream/auth">Upload</router-link>
         </p>
       </div>
+      <div id="shareModal"></div>
       <div v-if="!walletAddress">
         <p @click="authMetamask">Login with Metamask</p>
       </div>
