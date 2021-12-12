@@ -1,18 +1,20 @@
 <template>
   <div class="h-screen">
-    <nav class="flex w-11/12 m-auto justify-between items-center text-white">
-      <img alt="Vue logo" class="w-16 mt-4" src="./assets/logo.png" />
-      <div class="flex">
+    <nav class="flex w-11/12 m-auto items-center text-white">
+      <router-link to="/" class="flex-1">
+        <img alt="Vue logo" class="w-16 mt-4" src="./assets/logo.png" />
+      </router-link>
+      <div class="flex flex-2">
         <p class="font-light"><router-link to="/">Watch</router-link></p>
         <p class="ml-8 font-light">
           <router-link to="/stream/auth">Upload</router-link>
         </p>
       </div>
       <div id="shareModal"></div>
-      <div v-if="!walletAddress">
+      <div v-if="!walletAddress" class="flex flex-1 justify-end">
         <p @click="authMetamask">Login with Metamask</p>
       </div>
-      <div v-else>
+      <div v-else class="flex flex-1 justify-end">
         <p class="font-semibold text-lit-secondary">
           {{ walletAddress.substring(0, 6) }}...{{
             walletAddress.substring(
