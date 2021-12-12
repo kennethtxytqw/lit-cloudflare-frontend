@@ -14,9 +14,14 @@
 //     -H "X-Auth-Key: 9e71cdc773da780e5059efe41ee0887d86b08" \
 //     "https://api.cloudflare.com/client/v4/accounts/9b47beba2f167662ac16b81572ee529d/stream/direct_upload"
 
-// https://api.cloudflare.com/client/v4/accounts <== Get account ID
-// POST accounts/:account_identifier/stream/direct_upload <== Get direct up auth
-
+//
+// Request a one-time upload url to upload video
+// POST accounts/:account_identifier/stream/direct_upload
+// @param { String } email
+// @param { String } globalAPI
+// @param { String } accountId
+// @returns { String } uploadURL
+//
 export const requestCloudflareDirectUploadAuth = async (email, globalAPI, accountId) => {
 
     // -- prepare params
@@ -32,7 +37,7 @@ export const requestCloudflareDirectUploadAuth = async (email, globalAPI, accoun
         },
         body: JSON.stringify({
             maxDurationSeconds: 21600,
-            requireSignedURLs: true,
+            requireSignedURLs: false,
         })
     };
     
@@ -44,6 +49,14 @@ export const requestCloudflareDirectUploadAuth = async (email, globalAPI, accoun
     return result['result']['uploadURL'];
 }
 
+//
+// Get CloudFlare account id so that we can use it to request 
+// GET https://api.cloudflare.com/client/v4/accounts
+// other APIs on CloudFlare 
+// @param { String } email
+// @paarm { String } globalAPI
+// @returns { String } accountId
+//
 export const getCloudFlareAccountId = async (email, globalAPI) =>  {
 
     // -- prepare params
@@ -69,20 +82,3 @@ export const getCloudFlareAccountId = async (email, globalAPI) =>  {
     // // -- return
     return accountId;
 }
-
-// const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/9b47beba2f167662ac16b81572ee529d/stream/direct_upload`, {
-//     method: "POST",
-//     headers: {
-//         'Content-Type': 'application/json',
-//         'X-Auth-Email': "lightanson@protonmail.com",
-//         'X-Auth-Key': "9e71cdc773da780e5059efe41ee0887d86b08",
-//     },
-//     body: JSON.stringify({
-//         maxDurationSeconds: 21600,
-//         requireSignedURLs: true,
-//     })
-// });
-
-// const data = await res.json();
-
-// console.log(data);

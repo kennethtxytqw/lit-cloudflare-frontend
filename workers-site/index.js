@@ -61,7 +61,7 @@ async function handleEvent(event) {
         }
       };
 
-      // -- handle GET request
+      // -- handle POST request
       if(method == 'POST'){
 
         // -- prepare params

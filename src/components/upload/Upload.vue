@@ -122,6 +122,7 @@ export default {
         method: "POST",
         body: formData,
       });
+      console.log(uploadResult);      
 
     },
   },
