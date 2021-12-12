@@ -107,7 +107,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style >
 .lit-video-description {
   top: calc(84% - (9% / 16 * 100)) !important;
   display: flex;
