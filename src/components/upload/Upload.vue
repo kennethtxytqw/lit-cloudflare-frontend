@@ -108,7 +108,7 @@ export default {
       const globalAPI = '9e71cdc773da780e5059efe41ee0887d86b08';
 
       // get account id
-      const accountId = await getCloudFlareAccountId(email,globalAPI);
+      const accountId = await getCloudFlareAccountId(email, globalAPI);
 
       console.log("AccountId:", accountId);
       

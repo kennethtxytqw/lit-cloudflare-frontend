@@ -28,7 +28,6 @@ async function handleEvent(event) {
 
   const url = new URL(event.request.url)
   const path = url.pathname;
-  const json = await event.request.json();
 
   let options = {}
 
@@ -45,46 +44,6 @@ async function handleEvent(event) {
       options.cacheControl = {
         bypassCache: true,
       };
-    }
-
-    // If path is /account
-    if((path.match(/\/account$/) || [])[0] === path){
-      // -- prepare
-      const accountId = path.split('/')[2];
-      const method = event.request['method'];
-
-      const header = {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
-          "Access-Control-Max-Age": "86400",
-        }
-      };
-
-      // -- handle POST request
-      if(method == 'POST'){
-
-        // -- prepare params
-        const url = `https://api.cloudflare.com/client/v4/accounts`;
-        const options = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Auth-Email': json.email,
-                'X-Auth-Key': json.globalAPI,
-            },
-        };
-
-        const res = await fetch(url, options);
-        const result = await res.json();
-
-        const jsonData = JSON.stringify({
-          id: result['result'][0]['id']
-        }, null, 2)
-
-        return new Response(jsonData, header);
-      }
-
     }
 
     // If path is /wallet
@@ -151,6 +110,56 @@ async function handleEvent(event) {
       }
     }
     
+    // If path is /account
+    if((path.match(/\/account$/) || [])[0] === path){
+
+      const json = await event.request.json();
+      const method = event.request['method'];
+
+      const header = {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
+          "Access-Control-Max-Age": "86400",
+        }
+      };
+      
+      // -- handle GET request
+      if(method == 'GET'){
+        const jsonData = JSON.stringify({
+          data: "Hello, Moto.",
+        });
+  
+        return new Response(jsonData, header);
+      }
+
+      // -- handle POST request
+      if(method == 'POST'){
+
+        // -- prepare params
+        const url = `https://api.cloudflare.com/client/v4/accounts`;
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Auth-Email': json.email,
+                'X-Auth-Key': json.globalAPI,
+            },
+        };
+
+        const res = await fetch(url, options);
+        const result = await res.json();
+
+        const jsonData = JSON.stringify({
+          id: result['result'][0]['id']
+        }, null, 2)
+
+        return new Response(jsonData, header);
+      }
+      
+
+    }
+    
 
     const page = await getAssetFromKV(event, options);
 
@@ -204,28 +213,5 @@ async function handleEvent(event) {
     // Perhaps some other type of data was submitted in the form
     // like an image, or some other binary data. 
     return 'a file';
-  }
-}
-
-
-/**
- * Here's one example of how to modify a request to
- * remove a specific prefix, in this case `/docs` from
- * the url. This can be useful if you are deploying to a
- * route on a zone, or if you only want your static content
- * to exist at a specific path.
- */
-function handlePrefix(prefix) {
-  return request => {
-
-    // compute the default (e.g. / -> index.html)
-    let defaultAssetKey = mapRequestToAsset(request)
-    let url = new URL(defaultAssetKey.url)
-
-    // strip the prefix from the path for lookup
-    url.pathname = url.pathname.replace(prefix, '/')
-
-    // inherit all other props from the default request
-    return new Request(url.toString(), defaultAssetKey)
   }
 }
