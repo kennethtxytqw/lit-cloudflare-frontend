@@ -46,7 +46,9 @@ async function handleEvent(event) {
       };
     }
 
-    // If path is /wallet
+    // =================================================
+    // Path ./wallet/{walletAddress}
+    // =================================================
     if((path.match(/\/wallet\/.+$/) || [])[0] === path){
 
       // -- prepare
@@ -62,7 +64,9 @@ async function handleEvent(event) {
         }
       };
 
-      // -- handle GET request
+      // -------------------
+      // GET Request Handler
+      // -------------------
       if(method == 'GET'){
         const jsonData = JSON.stringify({
           method: event.request['method'],
@@ -73,7 +77,9 @@ async function handleEvent(event) {
         return new Response(jsonData, header);
       }
 
-      // -- handle POST request
+      // ---------------------
+      // POST Requests Handler 
+      // ---------------------
       if(method == 'POST'){
         
         // If there record for this wallet address
@@ -110,10 +116,13 @@ async function handleEvent(event) {
       }
     }
 
-    // If path is /newvideo
+    // =================================================
+    // Path ./newvideo
+    // =================================================
     if((path.match(/\/newvideo$/) || [])[0] === path){
-
-      const json = await event.request.json();
+      
+      // -- prepare
+      
       const method = event.request['method'];
 
       const header = {
@@ -124,18 +133,24 @@ async function handleEvent(event) {
         }
       };
       
-      // -- handle GET request
+      // -------------------
+      // GET Request Handler
+      // -------------------
       if(method == 'GET'){
 
         const jsonData = JSON.stringify({
-          data: "Hello, Moto.",
+          path: "./newvideo"
         });
 
         return new Response(jsonData, header);
       }
 
-      // -- handle POST request
+      // ---------------------
+      // POST Requests Handler 
+      // ---------------------
       if(method == 'POST'){
+        
+        const json = await event.request.json();
 
         await VIDEOS.put(json.id, json.value);
 
@@ -147,8 +162,75 @@ async function handleEvent(event) {
         return new Response(jsonData, header);
       }
     }
+
+    // =================================================
+    // Path ./api/videos
+    // =================================================
+    if((path.match(/\/api\/videos$/) || [])[0] === path){
+      
+      // -- prepare
+      
+      const method = event.request['method'];
+
+      const header = {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
+          "Access-Control-Max-Age": "86400",
+        }
+      };
+      
+      // -------------------
+      // GET Request Handler
+      // Return a list of videos from VIDEOS namespace
+      // -------------------
+      if(method == 'GET'){
+
+        const value = await VIDEOS.list();
+        const jsonData = JSON.stringify(value.keys);
+
+        return new Response(jsonData, header);
+      }
+
+      // ---------------------
+      // POST Requests Handler 
+      // ---------------------
+      if(method == 'POST'){
+        
+        const json = await event.request.json();
+        
+        // -- received data
+        // const accountId = json.accountId;
+        // const namespaceId = json.namespaceId;
+        const key = json.key;
+
+        // // -- prepare params
+        // const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/storage/kv/namespaces/${namespaceId}/values/${key}`;
+
+        // const options = {
+        //     method: 'GET',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'X-Auth-Email': 'lightanson@protonmail.com',
+        //         'X-Auth-Key': '9e71cdc773da780e5059efe41ee0887d86b08',
+        //     },
+        // };
+
+        const data = await VIDEOS.get(key);
+
+        const jsonData = JSON.stringify({
+          url,
+          data
+        }, null, 2)
+
+        return new Response(jsonData, header);
+      }
+    }
     
-    // If path is /account
+    
+    // =================================================
+    // Path ./account
+    // =================================================
     if((path.match(/\/account$/) || [])[0] === path){
 
       const json = await event.request.json();
@@ -162,7 +244,9 @@ async function handleEvent(event) {
         }
       };
       
-      // -- handle GET request
+      // -------------------
+      // GET Request Handler
+      // -------------------
       if(method == 'GET'){
         const jsonData = JSON.stringify({
           data: "Hello, Moto.",
@@ -171,7 +255,9 @@ async function handleEvent(event) {
         return new Response(jsonData, header);
       }
 
-      // -- handle POST request
+      // ---------------------
+      // POST Requests Handler 
+      // ---------------------
       if(method == 'POST'){
 
         // -- prepare params

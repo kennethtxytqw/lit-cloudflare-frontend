@@ -266,9 +266,7 @@ export default {
     async getValueFromDB(addr) {
       console.warn("...getting value from database with addr: " + addr);
 
-      const url = DEBUG
-        ? "http://127.0.0.1:8787"
-        : "https://cf-worker.gtc-lightanson.workers.dev";
+      const url = DEBUG ? API_DEV : API_PROD;
       const res = await fetch(`${url}/wallet/${addr}`);
       const data = await res.json();
 
@@ -318,9 +316,7 @@ export default {
         })
       );
 
-      const url = DEBUG
-        ? "http://127.0.0.1:8787"
-        : "https://cf-worker.gtc-lightanson.workers.dev";
+      const url = DEBUG ? API_DEV : API_PROD;
       const header = {
         method: "POST", // *GET, POST, PUT, DELETE, etc.
         mode: "cors", // no-cors, *cors, same-origin
