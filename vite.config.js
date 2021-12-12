@@ -12,7 +12,7 @@ const NS_VIDEO_PROD = 'dde3a62fc20a4fee993d83b7baf5755d';
 export default defineConfig({
   plugins: [vue()],
   define:{
-    DEBUG: true,
+    DEBUG: true, // <== CHANGE THIS FOR PRODUCTION
     API_DEV: JSON.stringify(API_DEV),
     API_PROD: JSON.stringify(API_PROD),
     NS_VIDEO_DEV: JSON.stringify(NS_VIDEO_DEV),

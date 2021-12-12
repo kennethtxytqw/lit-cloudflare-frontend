@@ -97,7 +97,7 @@ export const saveZipToKVDB = async (id, value) => {
     
     // -- prepare
     const debugURL = `${API_DEV}/newvideo`;
-    const prodURL = `${API_PROD}/newvide`;
+    const prodURL = `${API_PROD}/newvideo`;
 
     const options = {
         method: 'POST',
