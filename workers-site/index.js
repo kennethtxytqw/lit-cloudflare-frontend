@@ -126,6 +126,7 @@ async function handleEvent(event) {
       
       // -- handle GET request
       if(method == 'GET'){
+
         const jsonData = JSON.stringify({
           data: "Hello, Moto.",
         });

@@ -136,13 +136,11 @@
       "
       @click="postVideo"
     >
-      Submit
+    {{ percentage <= 0 ? 'Submit' : percentage >= 100 ? 'Completed' : 'Processing...' }}
     </button>
 
-    
-
     <!-- Progress bar -->
-
+    
 
   </div>
 </template>
@@ -172,7 +170,7 @@ export default {
       email: null,
       globalAPI: null,
       encryptedCredential: null,
-      totalSteps: 10,
+      totalSteps: 9,
       progressSteps: 0,
       percentage: 0,
       progressText: '',
@@ -282,13 +280,14 @@ export default {
           encryptedZip,
           encryptedSymmetricKey: encryptedSymmetricKey_string,
       }));
-
-      const saveVideoResponse = await saveZipToKVDB(makeId(24), dataToBeSaved);
+      const saveVideoResponse = await saveZipToKVDB(window.ethereum.selectedAddress + ':' + makeId(12), dataToBeSaved);
       console.log(saveVideoResponse);
       this.updateProgress(`Saved to CloudFlare KV Database`);
 
-      
-      
+      // -- step 9
+      await new Promise(r => setTimeout(r, 2000));
+      this.updateProgress(`Done`);
+
     },
   },
   async created() {
