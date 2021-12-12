@@ -26,6 +26,7 @@ export default {
     return {
       HTMLcontent: "",
       jsLoaded: false,
+      col: 4,
     };
   },
   methods: {
@@ -94,7 +95,10 @@ export default {
         result.data
       );
 
+
       this.HTMLcontent += snippet;
+
+  
 
       // Add the script at the end of the loop
       if (i == videos.length - 1) {
@@ -109,7 +113,7 @@ export default {
 
 <style >
 .lit-video-description {
-  top: calc(84% - (9% / 16 * 100)) !important;
+  top: calc(90% - (9% / 16 * 100)) !important;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -119,10 +123,15 @@ export default {
   @apply break-all;
 }
 #lit-videos {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 12px;
 }
 .lit-video-wrapper {
   width: 25%;
 }
+.lit-video-wrapper{
+  width: 100%;
+}
+
 </style>
