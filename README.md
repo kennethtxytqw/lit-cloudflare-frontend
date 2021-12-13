@@ -10,9 +10,6 @@
   - [User encryption](#user-encryption)
   - [User decryption](#user-decryption)
 
-- Use https://github.com/danielroe/stream-vue for streaming
-- Upload functionality
-
 # Description
 
 # Front-end App
