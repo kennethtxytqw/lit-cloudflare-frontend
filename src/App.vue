@@ -1,5 +1,14 @@
 <template>
   <div class="h-screen m-auto" style="max-width: 92.8%; padding-top: 10px">
+    <div class="flex w-11/12 m-auto flex-row-reverse">
+      <a href="https://github.com/wzac-io">
+        <img
+          src="./assets/github.svg"
+          alt="Github"
+          class="absolute bottom-12"
+        />
+      </a>
+    </div>
     <nav class="flex w-11/12 m-auto items-center text-white">
       <router-link to="/" class="flex-1">
         <!-- logo -->
@@ -14,6 +23,12 @@
         </p>
         <p class="ml-8 font-light" style="font-size: 20px; padding-top: 12px">
           <router-link to="/stream/auth">Upload</router-link>
+        </p>
+        <p class="ml-8 font-light" style="font-size: 20px; padding-top: 12px">
+          <a
+            href="https://github.com/wzac-io/lit-cloudflare-browser-extension#user-journey"
+            >Plugin</a
+          >
         </p>
       </div>
       <div id="shareModal"></div>

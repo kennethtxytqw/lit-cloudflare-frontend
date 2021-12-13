@@ -148,32 +148,57 @@
       }}
     </button>
 
-    <button
-      v-else-if="videoUploaded"
-      class="
-        bg-lit-primary
-        text-white
-        active:bg-purple-600
-        font-bold
-        uppercase
-        text-sm
-        px-6
-        mt-1
-        py-3
-        rounded-xl
-        shadow
-        hover:shadow-lg
-        outline-none
-        focus:outline-none
-        mr-1
-        mb-6
-        ease-linear
-        transition-all
-        duration-150
-      "
-    >
-      <router-link to="/">Watch Video</router-link>
-    </button>
+    <div v-else-if="videoUploaded">
+      <button
+        class="
+          bg-lit-primary
+          text-white
+          active:bg-purple-600
+          font-bold
+          uppercase
+          text-sm
+          px-6
+          mt-1
+          py-3
+          rounded-xl
+          shadow
+          hover:shadow-lg
+          outline-none
+          focus:outline-none
+          mr-1
+          mb-6
+          ease-linear
+          transition-all
+          duration-150
+        "
+      >
+        <router-link to="/">Watch Video</router-link>
+      </button>
+      <button
+        class="
+          bg-lit-primary
+          text-white
+          active:bg-purple-600
+          font-bold
+          uppercase
+          text-sm
+          px-6
+          py-3
+          rounded-xl
+          shadow
+          hover:shadow-lg
+          outline-none
+          focus:outline-none
+          mr-1
+          mb-6
+          ease-linear
+          transition-all
+          duration-150
+        "
+      >
+        <p>Generate Snippet</p>
+      </button>
+    </div>
 
     <!-- Progress bar -->
   </div>
