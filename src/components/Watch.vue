@@ -129,6 +129,7 @@ export default {
   gap: 12px;
 }
 .lit-video-wrapper {
+  min-width: 343px;
   width: 100%;
   transition: all linear 1s;
 }

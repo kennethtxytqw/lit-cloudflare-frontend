@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen">
+  <div class="h-screen m-auto" style="max-width: 92.8%; padding-top: 10px;">
     <nav class="flex w-11/12 m-auto items-center text-white">
       <router-link to="/" class="flex-1">
         <!-- logo -->
@@ -9,9 +9,9 @@
         </div>
       </router-link>
       <div class="flex flex-2">
-        <p class="font-light"><router-link to="/">Watch</router-link></p>
-        <p class="ml-8 font-light">
-          <router-link to="/stream/auth">Upload</router-link>
+        <p class="font-light" style="font-size:20px;padding-top:12px;"><router-link to="/">Watch</router-link></p>
+        <p class="ml-8 font-light" style="font-size:20px;padding-top:12px;">
+          <router-link to="/stream/auth" class="transition-all">Upload</router-link>
         </p>
       </div>
       <div id="shareModal"></div>
@@ -82,14 +82,20 @@ body {
   display: flex;
   justify-content: start;
 }
+.logo img{
+  width: 50px;
+  height: 50px;
+}
 .logo span{
   margin-top: auto;
   margin-bottom: auto;
   padding-top: 18px;
-  padding-left: 8px;
-  font-size: 28px;
+  padding-left: 18px;
   box-sizing: border-box;
-  text-shadow: 1px 0px 2px #9d3226;
-  font-weight: 500;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.8rem;
+
 }
 </style>
