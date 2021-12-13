@@ -1,16 +1,18 @@
 <template>
-  <div class="h-screen m-auto" style="max-width: 92.8%; padding-top: 10px;">
+  <div class="h-screen m-auto" style="max-width: 92.8%; padding-top: 10px">
     <nav class="flex w-11/12 m-auto items-center text-white">
       <router-link to="/" class="flex-1">
         <!-- logo -->
-        <div class="logo" style="justify-content: start;">
+        <div class="logo" style="justify-content: start">
           <img alt="Lit-CloudFlare" class="w-16 mt-4" src="./assets/logo.png" />
           <span>Lit-CloudFlare</span>
         </div>
       </router-link>
       <div class="flex flex-2">
-        <p class="font-light" style="font-size:20px;padding-top:12px;"><router-link to="/">Watch</router-link></p>
-        <p class="ml-8 font-light" style="font-size:20px;padding-top:12px;">
+        <p class="font-light" style="font-size: 20px; padding-top: 12px">
+          <router-link to="/">Watch</router-link>
+        </p>
+        <p class="ml-8 font-light" style="font-size: 20px; padding-top: 12px">
           <router-link to="/stream/auth">Upload</router-link>
         </p>
       </div>
@@ -19,7 +21,7 @@
         <p @click="authMetamask">Login with Metamask</p>
       </div>
       <div v-else class="flex flex-1 justify-end">
-        <p class="font-semibold text-lit-secondary">
+        <p class="font-semibold text-lg text-white">
           {{ walletAddress.substring(0, 6) }}...{{
             walletAddress.substring(
               walletAddress.length - 4,
@@ -73,20 +75,19 @@ export default {
   font-weight: 600;
 }
 body {
-  background: #150636;
-  background: -webkit-radial-gradient(center, #150636, #010008);
-  background: -moz-radial-gradient(center, #150636, #010008);
-  background: radial-gradient(ellipse at center, #150636, #010008);
+  background: #160736;
+  background: -webkit-linear-gradient(top left, #160736, #010008);
+  background: -moz-linear-gradient(top left, #160736, #010008);
+  background: linear-gradient(to bottom right, #160736, #010008);
 }
-.logo{
+.logo {
   display: flex;
-  
 }
-.logo img{
+.logo img {
   width: 50px;
   height: 50px;
 }
-.logo span{
+.logo span {
   margin-top: auto;
   margin-bottom: auto;
   padding-top: 18px;
@@ -96,6 +97,5 @@ body {
   font-style: normal;
   font-weight: 400;
   font-size: 1.8rem;
-
 }
 </style>

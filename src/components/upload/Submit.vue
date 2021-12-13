@@ -182,7 +182,11 @@
 <script>
 import { blobToDataURI, makeId, proxyObjectToArray } from "../../utils";
 import { getDecryptedString } from "../../crypto.js";
-import { requestCloudflareDirectUploadAuth, getCloudFlareAccountId, saveZipToKVDB } from "../../cloudflare.js";
+import {
+  requestCloudflareDirectUploadAuth,
+  getCloudFlareAccountId,
+  saveZipToKVDB,
+} from "../../cloudflare.js";
 
 const accessControlToReadable = async (value) => {
   return await LitJsSdk.humanizeAccessControlConditions({
@@ -207,8 +211,7 @@ export default {
     };
   },
   watch: {
-
-    // 
+    //
     // Update the percentage when progressSteps has changed
     //
     progressSteps: function (v1, v2) {
@@ -243,7 +246,7 @@ export default {
       return JSON.parse(atob(decryptedString));
     },
 
-    // 
+    //
     // Increment progress by 1 and update message each time it's called
     // @params { String } msg
     // @returns { void }
@@ -254,9 +257,9 @@ export default {
       this.progressSteps += 1;
     },
 
-    // 
+    //
     // Reset progress back to original state
-    // @returns { void } 
+    // @returns { void }
     //
     resetProgress() {
       this.progressText = "";
@@ -264,7 +267,7 @@ export default {
     },
 
     //
-    // When submit button is clicked, it will a 9 steps pipeline that 
+    // When submit button is clicked, it will a 9 steps pipeline that
     // consists of uploading a video to CloudFlare, encrypt the video
     // id to the lit-network, and finally save it to the database.
     // @returns { void }
@@ -361,15 +364,16 @@ export default {
   //
   // Set the readable version of the accessControlCondition when component
   // is created. Then we will get the credential from localStorage if it exists,
-  // otherwise, we will get it from the database. Finally, we will set the 
+  // otherwise, we will get it from the database. Finally, we will set the
   // email and globalAPI variables required for this component
   //
   async created() {
     this.setReadable(this.acc);
     const credential = await this.getCredential();
     // console.log("🤌  Credential:", credential);
-    this.email = credential.email;
+    console.log(this.email);
     this.globalAPI = credential.global_api;
+    this.email = credential.email;
   },
 };
 </script>

@@ -1,5 +1,7 @@
 <template>
-  <div class="bg-gray-50 w-2/3 rounded-b-3xl text-white font-semibold m-auto pt-10">
+  <div
+    class="bg-gray-50 w-2/3 rounded-b-3xl text-white font-semibold m-auto pt-10"
+  >
     <div class="bg-gray-50 p7 w-9/12 mx-auto">
       <h1 class="pt-4 pb-2 text-black">Upload your video here</h1>
       <div
@@ -39,7 +41,9 @@
           <img src="../../assets/arrow-down.svg" />
           <p class="m-0">Drag your file here or click to upload.</p>
         </div>
-        <video :src="video" class="w-36" v-else></video>
+        <div class="flex justify-center items-center" v-else>
+          <video :src="video" class="w-36 video"></video>
+        </div>
       </div>
       <div class="flex flex-row-reverse pb-10">
         <div class="settings__save mt-4">
@@ -85,15 +89,14 @@ export default {
     };
   },
   methods: {
-
     //
     // Get the video file from the file input field,
-    // We will get the blob format for the video for preview, 
-    // and get the FormData type for that we can use it 
+    // We will get the blob format for the video for preview,
+    // and get the FormData type for that we can use it
     // to upload. Finally, we will emit the variables to the
     // parent component
     // @params { Object } e : event
-    // @returns { void } 
+    // @returns { void }
     async getVideoFile(e) {
       const file = e.target.files[0];
       const previewFileBlob = await fileToBlob(file);
