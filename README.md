@@ -63,3 +63,4 @@ Here are some of the todos if we continue the project
 2. Creator should be able to update global api
 3. Show errors when email/globalAPI don't match
 4. Delete video if upload unsuccessful (The direct upload URL will create a placeholder which occupies storage)
+5. Setup environment variables 

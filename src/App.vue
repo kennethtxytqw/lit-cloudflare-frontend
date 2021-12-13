@@ -3,7 +3,7 @@
     <nav class="flex w-11/12 m-auto items-center text-white">
       <router-link to="/" class="flex-1">
         <!-- logo -->
-        <div class="logo">
+        <div class="logo" style="justify-content: start;">
           <img alt="Lit-CloudFlare" class="w-16 mt-4" src="./assets/logo.png" />
           <span>Lit-CloudFlare</span>
         </div>
@@ -11,7 +11,7 @@
       <div class="flex flex-2">
         <p class="font-light" style="font-size:20px;padding-top:12px;"><router-link to="/">Watch</router-link></p>
         <p class="ml-8 font-light" style="font-size:20px;padding-top:12px;">
-          <router-link to="/stream/auth" class="transition-all">Upload</router-link>
+          <router-link to="/stream/auth">Upload</router-link>
         </p>
       </div>
       <div id="shareModal"></div>
@@ -80,7 +80,7 @@ body {
 }
 .logo{
   display: flex;
-  justify-content: start;
+  
 }
 .logo img{
   width: 50px;

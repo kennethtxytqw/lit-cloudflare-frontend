@@ -1,0 +1,2 @@
+yarn build
+wrangler publish
