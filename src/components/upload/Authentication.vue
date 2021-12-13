@@ -21,7 +21,7 @@
     <div v-if="!loading">
       <!-- If not connected to Metamask -->
       <div v-if="selectedAddress == null || !hasLitAuthSignature()" class="pt-24 pb-24">
-        Please connect your wallet.
+        Please connect to your wallet.
       </div>
 
       <!-- If Lit network is not ready, load spinner -->

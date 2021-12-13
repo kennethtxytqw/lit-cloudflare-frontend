@@ -1,17 +1,21 @@
+# Table of Contents
+- [Table of Contents](#table-of-contents)
 - [Description](#description)
-- [Quick Start](#quick-start)
-  - [Front-end App](#front-end-app)
-  - [CloudFlare Worker (Backend)](#cloudflare-worker-backend)
+- [Front-end App](#front-end-app)
+- [CloudFlare Worker (Backend)](#cloudflare-worker-backend)
 - [Limitations/Sponsors (If you would like to sponsor us going forward)](#limitationssponsors-if-you-would-like-to-sponsor-us-going-forward)
+- [Diagrams](#diagrams)
+  - [Login/signup page](#loginsignup-page)
+  - [Sending a POST/GET Request](#sending-a-postget-request)
+  - [User encryption](#user-encryption)
+  - [User decryption](#user-decryption)
 
 - Use https://github.com/danielroe/stream-vue for streaming
 - Upload functionality
 
 # Description
 
-# Quick Start
-
-## Front-end App
+# Front-end App
 
 The default output directory is `./dist` (relative to project root), which will be used for our CloudFlare worker to serve our front-end app. When it is built for deployment, make sure to turn `DEBUG` to `false` in the `vite.config.js` file.
 
@@ -26,7 +30,7 @@ yarn dev
 yarn build
 ```
 
-## CloudFlare Worker (Backend)
+# CloudFlare Worker (Backend)
 
 You will need to update the `wrangler.toml` config file, specifically your `account_id`, `site`, and `kv_namespaces`
 
@@ -64,3 +68,21 @@ Here are some of the todos if we continue the project
 3. Show errors when email/globalAPI don't match
 4. Delete video if upload unsuccessful (The direct upload URL will create a placeholder which occupies storage)
 5. Setup environment variables 
+
+# Diagrams
+
+## Login/signup page
+
+![](https://assets.wzac.io/lit-protocol/lit-login.jpeg)
+
+## Sending a POST/GET Request
+
+![](https://assets.wzac.io/lit-protocol/lit-request.jpeg)
+
+## User encryption
+
+![](https://assets.wzac.io/lit-protocol/lit-user-encryption.jpeg)
+
+## User decryption
+
+![](https://assets.wzac.io/lit-protocol/lit-user-encryption.jpeg)
