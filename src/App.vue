@@ -1,11 +1,10 @@
 <template>
   <div class="h-screen m-auto" style="max-width: 92.8%; padding-top: 10px">
-    <div class="flex w-11/12 m-auto flex-row-reverse">
-      <a href="https://github.com/wzac-io">
+    <div id="github" class="fixed bottom-0 right-0 z-10 w-12 h-12 ">
+      <a href="https://github.com/wzac-io" target="_blank">
         <img
           src="./assets/github.svg"
           alt="Github"
-          class="absolute bottom-12"
         />
       </a>
     </div>
@@ -18,17 +17,14 @@
         </div>
       </router-link>
       <div class="flex flex-2">
-        <p class="font-light" style="font-size: 20px; padding-top: 12px">
+        <p class="btn-nav font-light" style="font-size: 20px; padding-top: 12px">
           <router-link to="/">Watch</router-link>
         </p>
-        <p class="ml-8 font-light" style="font-size: 20px; padding-top: 12px">
+        <p class="btn-nav ml-8 font-light" style="font-size: 20px; padding-top: 12px">
           <router-link to="/stream/auth">Upload</router-link>
         </p>
-        <p class="ml-8 font-light" style="font-size: 20px; padding-top: 12px">
-          <a
-            href="https://github.com/wzac-io/lit-cloudflare-browser-extension#user-journey"
-            >Plugin</a
-          >
+        <p class="btn-nav ml-8 font-light" style="font-size: 20px; padding-top: 12px">
+          <router-link to="/plugin">Plugin</router-link>
         </p>
       </div>
       <div id="shareModal"></div>
@@ -88,6 +84,10 @@ export default {
 <style>
 .router-link-active {
   font-weight: 600;
+}
+.btn-nav .router-link-active{
+  border-bottom: 1px solid #F23C2C;
+  padding-bottom: 3px;
 }
 body {
   background: #160736;

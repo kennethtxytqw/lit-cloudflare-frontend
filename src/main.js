@@ -35,6 +35,11 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: "/plugin",
+      name: "Plugin",
+      component: () => import("./components/Plugin.vue"),
+    },
   ],
 });
 
