@@ -3,7 +3,6 @@
     class="bg-gray-50 w-2/3 rounded-b-3xl text-white font-semibold m-auto pt-10"
   >
     <div class="bg-gray-50 p7 w-9/12 mx-auto">
-      <h1 class="pt-4 pb-2 text-black">Upload your video here</h1>
       <div
         x-ref="dnd"
         class="
@@ -12,6 +11,7 @@
           text-gray-400
           bg-gray-50
           border border-gray-400 border-dashed
+          border
           cursor-pointer
         "
       >
@@ -35,13 +35,17 @@
         />
 
         <div
-          class="flex flex-row items-center justify-center py-10 text-center"
+          class="flex flex-col items-center justify-center py-10 text-center"
           v-if="video === undefined"
         >
-          <img src="../../assets/arrow-down.svg" />
-          <p class="m-0">Drag your file here or click to upload.</p>
+        <div>
+          <svg fill="currentColor" preserveAspectRatio="xMidYMid meet" height="3em" width="3em" viewBox="0 0 40 40" style="vertical-align: middle;"><g><path d="m20 24.1l10-7.5-10-7.5v15z m13.4-20.7c1.8 0 3.2 1.4 3.2 3.2v20c0 1.8-1.4 3.4-3.2 3.4h-20c-1.8 0-3.4-1.6-3.4-3.4v-20c0-1.8 1.6-3.2 3.4-3.2h20z m-26.8 6.6v23.4h23.4v3.2h-23.4c-1.8 0-3.2-1.4-3.2-3.2v-23.4h3.2z"></path></g></svg>
         </div>
-        <div class="flex justify-center items-center" v-else>
+        
+          <p class="m-0 text-2xl mt-4">Select a video to upload.</p>
+          <p class="m-0 text-l">or drag and drop your video here.</p>
+        </div>
+        <div class="flex justify-center items-center h-24" v-else>
           <video :src="video" class="w-36 video"></video>
         </div>
       </div>
