@@ -128,10 +128,25 @@ export default {
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 12px;
 }
+
+@media all and (min-width: 1155px) and (max-width: 1522px) { 
+  #lit-videos {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+}
+@media all and (min-width: 800px) and (max-width: 1154px) { 
+  #lit-videos {
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
+
 .lit-video-wrapper {
   min-width: 343px;
   width: 100%;
   transition: all linear 1s;
+  margin-bottom: 24px
 }
 
 </style>

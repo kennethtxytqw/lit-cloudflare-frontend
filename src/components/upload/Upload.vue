@@ -45,7 +45,7 @@
           <p class="m-0 text-2xl mt-4">Select a video to upload.</p>
           <p class="m-0 text-l">or drag and drop your video here.</p>
         </div>
-        <div class="flex justify-center items-center h-24" v-else>
+        <div class="flex justify-center items-center min-h-24 p-2" v-else>
           <video :src="video" class="w-36 video"></video>
         </div>
       </div>

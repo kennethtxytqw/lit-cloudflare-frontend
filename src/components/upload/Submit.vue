@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="container"
     class="
       bg-gray-50
       w-2/3
@@ -11,6 +12,7 @@
       justify-center
       items-center
       transition-all
+      
     "
   >
     <!-- requirements not met -->
@@ -174,37 +176,23 @@
       >
         <router-link to="/">Watch Video</router-link>
       </button>
-      <button
-        class="
-          bg-lit-primary
-          text-white
-          active:bg-purple-600
-          font-bold
-          uppercase
-          text-sm
-          px-6
-          py-3
-          rounded-xl
-          shadow
-          hover:shadow-lg
-          outline-none
-          focus:outline-none
-          mr-1
-          mb-6
-          ease-linear
-          transition-all
-          duration-150
-        "
-      >
-        <p>Generate Snippet</p>
-      </button>
     </div>
 
-    <!-- Progress bar -->
+    <!-- Generate Snippet -->
+    <h1 v-if="videoUploaded" class="w-full h-1 border border-dashed mb-6 mt-6"></h1>
+    <h1 v-if="videoUploaded" class="text-5xl mb-3">Snippets</h1>
+    <div v-if="videoUploaded" class="lit-label">Copy the following snippets and paste it to your website, or anywhere you like!</div>
+    <pre v-if="videoUploaded" id="js-lit-snippet-1" class="lit-snippet">{{ snippet1 }}</pre>
+    <span v-if="videoUploaded" class="btn-copy" @click="copySnippet">Click to copy</span>
+    <div v-if="videoUploaded" class="lit-label">Place the following script tags at the end of the body tag</div>
+    <pre v-if="videoUploaded" id="js-lit-snippet-2" class="lit-snippet">{{ snippet2 }}</pre>
+    <span v-if="videoUploaded" class="btn-copy pb-12" @click="copySnippet">Click to copy</span>
   </div>
 </template>
 
 <script>
+
+
 import { blobToDataURI, makeId, proxyObjectToArray } from "../../utils";
 import { getDecryptedString } from "../../crypto.js";
 import {
@@ -218,6 +206,10 @@ const accessControlToReadable = async (value) => {
     accessControlConditions: value,
   });
 };
+
+const scriptTags = `<!SNIPPET! onload="LitJsSdk.litJsSdkLoadedInALIT()" src="https://jscdn.litgateway.com/index.web.js"></!SNIPPET!>
+<!SNIPPET! src="https://cloudflare-lit-protocol-integration.vercel.app/lit-unlock.min.js"></!SNIPPET!>
+<link rel="stylesheet" href="https://cloudflare-lit-protocol-integration.vercel.app/lit-unlock.min.css"></link>`;
 
 export default {
   name: "AccessControl",
@@ -233,6 +225,8 @@ export default {
       percentage: 0,
       progressText: "",
       videoUploaded: false,
+      snippet1: '',
+      snippet2: '',
     };
   },
   watch: {
@@ -292,12 +286,13 @@ export default {
     },
 
     //
-    // When submit button is clicked, it will a 9 steps pipeline that
+    // When submit button is clicked, it will run a 9 steps pipeline that
     // consists of uploading a video to CloudFlare, encrypt the video
     // id to the lit-network, and finally save it to the database.
     // @returns { void }
     //
     async onSubmit() {
+      
       this.resetProgress();
       const chain = "ethereum";
 
@@ -381,10 +376,58 @@ export default {
 
       // -- step 9
       await new Promise((r) => setTimeout(r, 2000));
+      this.snippet1 = this.getSnippet(this.readable, dataToBeSaved);
+      this.snippet2 = scriptTags.replaceAll('!SNIPPET!', 'script');
       this.updateProgress(`Done`);
       this.videoUploaded = true;
+      
+      await new Promise((r) => setTimeout(r, 2000));
+      window.scrollTo(0,document.body.scrollHeight);
     },
+    // 
+    // Copy snippet
+    // @returns { void } 
+    //
+    copySnippet(e){
+      const snippet = e.target.previousElementSibling.innerText;
+      navigator.clipboard.writeText(snippet).then(() => {
+      console.log('Async: Copying to clipboard was successful!');
+
+          e.target.innerText = 'Copied text to clipboard';
+
+          setTimeout(() => {
+              e.target.innerText = 'Click to copy';
+          }, 2000);
+
+      }, (err) => {
+          console.error('Async: Could not copy text: ', err);
+      });
+    },
+
+    // 
+    // Generate a snippet
+    // @params { String } readable of access control conditions
+    // @params { String } data
+    // @returns { String } snippet
+    //
+    getSnippet(readable, data) {
+          return `<div class="lit-video-wrapper">
+        <iframe 
+            src=""
+            class="lit-video"
+            allow="accelerometer; gyroscope; 
+            autoplay; encrypted-media; 
+            picture-in-picture;" 
+            allowfullscreen="true"
+            data-readable-conditions="${readable}"
+            data-lit="${data}">
+        </iframe>
+        <button class="btn-lit-video-unlock">🔥  Unlock with Lit-Protocol</button>
+    </div>
+    `;
+        },
   },
+
 
   //
   // Set the readable version of the accessControlCondition when component
@@ -403,3 +446,34 @@ export default {
 };
 </script>
 
+<style>
+.lit-snippet{
+  background-color: #f2f2f2;
+  border: 1px solid #d9d9d9;
+  font-family: monaco, courier, monospace;
+  width: 100%;
+  max-width: 80%;
+  border-radius: 3px;
+  color: #313131;
+  display: block;
+  font-size: 14px;
+  overflow: auto;
+  padding: 0.5rem;
+}
+.btn-copy{
+  font-size: 12px;
+  color: rgb(61, 61, 61);
+  max-width: 80%;
+  width: 100%;
+  margin-top: 2px;
+  cursor: pointer;
+}
+.lit-label{
+  display: block;
+  font-size: 0.875rem;
+  margin-bottom: 0.35938em;
+  min-height: 1.2em;
+  width: 100%;
+  max-width: 80%;
+}
+</style>
