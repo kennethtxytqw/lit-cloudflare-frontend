@@ -1,11 +1,8 @@
 <template>
   <div class="h-screen m-auto" style="max-width: 92.8%; padding-top: 10px">
-    <div id="github" class="fixed bottom-0 right-0 z-10 w-12 h-12 ">
+    <div id="github" class="fixed bottom-0 right-0 z-10 w-12 h-12">
       <a href="https://github.com/wzac-io" target="_blank">
-        <img
-          src="./assets/github.svg"
-          alt="Github"
-        />
+        <img src="./assets/github.svg" alt="Github" />
       </a>
     </div>
     <nav class="flex w-11/12 m-auto items-center text-white">
@@ -17,18 +14,27 @@
         </div>
       </router-link>
       <div class="flex flex-2">
-        <p class="btn-nav font-light" style="font-size: 20px; padding-top: 12px">
+        <p
+          class="btn-nav font-light"
+          style="font-size: 20px; padding-top: 12px"
+        >
           <router-link to="/">Watch</router-link>
         </p>
-        <p class="btn-nav ml-8 font-light" style="font-size: 20px; padding-top: 12px">
+        <p
+          class="btn-nav ml-8 font-light"
+          style="font-size: 20px; padding-top: 12px"
+        >
           <router-link to="/stream/auth">Upload</router-link>
         </p>
-        <p class="btn-nav ml-8 font-light" style="font-size: 20px; padding-top: 12px">
+        <p
+          class="btn-nav ml-8 font-light"
+          style="font-size: 20px; padding-top: 12px"
+        >
           <router-link to="/plugin">Plugin</router-link>
         </p>
       </div>
       <div id="shareModal"></div>
-      <div v-if="!walletAddress" class="flex flex-1 justify-end">
+      <div v-if="!walletAddress" class="flex flex-1 justify-end cursor-pointer">
         <p @click="authMetamask">Login with Metamask</p>
       </div>
       <div v-else class="flex flex-1 justify-end">
@@ -85,8 +91,8 @@ export default {
 .router-link-active {
   font-weight: 600;
 }
-.btn-nav .router-link-active{
-  border-bottom: 1px solid #F23C2C;
+.btn-nav .router-link-active {
+  border-bottom: 1px solid #f23c2c;
   padding-bottom: 3px;
 }
 body {

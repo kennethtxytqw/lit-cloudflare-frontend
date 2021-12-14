@@ -20,7 +20,10 @@
     <!-- LOADED -->
     <div v-if="!loading">
       <!-- If not connected to Metamask -->
-      <div v-if="selectedAddress == null || !hasLitAuthSignature()" class="pt-24 pb-24">
+      <div
+        v-if="selectedAddress == null || !hasLitAuthSignature()"
+        class="pt-24 pb-24"
+      >
         Please connect to your wallet.
       </div>
 
@@ -43,7 +46,7 @@
 
       <!-- If connected to Metamask -->
       <div v-if="selectedAddress != null && networkIsReady" class="my-6 flex">
-        <div v-if="!kvRegistered" class="flex-1 pr-6">
+        <div v-if="!kvRegistered" class="flex-1 pl-6">
           CloudFlare Email:
           <input
             type="text"
@@ -109,7 +112,7 @@
             Save to KV DB
           </button>
         </div>
-        <div class="flex-1 pl-6 flex flex-col justify-between">
+        <div class="flex-1 px-6 flex flex-col justify-between">
           <p v-if="!kvRegistered">You're not registered on CloudFlare</p>
 
           <!-- Loading account -->
@@ -129,7 +132,10 @@
             </div>
           </div>
 
-          <p class="text-center" v-if="kvRegistered && loggedIn">Welcome back!<br> {{ selectedAddress }}</p>
+          <p class="text-center" v-if="kvRegistered && loggedIn">
+            Welcome back!<br />
+            {{ selectedAddress }}
+          </p>
           <button
             class="
               bg-lit-primary
@@ -196,12 +202,11 @@ export default {
     };
   },
   methods: {
-
     // ================== Local Component ==================
-    // 
+    //
     // set if user is registered on CloudFlare KV
     // @params { Bool } true/false
-    // @returns { void } 
+    // @returns { void }
     setKvRegistered(value) {
       this.kvRegistered = value;
     },
@@ -209,7 +214,7 @@ export default {
     //
     // set it is loading
     // @params { Bool } true/false
-    // @returns { void } 
+    // @returns { void }
     //
     setLoading(value) {
       this.loading = value;
@@ -218,7 +223,7 @@ export default {
     // ================== Lit-Protocol ==================
     //
     // Initalise LIT SDK
-    // @returns { void } 
+    // @returns { void }
     //
     initLitSdk() {
       // if network is not ready
@@ -239,18 +244,18 @@ export default {
       );
     },
 
-    // 
+    //
     // Check local storage if it hass the lit-auth signature
-    // @returns { void } 
+    // @returns { void }
     //
     hasLitAuthSignature() {
       return localStorage["lit-auth-signature"] != null;
     },
 
-    // 
+    //
     // Event:: when the lit-auth signature is signed
     // @params { Function } callback
-    // @returns { void } 
+    // @returns { void }
     //
     onLitAuthSigned(callback) {
       var litSigned = setInterval(() => {
@@ -287,18 +292,18 @@ export default {
 
     // ================== Metamask ==================
 
-    // 
+    //
     // Set the selected wallet address to local state
-    // @returns { void } 
+    // @returns { void }
     //
     setConnectedAddress() {
       this.selectedAddress = window.ethereum.selectedAddress;
     },
-    
-    // 
+
+    //
     // Event:: When user change its Metamask account
-    // @params { Function } 
-    // @returns { void } 
+    // @params { Function }
+    // @returns { void }
     //
     onMetamaskAccountChanged(callback) {
       window.ethereum.on("accountsChanged", (accounts) => {
@@ -328,7 +333,7 @@ export default {
 
     //
     // Insert entry to DB
-    // @returns { void } 
+    // @returns { void }
     //
     async setValueToDB() {
       const authSig = await LitJsSdk.checkAndSignAuthMessage({
