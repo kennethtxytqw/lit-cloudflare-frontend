@@ -71,7 +71,7 @@ export const getCloudFlareAccountId = async (email, globalAPI) =>  {
 // (POST) Save new video to VIDEO KV
 // @param { String } id
 // @param { String } value
-// @returns { Void } 
+// @returns { Object } JSON 
 //
 export const saveZipToKVDB = async (id, value) => {
     
@@ -99,6 +99,7 @@ export const saveZipToKVDB = async (id, value) => {
 
 //
 // (GET) Get all videos from namespace VIDEOS from CloudFlare KV Database
+// @returns { Object } JSON 
 //
 export const getCloudFlareVideos = async () => {
     console.log("Get CloudFlare Videos");
@@ -124,6 +125,7 @@ export const getCloudFlareVideos = async () => {
 //
 // (POST) Get value from key
 // @params { String } key : the key of the KV database
+// @returns { Object } JSON 
 //
 export const getCloudFlareValueFromKey = async (key) => {
     // -- prepare
