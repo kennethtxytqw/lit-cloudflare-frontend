@@ -46,7 +46,29 @@
             )
           }}
         </p>
-        <Blockie class="ml-6" :address="walletAddress" />
+        <div>
+          <Blockie
+            class="ml-6 cursor-pointer"
+            :address="walletAddress"
+            @click="open"
+          />
+
+          <!-- Dropdown -->
+          <div
+            class="absolute bg-white min-w-max shadow-lg hover:text-white"
+            v-if="isOpen"
+          >
+            <div
+              @click="logOut"
+              class="py-3 px-4 hover:bg-gray-100 text-gray-700 cursor-pointer"
+            >
+              <a class="group flex items-center text-sm">
+                <img class="mr-3 h-5 w-4" src="./assets/log-out.svg" />
+                <h5>Log out</h5>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
     <div class="mt-12">
@@ -67,6 +89,7 @@ export default {
     return {
       authSig: Object,
       walletAddress: "",
+      isOpen: false,
     };
   },
   methods: {
@@ -78,6 +101,12 @@ export default {
     },
     async fetchVideos() {
       console.log("TODO");
+    },
+    open() {
+      this.isOpen = !this.isOpen;
+    },
+    logOut() {
+      console.log("disconnect from metamask");
     },
   },
   async mounted() {
