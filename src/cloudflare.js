@@ -44,7 +44,7 @@ export const requestCloudflareDirectUploadAuth = async (email, globalAPI, accoun
 export const getCloudFlareAccountId = async (email, globalAPI) =>  {
 
     // -- prepare params
-    const url = `https://cf-worker.gtc-lightanson.workers.dev/account`;
+    const url = `${API_PROD}/account`;
 
     // -- prepare
     const options = {
