@@ -37,7 +37,7 @@
       <div v-if="!walletAddress" class="flex flex-1 justify-end cursor-pointer">
         <p @click="authMetamask">Login with Metamask</p>
       </div>
-      <div v-else class="flex flex-1 justify-end">
+      <div v-else class="flex flex-1 justify-end items-center">
         <p class="font-semibold text-lg text-white">
           {{ walletAddress.substring(0, 6) }}...{{
             walletAddress.substring(
@@ -46,6 +46,7 @@
             )
           }}
         </p>
+        <Blockie class="ml-6" :address="walletAddress" />
       </div>
     </nav>
     <div class="mt-12">
@@ -55,8 +56,13 @@
 </template>
 
 <script>
+import Blockie from "./components/Blockie.vue";
+
 export default {
   name: "App",
+  components: {
+    Blockie,
+  },
   data() {
     return {
       authSig: Object,

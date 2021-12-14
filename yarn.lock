@@ -1766,6 +1766,11 @@
     "ethereumjs-abi" "git+https://github.com/ethereumjs/ethereumjs-abi.git"
     "ethereumjs-util" "^5.1.1"
 
+"ethereum-blockies@^0.1.1":
+  "integrity" "sha1-h5/pWd7vSSp6krQ9w0ro3C7lkfw="
+  "resolved" "https://registry.npmjs.org/ethereum-blockies/-/ethereum-blockies-0.1.1.tgz"
+  "version" "0.1.1"
+
 "ethereum-common@^0.0.18":
   "integrity" "sha1-L9w1dvIykDNYl26znaeDIT/5Uj8="
   "resolved" "https://registry.npmjs.org/ethereum-common/-/ethereum-common-0.0.18.tgz"
@@ -1803,6 +1808,7 @@
   "version" "1.0.2"
 
 "ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
+  "integrity" "sha512-qs8G5KwnIO/thOQjv1RvR/4oiTsy6IaCsN+ory5dbiqFXz8sd239aWJH0wmsVNPimL5X1KzQheUpi6xAo6FU4w=="
   "resolved" "git+ssh://git@github.com/ethereumjs/ethereumjs-abi.git#ee3994657fa7a427238e6ba92a84d0b529bbcde0"
   "version" "0.6.8"
   dependencies:
@@ -3686,6 +3692,7 @@
     "@vue/shared" "3.2.24"
 
 "web-streams-polyfill@git://github.com/gwicke/web-streams-polyfill#spec_performance_improvements":
+  "integrity" "sha512-zmEbUhViUrDkti9K+Uqg1KEpvijlQm4QQJ0MvgiWXKrjApVRm9hjlRO1bQjT+aKVtv15prbz2Ea3gxZRajmF4Q=="
   "resolved" "git+ssh://git@github.com/gwicke/web-streams-polyfill.git#42c488428adea1dc0c0245014e4896ad456b1ded"
   "version" "1.2.2"
 
