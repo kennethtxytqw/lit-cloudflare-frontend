@@ -106,7 +106,8 @@ export default {
       this.isOpen = !this.isOpen;
     },
     logOut() {
-      console.log("disconnect from metamask");
+      localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
+      location.reload();
     },
   },
   async mounted() {
