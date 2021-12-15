@@ -1,8 +1,12 @@
-# DEMO 
+# DEMO
+https://cf-worker.gtc-lightanson.workers.dev/
+
+# VIDEO
 https://www.youtube.com/watch?v=rxA1hH20-FQ
 
 # Table of Contents
 - [DEMO](#demo)
+- [VIDEO](#video)
 - [Table of Contents](#table-of-contents)
 - [Description](#description)
 - [Front-end App](#front-end-app)
