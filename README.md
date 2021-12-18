@@ -21,7 +21,7 @@ https://www.youtube.com/watch?v=rxA1hH20-FQ
 # Description
 This platform allows creators to encrypt videos using the Lit-SDK, verifying using the CloudFlare worker, and storing the encrypted data into the CloudFlare key value database. Then, showing all the encrypted videos on the home page in which users will have to unlock it based on the on-chain conditions. 
 
-In addition,we have also allowed users to copy/paste video snippets to their website, or any websites when the video is uploaded. To complement this feature, we have created a browser extension that allows user to encrypt their videos right in the CloudFlare dashboard, without actually needed to use the platform at all. 
+In addition,we have also allowed users to copy/paste video snippets to their website, or any websites when the video is uploaded. To complement this feature, we have created a browser extension that allows user to encrypt their videos right in the CloudFlare dashboard, without needing to use the platform at all. 
 
 # Front-end App
 
