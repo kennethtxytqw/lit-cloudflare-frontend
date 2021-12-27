@@ -18,6 +18,11 @@ import {
   getCloudFlareValueFromKey,
 } from "../cloudflare.js";
 
+//
+// Get readable access control from LitSDK
+// @param { String } accessControlConditions in string
+// @returns { String } Humanised access control
+//
 const accessControlToReadable = async (value) => {
   return await LitJsSdk.humanizeAccessControlConditions({
     accessControlConditions: value,
@@ -34,17 +39,36 @@ export default {
     };
   },
   methods: {
+
+    // 
+    // Inject external javascript into component
+    // @param { String } path
+    // @returns { void } 
+    //
     injectJS(path) {
       var tag = document.createElement("script");
       tag.setAttribute("src", path);
       document.head.appendChild(tag);
     },
+
+    // 
+    // Inject external CSS into component
+    // @param { String } path
+    // @returns { void } 
+    //
     injectCSS(path) {
       var tag = document.createElement("link");
       tag.setAttribute("rel", "stylesheet");
       tag.setAttribute("href", path);
       document.head.appendChild(tag);
     },
+
+    // 
+    // Create a copy/pastable snippet 
+    // @param { String } readable 
+    // @param { String } data
+    // @returns { String } snippet
+    //
     getSnippet(readable, data) {
       return `<div class="lit-video-wrapper">
     <iframe 
@@ -64,11 +88,15 @@ export default {
   },
 
   async mounted() {
-    alert(DEBUG)
-    this.injectCSS(
-      "https://cloudflare-lit-protocol-integration.vercel.app/lit-unlock.min.css"
-    );
+    this.injectCSS(ENV.LIT_UNLOCK_CSS);
   },
+
+  // 
+  // Get a list of videos, for each video we will use its key and data
+  // to fetch the data from CloudFlare. The returned data consists of
+  // encrypted data and access control conditions in readable format which 
+  // are then used to generate the snippet. 
+  // 
   async created() {
     console.log("--- created ---");
     const videos = await getCloudFlareVideos();
@@ -78,7 +106,7 @@ export default {
       const item = videos[i];
       const key = item.name;
       const data = key.split(":");
-      const walletAddress = data[0];
+      // const walletAddress = data[0];
       // const accountId = data[1];
       // const namespaceId = data[2];
       // const randomId = data[3];
@@ -104,9 +132,7 @@ export default {
 
       // Add the script at the end of the loop
       if (i == videos.length - 1) {
-        this.injectJS(
-          "https://cloudflare-lit-protocol-integration.vercel.app/lit-unlock.min.js"
-        );
+        this.injectJS(ENV.LIT_UNLOCK_JS);
       }
     }
   },

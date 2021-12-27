@@ -99,7 +99,7 @@ export default {
     // and get the FormData type for that we can use it
     // to upload. Finally, we will emit the variables to the
     // parent component
-    // @params { Object } e : event
+    // @param { Object } e : event
     // @returns { void }
     async getVideoFile(e) {
       const file = e.target.files[0];

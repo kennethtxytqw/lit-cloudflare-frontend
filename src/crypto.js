@@ -2,7 +2,7 @@ import { buf2hex, dataURItoBlob } from "./utils";
 
 //
 // Decrypt the encrypted base64 string credential
-// @params { String } base64 and encrypted of "{email:'', globalAPI: ''}"
+// @param { String } base64 and encrypted of "{email:'', globalAPI: ''}"
 // @returns { String } "{email:'', globalAPI: ''}"
 //
 export const getDecryptedString = async (base64EncryptedCredential) => {

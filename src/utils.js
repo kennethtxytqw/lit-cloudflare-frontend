@@ -52,7 +52,7 @@ export const fileToBlob = (file) => {
 
 //
 // Generate an unique id based on length
-// @params { Int } length of the random string
+// @param { Int } length of the random string
 // @returns { String } random string
 export const makeId = (length) => {
     var result           = '';
@@ -67,7 +67,7 @@ export const makeId = (length) => {
 
 // 
 // Convert array string string 1,2,3,4,5 to Unit8Array
-// @params { String } string array
+// @param { String } string array
 // @returns { Unit8Array } array
 //
 export const arrayStringToUnit8Array = (value) =>{
@@ -88,7 +88,7 @@ export const buf2hex = (buffer) => {
 
 //
 // Convert proxy object to array
-// @params { Object<Proxy> } 
+// @param { Object<Proxy> } 
 // @returns { Array } 
 //
 export const proxyObjectToArray = (proxyObject) => {

@@ -124,7 +124,7 @@ export const getCloudFlareVideos = async () => {
 
 //
 // (POST) Get value from key
-// @params { String } key : the key of the KV database
+// @param { String } key : the key of the KV database
 // @returns { Object } JSON 
 //
 export const getCloudFlareValueFromKey = async (key) => {

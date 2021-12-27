@@ -81,7 +81,7 @@ export default {
 
     //
     // save video to the local state
-    // @params { Object } an event emitted from the child component
+    // @param { Object } an event emitted from the child component
     // @returns { void }
     // 
     saveVideo(e) {
@@ -91,8 +91,8 @@ export default {
 
     // 
     // Save the login info from base64 to the original state to local state
-    // @params { Object } an event emitted from the child component
-    // @params { void } 
+    // @param { Object } an event emitted from the child component
+    // @param { void } 
     // 
     saveLoginInfo(e) {
       console.log(JSON.parse(atob(e)));
@@ -102,7 +102,7 @@ export default {
 
     // 
     // Inject External Javascript
-    // @params { String } path : eg. https://cdn.jquery.com/jquery.min.js
+    // @param { String } path : eg. https://cdn.jquery.com/jquery.min.js
     // @returns { void }
     // 
     injectJS(path) {
@@ -113,7 +113,7 @@ export default {
 
     //
     // Inject external CSS stylesheet
-    // @params { String } path : eg. http://cdn.jqeruy.com/style.css
+    // @param { String } path : eg. http://cdn.jqeruy.com/style.css
     // @returns { void } 
     //
     injectCSS(path) {

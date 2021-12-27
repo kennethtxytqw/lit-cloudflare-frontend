@@ -205,7 +205,7 @@ export default {
     // ================== Local Component ==================
     //
     // set if user is registered on CloudFlare KV
-    // @params { Bool } true/false
+    // @param { Bool } true/false
     // @returns { void }
     setKvRegistered(value) {
       this.kvRegistered = value;
@@ -213,7 +213,7 @@ export default {
 
     //
     // set it is loading
-    // @params { Bool } true/false
+    // @param { Bool } true/false
     // @returns { void }
     //
     setLoading(value) {
@@ -254,7 +254,7 @@ export default {
 
     //
     // Event:: when the lit-auth signature is signed
-    // @params { Function } callback
+    // @param { Function } callback
     // @returns { void }
     //
     onLitAuthSigned(callback) {
@@ -302,7 +302,7 @@ export default {
 
     //
     // Event:: When user change its Metamask account
-    // @params { Function }
+    // @param { Function }
     // @returns { void }
     //
     onMetamaskAccountChanged(callback) {
@@ -408,7 +408,7 @@ export default {
 
     //
     // Decrypt the encrypted base64 string credential
-    // @params { String } base64 of "{email:'', globalAPI: ''}"
+    // @param { String } base64 of "{email:'', globalAPI: ''}"
     // @returns { String } "{email:'', globalAPI: ''}"
     //
     async getDecryptedString(base64EncryptedCredential) {

@@ -242,7 +242,7 @@ export default {
   methods: {
     //
     // set readable access control conditions
-    // @params { Array } a list of accessControlConditions in an array
+    // @param { Array } a list of accessControlConditions in an array
     // @returns { void }
     //
     async setReadable(acc) {
@@ -255,7 +255,7 @@ export default {
 
     //
     // get credential from local storage
-    // @params { Object } credential
+    // @param { Object } credential
     //
     async getCredential() {
       this.encryptedCredential = localStorage["lit-encrypted-cred"];
@@ -267,7 +267,7 @@ export default {
 
     //
     // Increment progress by 1 and update message each time it's called
-    // @params { String } msg
+    // @param { String } msg
     // @returns { void }
     //
     updateProgress(msg) {
@@ -404,8 +404,8 @@ export default {
 
     // 
     // Generate a snippet
-    // @params { String } readable of access control conditions
-    // @params { String } data
+    // @param { String } readable of access control conditions
+    // @param { String } data
     // @returns { String } snippet
     //
     getSnippet(readable, data) {

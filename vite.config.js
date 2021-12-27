@@ -11,6 +11,7 @@ const _string = (v) => JSON.stringify(v);
 export default defineConfig({
   plugins: [vue()],
   define:{
+    ENV: ENV,
     DEBUG: _string(ENV.ENVIRONMENT) != 'dev',
     API_DEV: _string(ENV.API_DEV),
     NS_VIDEO_DEV: _string(ENV.NS_VIDEO_DEV),
