@@ -18,6 +18,11 @@ import {
   getCloudFlareValueFromKey,
 } from "../cloudflare.js";
 
+import {
+  injectCSS,
+  injectJS,
+} from "../utils/html.js";
+
 //
 // Get readable access control from LitSDK
 // @param { String } accessControlConditions in string
@@ -39,29 +44,6 @@ export default {
     };
   },
   methods: {
-
-    // 
-    // Inject external javascript into component
-    // @param { String } path
-    // @returns { void } 
-    //
-    injectJS(path) {
-      var tag = document.createElement("script");
-      tag.setAttribute("src", path);
-      document.head.appendChild(tag);
-    },
-
-    // 
-    // Inject external CSS into component
-    // @param { String } path
-    // @returns { void } 
-    //
-    injectCSS(path) {
-      var tag = document.createElement("link");
-      tag.setAttribute("rel", "stylesheet");
-      tag.setAttribute("href", path);
-      document.head.appendChild(tag);
-    },
 
     // 
     // Create a copy/pastable snippet 
@@ -88,7 +70,7 @@ export default {
   },
 
   async mounted() {
-    this.injectCSS(ENV.LIT_UNLOCK_CSS);
+    injectCSS(ENV.LIT_UNLOCK_CSS);
   },
 
   // 
@@ -132,7 +114,7 @@ export default {
 
       // Add the script at the end of the loop
       if (i == videos.length - 1) {
-        this.injectJS(ENV.LIT_UNLOCK_JS);
+        injectJS(ENV.LIT_UNLOCK_JS);
       }
     }
   },

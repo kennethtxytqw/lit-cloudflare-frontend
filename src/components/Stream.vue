@@ -67,6 +67,12 @@
 </template>
 
 <script>
+
+import {
+  injectCSS,
+  injectJS,
+} from "../utils/html.js";
+
 export default {
   name: "Upload",
   data() {
@@ -98,29 +104,6 @@ export default {
       console.log(JSON.parse(atob(e)));
       this.email = JSON.parse(atob(e)).email;
       this.global_api = JSON.parse(atob(e)).global_api;
-    },
-
-    // 
-    // Inject External Javascript
-    // @param { String } path : eg. https://cdn.jquery.com/jquery.min.js
-    // @returns { void }
-    // 
-    injectJS(path) {
-      var tag = document.createElement("script");
-      tag.setAttribute("src", path);
-      document.head.appendChild(tag);
-    },
-
-    //
-    // Inject external CSS stylesheet
-    // @param { String } path : eg. http://cdn.jqeruy.com/style.css
-    // @returns { void } 
-    //
-    injectCSS(path) {
-      var tag = document.createElement("link");
-      tag.setAttribute("rel", "stylesheet");
-      tag.setAttribute("href", path);
-      document.head.appendChild(tag);
     },
 
     // 
@@ -169,12 +152,8 @@ export default {
     },
   },
   async mounted() {
-    this.injectJS(
-      "https://cdn.jsdelivr.net/npm/lit-access-control-conditions-modal-vanilla-js/dist/index.js"
-    );
-    this.injectCSS(
-      "https://cdn.jsdelivr.net/npm/lit-access-control-conditions-modal-vanilla-js/dist/main.css"
-    );
+    injectJS(ENV.LIT_ACCESS_CONTROL_MODAL_JS);
+    injectCSS(ENV.LIT_ACCESS_CONTROL_MODAL_CSS);
   },
 };
 </script>
