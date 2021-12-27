@@ -64,6 +64,7 @@ export default {
   },
 
   async mounted() {
+    alert(DEBUG)
     this.injectCSS(
       "https://cloudflare-lit-protocol-integration.vercel.app/lit-unlock.min.css"
     );
