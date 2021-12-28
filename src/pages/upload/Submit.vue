@@ -218,18 +218,6 @@ export default {
     },
 
     //
-    // get credential from local storage
-    // @param { Object } credential
-    //
-    // async getCredential() {
-    //   this.encryptedCredential = localStorage["lit-encrypted-cred"];
-    //   const decryptedString = await getDecryptedString(
-    //     this.encryptedCredential
-    //   );
-    //   return JSON.parse(atob(decryptedString));
-    // },
-
-    //
     // Increment progress by 1 and update message each time it's called
     // @param { String } msg
     // @returns { void }
