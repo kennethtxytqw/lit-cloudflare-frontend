@@ -103,10 +103,10 @@ wrangler kv:namespace create "VIDEOS"
 Here are some of the todos if we continue the project
 
 1. Creator should be able to delete videos
-2. Creator should be able to update global api
-3. Show errors when email/globalAPI don't match
+2. ~~Creator should be able to update global api~~
+3. ~~Show errors when email/globalAPI don't match~~
 4. Delete video if upload unsuccessful (A direct upload URL will be created as a placeholder for creator to upload a video. If it fails to upload, the creator persists which will occupy extra storages (depending on your CloudFlare plan it might not be ideal.))
-5. Setup environment variables 
-6. Make use of Lit JWT (npm package wasn't verified at the time of this project started)
-   1. It could be used to restrict access for certain APIs if user doesn't meet access control conditios.
-7. Make use of CloudFlare JWT for videos so authroized users cannot use copy the link to share it to unauthorized users.
+5. ~~Setup environment variables~~
+6. ~~Make use of Lit JWT (npm package wasn't verified at the time of this project started)~~
+   1. ~~It could be used to restrict access for certain APIs if user doesn't meet access control conditios.~~
+7. ~~Make use of CloudFlare JWT for videos so authroized users cannot use copy the link to share it to unauthorized users.~~
