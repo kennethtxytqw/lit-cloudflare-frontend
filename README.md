@@ -13,11 +13,9 @@ https://www.youtube.com/watch?v=rxA1hH20-FQ
 - [CloudFlare Worker (Backend)](#cloudflare-worker-backend)
   - [API Endpoints](#api-endpoints)
 - [Diagrams](#diagrams)
-  - [Login/signup page](#loginsignup-page)
-  - [Sending a POST/GET Request](#sending-a-postget-request)
-  - [User encryption](#user-encryption)
-  - [User decryption](#user-decryption)
-- [Limitations/Sponsors (If you would like to sponsor us going forward)](#limitationssponsors-if-you-would-like-to-sponsor-us-going-forward)
+  - [JWT Integration](#jwt-integration)
+- [Todo list](#todo-list)
+    - [[COMPLETED 28-12-21]](#completed-28-12-21)
 
 # Description
 This platform allows creators to encrypt videos using the Lit-SDK, verifying using the CloudFlare worker, and storing the encrypted data into the CloudFlare key value database. Then, showing all the encrypted videos on the home page in which users will have to unlock it based on the on-chain conditions. 
@@ -82,31 +80,22 @@ wrangler kv:namespace create "VIDEOS"
 
 # Diagrams
 
-## Login/signup page
+## JWT Integration
 
-![](https://assets.wzac.io/lit-protocol/lit-login.jpeg)
+![](https://assets.wzac.io/lit-protocol/lit-cloudflare-jwt-integration.jpeg)
 
-## Sending a POST/GET Request
-
-![](https://assets.wzac.io/lit-protocol/lit-request.jpeg)
-
-## User encryption
-
-![](https://assets.wzac.io/lit-protocol/lit-user-encryption.jpeg)
-
-## User decryption
-
-![](https://assets.wzac.io/lit-protocol/lit-user-encryption.jpeg)
-
-# Limitations/Sponsors (If you would like to sponsor us going forward)
+# Todo list
 
 Here are some of the todos if we continue the project
 
 1. Creator should be able to delete videos
-2. ~~Creator should be able to update global api~~
-3. ~~Show errors when email/globalAPI don't match~~
-4. Delete video if upload unsuccessful (A direct upload URL will be created as a placeholder for creator to upload a video. If it fails to upload, the creator persists which will occupy extra storages (depending on your CloudFlare plan it might not be ideal.))
-5. ~~Setup environment variables~~
-6. ~~Make use of Lit JWT (npm package wasn't verified at the time of this project started)~~
-   1. ~~It could be used to restrict access for certain APIs if user doesn't meet access control conditios.~~
-7. ~~Make use of CloudFlare JWT for videos so authroized users cannot use copy the link to share it to unauthorized users.~~
+2. Delete video if upload unsuccessful (A direct upload URL will be created as a placeholder for creator to upload a video. If it fails to upload, the creator persists which will occupy extra storages (depending on your CloudFlare plan it might not be ideal.))
+
+### [COMPLETED 28-12-21]
+
+1. Setup environment variables
+   1. Add `.env` variables
+   2. Update `wrangler.toml` env
+   3. Add `yarn deploy` command
+2. Integrate JWT with signed URL
+3. Remove `Authenticated page`

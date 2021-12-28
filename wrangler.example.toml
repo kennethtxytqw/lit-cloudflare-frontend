@@ -16,3 +16,5 @@ kv_namespaces = [
 [vars]
 CF_EMAIL = "<CLOUDFLARE_EMAIL>"
 CF_API_KEY =  "<CLOUDFLARE_GLOBAL_APIL>"
+ACCOUNT_ID="<CLOUDFLARE_ACCOUNT_ID>"
+WHITE_LIST="cf-worker.gtc-lightanson.workers.dev, 127.0.0.1, localhost"
