@@ -24,7 +24,7 @@
           class="btn-nav ml-8 font-light"
           style="font-size: 20px; padding-top: 12px"
         >
-          <router-link to="/stream/auth">Upload</router-link>
+          <router-link to="/stream/upload">Upload</router-link>
         </p>
         <p
           class="btn-nav ml-8 font-light"
@@ -50,13 +50,13 @@
           <Blockie
             class="ml-6 cursor-pointer"
             :address="walletAddress"
-            @click="open"
+            @click="toggleOpen"
           />
 
           <!-- Dropdown -->
           <div
             class="absolute bg-white min-w-max shadow-lg hover:text-white"
-            v-if="isOpen"
+            v-if="isOpened"
           >
             <div
               @click="logOut"
@@ -89,22 +89,34 @@ export default {
     return {
       authSig: Object,
       walletAddress: "",
-      isOpen: false,
+      isOpened: false,
     };
   },
   methods: {
+
+    //
+    // Auth user using LitSDK
+    // @returns { void } 
+    //
     async authMetamask() {
       const authSig = await LitJsSdk.checkAndSignAuthMessage({
         chain: "ethereum",
       });
       this.authSig = authSig;
     },
-    async fetchVideos() {
-      console.log("TODO");
+
+    // 
+    // Toggle the dropdown menu by setting the isOpeneded state
+    // @returns { void } 
+    //
+    toggleOpen() {
+      this.isOpened = !this.isOpened;
     },
-    open() {
-      this.isOpen = !this.isOpen;
-    },
+
+    //
+    // Logout user by removing the localStroage key
+    // @returns { void }
+    //
     logOut() {
       localStorage.removeItem("WEB3_CONNECT_CACHED_PROVIDER");
       location.reload();

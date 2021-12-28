@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { fileToBlob } from "../../utils.js";
+import { fileToBlob } from "../../utils/utils.js";
 
 export default {
   name: "Upload",
@@ -101,6 +101,7 @@ export default {
     // parent component
     // @param { Object } e : event
     // @returns { void }
+    //
     async getVideoFile(e) {
       const file = e.target.files[0];
       const previewFileBlob = await fileToBlob(file);

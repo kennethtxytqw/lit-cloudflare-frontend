@@ -1,4 +1,5 @@
 import { getAssetFromKV, mapRequestToAsset } from '@cloudflare/kv-asset-handler'
+import { verifyJwt } from "lit-jwt-verifier";
 
 /**
  * The DEBUG flag will do two things that help during development:
@@ -30,7 +31,7 @@ async function handleEvent(event) {
   const path = url.pathname;
 
   let options = {}
-
+  
   /**
    * You can add custom logic to how we fetch your assets
    * by configuring the function `mapRequestToAsset`
@@ -44,6 +45,137 @@ async function handleEvent(event) {
       options.cacheControl = {
         bypassCache: true,
       };
+    }
+
+    // =================================================
+    // Path ./api/video_id
+    // =================================================
+    if((path.match(/\/api\/video_id$/) || [])[0] === path){
+      // -- prepare
+      const method = event.request['method'];
+
+      const _header = {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
+          "Access-Control-Max-Age": "86400",
+        }
+      };
+
+      // -------------------
+      // GET Request Handler
+      // -------------------
+      if(method == 'GET'){
+
+        // -- prepare JWT
+        console.log(`request url==> ${url}`);
+        let jwt;
+
+        // -- check if JWT token exists
+        try {
+          const { searchParams } = new URL(url)
+          jwt = searchParams.get('jwt')
+          console.log('jwt==>', jwt)
+        } catch (e) {
+          console.log(e)
+          return new Response('no jwt', { status: 400 })
+        }
+
+        // -- check JWT
+        try{
+          const { payload, header, signature, verified } = await verifyJwt({ jwt });
+          const _WHITE_LIST = WHITE_LIST.replaceAll(' ', '').split(',');
+
+          // -- if it's NOT legit
+          if(!verified || !_WHITE_LIST.includes(payload.baseUrl) || payload.orgId !== '' || payload.role !== '' || payload.extraData !== ''){
+            // -- Exception:: Unauthorized
+            return new Response('Unauthorized', {
+              headers: { 'content-type': 'text/plain' },
+              status: 401,
+            })
+          }
+
+          // -- if it's legit, get signed url
+          const videoID = payload.path.split('/')[1];
+          const signedVideoId = await getSignedUrl(videoID);
+          
+          // -- compile data
+
+          return new Response(JSON.stringify(signedVideoId), _header);
+
+
+        }catch (e) {
+          console.log('error')
+          console.log(JSON.stringify(e, ['message', 'arguments', 'type', 'name']))
+          console.log(e.stack)
+        }
+
+        // -- Exception:: Unauthorized
+        return new Response('Unauthorized', {
+          headers: { 'content-type': 'text/plain' },
+          status: 401,
+        })
+
+        // const jsonData = JSON.stringify(result['result']['uploadURL']);
+        // const jsonData = 'http://127.0.0.1:8787/api/video_id';
+
+        // return new Response(jsonData, header);
+      }
+    }
+    // =================================================
+    // Path ./api/get_direct_upload_auth
+    // =================================================
+    if((path.match(/\/api\/get_direct_upload_auth$/) || [])[0] === path){
+
+      // -- prepare
+      const method = event.request['method'];
+
+      const header = {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
+          "Access-Control-Max-Age": "86400",
+        }
+      };
+
+      // -------------------
+      // GET Request Handler
+      // -------------------
+      if(method == 'GET'){
+
+        // -- prepare
+        const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/stream/direct_upload`;
+        
+        const options = {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'X-Auth-Email': CF_EMAIL,
+              'X-Auth-Key': CF_GLOBAL_API,
+          },
+          body: JSON.stringify({
+              maxDurationSeconds: 300, // 5 mins
+              requireSignedURLs: true,
+          })
+        };
+
+        // -- execute
+        const res = await fetch(url, options);
+        const result = await res.json();
+
+        const jsonData = JSON.stringify(result['result']['uploadURL']);
+
+        return new Response(jsonData, header);
+      }
+
+      // ---------------------
+      // POST Requests Handler 
+      // ---------------------
+      if(method == 'POST'){
+        return new Response("Testing", header);
+      }
+
+
     }
 
     // =================================================
@@ -117,12 +249,11 @@ async function handleEvent(event) {
     }
 
     // =================================================
-    // Path ./newvideo
+    // Path ./api/new_video
     // =================================================
-    if((path.match(/\/newvideo$/) || [])[0] === path){
+    if((path.match(/\/api\/new_video$/) || [])[0] === path){
       
       // -- prepare
-      
       const method = event.request['method'];
 
       const header = {
@@ -307,35 +438,40 @@ async function handleEvent(event) {
   }
 }
 
-/**
- * readRequestBody reads in the incoming request body
- * Use await readRequestBody(..) in an async function to get the string
- * @param {Request} request the incoming request to read from
- */
- async function readRequestBody(request) {
-  const { headers } = request
-  const contentType = headers.get("content-type") || ""
+//
+// (POST) Request a signed video url
+// accounts/:account_identifier/stream/direct_upload
+// @returns { String } uploadURL
+//
+export const getSignedUrl = async (VIDEO_ID) => {
+  
+  console.log("====== VIDEO_ID ======: ", VIDEO_ID);
 
-  if (contentType.includes("application/json")) {
-    return JSON.stringify(await request.json())
-  }
-  else if (contentType.includes("application/text")) {
-    return request.text()
-  }
-  else if (contentType.includes("text/html")) {
-    return request.text()
-  }
-  else if (contentType.includes("form")) {
-    const formData = await request.formData()
-    const body = {}
-    for (const entry of formData.entries()) {
-      body[entry[0]] = entry[1]
-    }
-    return JSON.stringify(body)
-  }
-  else {
-    // Perhaps some other type of data was submitted in the form
-    // like an image, or some other binary data. 
-    return 'a file';
-  }
+  // -- prepare
+  const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/stream/${VIDEO_ID}/token`;
+
+  console.log(url);
+  var signed_url_restrictions = {
+    //limit viewing for the next 2 hours
+    exp: Math.floor(Date.now() / 1000) + (12*60*60),
+  };
+  
+  const options = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'X-Auth-Email': CF_EMAIL,
+        'X-Auth-Key': CF_GLOBAL_API,
+    },
+    body: JSON.stringify(signed_url_restrictions)
+  };
+
+  // -- execute
+  const res = await fetch(url, options);
+  const result = await res.json();
+  const token = result.result.token;
+  console.log("TOKEN!!!");
+  console.log(token);
+
+  return token;
 }

@@ -1,70 +1,26 @@
 //
 // (POST) Request a one-time upload url to upload video
 // accounts/:account_identifier/stream/direct_upload
-// @param { String } email
-// @param { String } globalAPI
-// @param { String } accountId
 // @returns { String } uploadURL
 //
-export const requestCloudflareDirectUploadAuth = async (email, globalAPI, accountId) => {
-
-    // -- prepare params
-    const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/stream/direct_upload`;
+export const requestCloudflareDirectUploadAuth = async () => {
 
     // -- prepare
+    const debugURL = `${API_DEV}/api/get_direct_upload_auth`;
+    const prodURL = `${API_PROD}/api/get_direct_upload_auth`;
+    const url = DEBUG ? debugURL : prodURL;
+
     const options = {
-        method: 'POST',
+        method: 'GET',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'X-Auth-Email': email,
-            'X-Auth-Key': globalAPI,
         },
-        body: JSON.stringify({
-            maxDurationSeconds: 21600,
-            requireSignedURLs: false,
-        })
     };
-    
+
     // -- execute
     const res = await fetch(url, options);
     const result = await res.json();
-    
-    // -- return
-    return result['result']['uploadURL'];
-}
-
-//
-// (POST) Get CloudFlare account id so that we can use it to request 
-// from GET https://api.cloudflare.com/client/v4/accounts
-// other APIs on CloudFlare 
-// @param { String } email
-// @paarm { String } globalAPI
-// @returns { String } accountId
-//
-export const getCloudFlareAccountId = async (email, globalAPI) =>  {
-
-    // -- prepare params
-    const url = `${API_PROD}/account`;
-
-    // -- prepare
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: JSON.stringify({
-            email,
-            globalAPI
-        })
-    };
-    
-    // // -- execute
-    const res = await fetch(url, options);
-    const result = await res.json();
-    const accountId = result.id;
-    
-    // // -- return
-    return accountId;
+    return result;
 }
 
 //
@@ -76,8 +32,8 @@ export const getCloudFlareAccountId = async (email, globalAPI) =>  {
 export const saveZipToKVDB = async (id, value) => {
     
     // -- prepare
-    const debugURL = `${API_DEV}/newvideo`;
-    const prodURL = `${API_PROD}/newvideo`;
+    const debugURL = `${API_DEV}/api/new_video`;
+    const prodURL = `${API_PROD}/api/new_video`;
 
     const options = {
         method: 'POST',

@@ -9,36 +9,36 @@ const router = createRouter({
     {
       path: "/",
       name: "App",
-      component: () => import("./components/Watch.vue"),
+      component: () => import("./pages/Watch.vue"),
     },
     {
       path: "/stream",
       name: "Stream",
-      component: () => import("./components/Stream.vue"),
+      component: () => import("./pages/Stream.vue"),
       children: [
         {
           path: "upload",
-          component: () => import("./components/upload/Upload.vue"),
+          component: () => import("./pages/upload/Upload.vue"),
         },
         {
           path: "token-gate",
-          component: () => import("./components/upload/AccessControl.vue"),
+          component: () => import("./pages/upload/AccessControl.vue"),
         },
         {
           path: "submit",
-          component: () => import("./components/upload/Submit.vue"),
+          component: () => import("./pages/upload/Submit.vue"),
           props: true,
         },
         {
           path: "auth",
-          component: () => import("./components/upload/Authentication.vue"),
+          component: () => import("./pages/upload/Authentication.vue"),
         },
       ],
     },
     {
       path: "/plugin",
       name: "Plugin",
-      component: () => import("./components/Plugin.vue"),
+      component: () => import("./pages/Plugin.vue"),
     },
   ],
 });

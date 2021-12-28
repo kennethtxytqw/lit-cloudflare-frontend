@@ -182,7 +182,7 @@ import {
   dataURItoBlob,
   arrayStringToUnit8Array,
   buf2hex,
-} from "../../utils";
+} from "../../utils/utils.js";
 
 export default {
   name: "Authentication",

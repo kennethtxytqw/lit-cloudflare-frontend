@@ -16,7 +16,7 @@
 import {
   getCloudFlareVideos,
   getCloudFlareValueFromKey,
-} from "../cloudflare.js";
+} from "../utils/cloudflare.js";
 
 import {
   injectCSS,

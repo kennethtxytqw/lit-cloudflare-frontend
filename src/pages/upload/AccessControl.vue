@@ -56,10 +56,10 @@ export default {
   methods: {
 
     // 
-    // Emit event name openShareModal to open the access control conditions modal
+    // Emit event name onOpenShareModal to open the access control conditions modal
     //
     openModal() {
-      this.$emit("openShareModal");
+      this.$emit("onOpenShareModal");
     },
   },
   mounted() {
@@ -67,7 +67,7 @@ export default {
       alert("Please upload a video.");
       this.$router.push({ path: "upload" });
     } else {
-      this.$emit("openShareModal");
+      this.$emit("onOpenShareModal");
       this.acc = true;
     }
   },

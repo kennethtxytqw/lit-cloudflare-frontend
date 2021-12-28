@@ -17,6 +17,8 @@ export default defineConfig({
     NS_VIDEO_DEV: _string(ENV.NS_VIDEO_DEV),
     API_PROD: _string(ENV.API_PROD),
     NS_VIDEO_PROD: _string(ENV.NS_VIDEO_PROD),
+    BASE_URL_DEV: _string(ENV.BASE_URL_DEV),
+    BASE_URL_PROD: _string(ENV.BASE_URL_PROD),
   },
   jsxInject: [
     `import LitJsSdk from 'lit-js-sdk' `,

@@ -1,6 +1,6 @@
 // 
 // Inject external javascript into component
-// @param { String } path
+// @param { String } path : eg. https://cdn.jquery.com/jquery.min.js
 // @returns { void } 
 //
 export const injectJS = (path) => {
@@ -11,7 +11,7 @@ export const injectJS = (path) => {
 
 // 
 // Inject external CSS into component
-// @param { String } path
+// @param { String } path : eg. http://cdn.jqeruy.com/style.css
 // @returns { void } 
 //
 export const injectCSS = (path) => {

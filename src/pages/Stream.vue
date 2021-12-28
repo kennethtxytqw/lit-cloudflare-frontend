@@ -1,18 +1,8 @@
 <template>
   <div class="mt-20">
     <div class="w-2/3 m-auto h-10 flex text-white">
-      <router-link
-        to="/stream/auth"
-        class="
-          bg-lit-secondary
-          flex-1 flex
-          items-center
-          justify-center
-          cursor-pointer
-        "
-      >
-        <p>Log in</p>
-      </router-link>
+
+      <!-- tab -->
       <router-link
         to="/stream/upload"
         class="
@@ -25,6 +15,8 @@
       >
         <p>Upload video</p>
       </router-link>
+
+      <!-- tab -->
       <router-link
         to="/stream/token-gate"
         class="
@@ -39,6 +31,7 @@
         <p>Token-gate the video</p>
       </router-link>
 
+      <!-- tab -->
       <router-link
         to="/stream/submit"
         class="
@@ -54,9 +47,10 @@
       </router-link>
     </div>
 
+    <!-- content area -->
     <router-view
       @onVideoUploaded="saveVideo"
-      @openShareModal="openShareModal"
+      @onOpenShareModal="openShareModal"
       @loginInfo="saveLoginInfo"
       :acc="accessControlConditions"
       :video="video"
