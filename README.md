@@ -11,6 +11,7 @@ https://www.youtube.com/watch?v=rxA1hH20-FQ
 - [Description](#description)
 - [Front-end App](#front-end-app)
 - [CloudFlare Worker (Backend)](#cloudflare-worker-backend)
+  - [API Endpoints](#api-endpoints)
 - [Diagrams](#diagrams)
   - [Login/signup page](#loginsignup-page)
   - [Sending a POST/GET Request](#sending-a-postget-request)
@@ -36,6 +37,9 @@ yarn dev
 
 // build 
 yarn build
+
+// deploy - turn debug to false in the vite.config.js file, build and wrangler publish, then turn debug back to true
+yarn deploy
 ```
 
 # CloudFlare Worker (Backend)
@@ -66,6 +70,15 @@ wrangler kv:namespace create "LIT_KV"
 wrangler kv:namespace create "VIDEOS" 
 
 ```
+
+## API Endpoints
+- `GET /wallet/${walletAddress}`
+- `POST /wallet/${walletAddress}`
+- `POST /api/new_video` Add new video to `VIDEOS` KV
+- `GET /api/videos` return all videos’ key from `VIDEOS` KV
+- `POST /api/videos` return data of that particular video id
+- `GET /api/get_direct_upload_auth`
+- `GET /api/video_id` return signed video id
 
 # Diagrams
 

@@ -115,11 +115,7 @@ async function handleEvent(event) {
           headers: { 'content-type': 'text/plain' },
           status: 401,
         })
-
-        // const jsonData = JSON.stringify(result['result']['uploadURL']);
-        // const jsonData = 'http://127.0.0.1:8787/api/video_id';
-
-        // return new Response(jsonData, header);
+        
       }
     }
     // =================================================
@@ -178,75 +174,6 @@ async function handleEvent(event) {
 
     }
 
-    // =================================================
-    // Path ./wallet/{walletAddress}
-    // =================================================
-    if((path.match(/\/wallet\/.+$/) || [])[0] === path){
-
-      // -- prepare
-      const walletAddress = path.split('/')[2];
-      const method = event.request['method'];
-      const credential = await LIT_KV.get(walletAddress);
-      
-      const header = {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
-          "Access-Control-Max-Age": "86400",
-        }
-      };
-
-      // -------------------
-      // GET Request Handler
-      // -------------------
-      if(method == 'GET'){
-        const jsonData = JSON.stringify({
-          method: event.request['method'],
-          walletAddress: walletAddress,
-          kv: credential, 
-        }, null, 2)
-
-        return new Response(jsonData, header);
-      }
-
-      // ---------------------
-      // POST Requests Handler 
-      // ---------------------
-      if(method == 'POST'){
-        
-        // If there record for this wallet address
-        if(credential != null){
-          const jsonData = JSON.stringify({
-            error: "Wallet Exist",
-          });
-          return new Response(jsonData, header);
-        }
-
-        // If no record was found for this wallet address
-        const encryptedCredential = await event.request.url.split('?c=')[1];
-
-        // If the size of the data is less than 1000 characters
-        if(encryptedCredential.length < 1000){
-          const jsonData = JSON.stringify({
-            error: "requirements not met.",
-          }, null, 2);
-  
-          return new Response(jsonData, header);
-        }
-
-        // insert new entry to db
-        await LIT_KV.put(walletAddress, encryptedCredential);
-
-        const jsonData = JSON.stringify({
-          method: event.request['method'],
-          walletAddress: walletAddress,
-          kv: encryptedCredential,
-        }, null, 2);
-
-        return new Response(jsonData, header);
-
-      }
-    }
 
     // =================================================
     // Path ./api/new_video
@@ -329,23 +256,8 @@ async function handleEvent(event) {
       if(method == 'POST'){
         
         const json = await event.request.json();
-        
-        // -- received data
-        // const accountId = json.accountId;
-        // const namespaceId = json.namespaceId;
+
         const key = json.key;
-
-        // // -- prepare params
-        // const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/storage/kv/namespaces/${namespaceId}/values/${key}`;
-
-        // const options = {
-        //     method: 'GET',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'X-Auth-Email': 'lightanson@protonmail.com',
-        //         'X-Auth-Key': '9e71cdc773da780e5059efe41ee0887d86b08',
-        //     },
-        // };
 
         const data = await VIDEOS.get(key);
 
@@ -356,63 +268,6 @@ async function handleEvent(event) {
 
         return new Response(jsonData, header);
       }
-    }
-    
-    
-    // =================================================
-    // Path ./account
-    // =================================================
-    if((path.match(/\/account$/) || [])[0] === path){
-
-      const json = await event.request.json();
-      const method = event.request['method'];
-
-      const header = {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
-          "Access-Control-Max-Age": "86400",
-        }
-      };
-      
-      // -------------------
-      // GET Request Handler
-      // -------------------
-      if(method == 'GET'){
-        const jsonData = JSON.stringify({
-          data: "Hello, Moto.",
-        });
-  
-        return new Response(jsonData, header);
-      }
-
-      // ---------------------
-      // POST Requests Handler 
-      // ---------------------
-      if(method == 'POST'){
-
-        // -- prepare params
-        const url = `https://api.cloudflare.com/client/v4/accounts`;
-        const options = {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Auth-Email': json.email,
-                'X-Auth-Key': json.globalAPI,
-            },
-        };
-
-        const res = await fetch(url, options);
-        const result = await res.json();
-
-        const jsonData = JSON.stringify({
-          id: result['result'][0]['id']
-        }, null, 2)
-
-        return new Response(jsonData, header);
-      }
-      
-
     }
     
 

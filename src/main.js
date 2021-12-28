@@ -29,10 +29,6 @@ const router = createRouter({
           component: () => import("./pages/upload/Submit.vue"),
           props: true,
         },
-        {
-          path: "auth",
-          component: () => import("./pages/upload/Authentication.vue"),
-        },
       ],
     },
     {
