@@ -9,6 +9,11 @@ on:
 env:
   CF_EMAIL: ${{ secrets.CF_EMAIL }}
   CF_GLOBAL_API: ${{ secrets.CF_GLOBAL_API }}
+  CF_WORKER_NAME: ${{ secrets.CF_WORKER_NAME }} # Must be lower case
+  CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+  CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+  JWT_WHITE_LIST: ${{ secrets.JWT_WHITE_LIST }} # No space between commas
+
 
 jobs:
   build-and-deploy:
@@ -25,7 +30,7 @@ jobs:
       # -- Prepare variables
       - name: Prepare variables
         working-directory: ./worker
-        run: bash create-db.sh cicd 9b47beba2f167662ac16b81572ee529d lightanson@protonmail.com 9e71cdc773da780e5059efe41ee0887d86b08 cf-worker.gtc-lightanson.workers.dev,127.0.0.1,localhost
+        run: bash create-db.sh $CF_WORKER_NAME $CF_ACCOUNT_ID $CF_EMAIL $CF_GLOBAL_API $JWT_WHITE_LIST
 
       # -- Build the front-end app
       - name: Build App
