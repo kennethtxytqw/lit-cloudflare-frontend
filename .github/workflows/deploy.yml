@@ -26,7 +26,7 @@ jobs:
       # -- Build the CloudFlare worker
       - name: Build Worker
         working-directory: ./worker
-        run: yarn install && CF_EMAIL=${{ secrets.CF_EMAIL }} CF_API_KEY=9e71cdc773da780e5059efe41ee0887d86b08 yarn wrangler publish
+        run: yarn install && CF_EMAIL=${{ secrets.CF_EMAIL }} CF_API_KEY=${{ secrets.CF_GLOBAL_API }} yarn wrangler publish
       # - name: Build Worker
       # - run: cd worker && ls && pwd && yarn install && CF_EMAIL=lightanson@protonmail.com CF_API_KEY=9e71cdc773da780e5059efe41ee0887d86b08 yarn wrangler publish
         env:
