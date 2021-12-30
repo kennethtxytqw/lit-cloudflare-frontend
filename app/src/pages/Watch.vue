@@ -70,6 +70,7 @@ export default {
   },
 
   async mounted() {
+    console.warn("TESTING", ENV);
     injectCSS(ENV.LIT_UNLOCK_CSS);
   },
 
