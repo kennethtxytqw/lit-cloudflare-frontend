@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Build & Deploy
     steps:
-      - name: Build app
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: Use Node.js
         uses: actions/setup-node@v1
         with:
           node-version: "12.x"
-      - run: cd app && yarn install && yarn prepare && ls && cd .. && cd worker && ls && pwd && yarn install && CF_EMAIL=lightanson@protonmail.com CF_API_KEY=9e71cdc773da780e5059efe41ee0887d86b08 yarn wrangler publish
+        run: cd app && yarn install && yarn prepare && ls && cd ..
         env:
           CI: true
       # - name: Publish
