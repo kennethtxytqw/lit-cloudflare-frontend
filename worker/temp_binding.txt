@@ -1,0 +1,7 @@
+yarn run v1.22.10
+$ /Users/anson/Projects/lit-cloudflare-frontend/node_modules/.bin/wrangler kv:namespace create VIDEO6
+🌀  Creating namespace with title "cicd-VIDEO6"
+✨  Success!
+Add the following to your configuration file in your kv_namespaces array:
+{ binding = "VIDEO6", id = "f5ff12b016d549daafbb369fb5847895" }
+Done in 1.60s.

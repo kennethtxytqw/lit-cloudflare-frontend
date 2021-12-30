@@ -13,7 +13,10 @@
     "dev": "cd ./app && yarn dev && cd ../",
     "worker": "cd ./worker && wrangler dev && cd ../",
     "wrangler publish": "cd ./worker & yarn && wrangler publish",
-    "commit": "git add .github && git commit -m 'ci: deploy' && git push"
+    "commit": "git add .github && git commit -m 'ci: deploy' && git push",
+    "debug-on": "cd ./app && bash ./debug_true.sh",
+    "debug-off": "cd ./app && bash ./debug_false.sh",
+    "create-db": "cd ./worker && bash ./create-db.sh"
   },
   "keywords": [],
   "author": "",
