@@ -6,6 +6,10 @@ on:
       - cicd
   repository_dispatch:
 
+env:
+  CF_EMAIL: ${{ secrets.CF_EMAIL }}
+  CF_GLOBAL_API: ${{ secrets.CF_GLOBAL_API }}
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -26,17 +30,6 @@ jobs:
       # -- Build the CloudFlare worker
       - name: Build Worker
         working-directory: ./worker
-        run: yarn install && CF_EMAIL=${{ secrets.CF_EMAIL }} CF_API_KEY=${{ secrets.CF_GLOBAL_API }} yarn wrangler publish
-      # - name: Build Worker
-      # - run: cd worker && ls && pwd && yarn install && CF_EMAIL=lightanson@protonmail.com CF_API_KEY=9e71cdc773da780e5059efe41ee0887d86b08 yarn wrangler publish
+        run: yarn install && CF_EMAIL=$CF_EMAIL CF_API_KEY=$CF_GLOBAL_API yarn wrangler publish
         env:
           CI: true
-      # - name: Publish
-      #   uses: cloudflare/wrangler-action@1.3.0
-      #   with:
-      #     apiKey: ${{ secrets.CF_GLOBAL_API }}
-      #     email: ${{ secrets.CF_EMAIL }}
-      #     workingDirectory: worker
-      #     wranglerVersion: '1.13.0'
-      #   env:
-      #     CF_ACCOUNT_ID: 9b47beba2f167662ac16b81572ee529d
