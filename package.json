@@ -13,7 +13,7 @@
     "dev": "cd ./app && yarn dev && cd ../",
     "worker": "cd ./worker && wrangler dev && cd ../",
     "wrangler publish": "cd ./worker & yarn && wrangler publish",
-    "commit": "git add .github && git commit -m 'ci: deploy' && git add * && git commit -m 'ci: deploy' && git push"
+    "commit": "git add .github && git commit -m 'ci: deploy' && git push"
   },
   "keywords": [],
   "author": "",
