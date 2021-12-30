@@ -6,7 +6,7 @@ zone_id = ''
 usage_model = ''
 compatibility_flags = []
 workers_dev = true
-site = {bucket = "../app/dist",entry-point = "../worker"}
+site = {bucket = "./app/dist", entry-point = "../worker"}
 compatibility_date = "2021-12-10"
 kv_namespaces = [ 
     { binding = "LIT_KV", preview_id = "75ae5daf6a5342a09401091e81568af7", id = "6bc472654d6b4184ae76546a1b4b3e5b" },
