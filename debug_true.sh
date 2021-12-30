@@ -1,1 +1,0 @@
-sed -i -e 's/DEBUG: false/DEBUG: true/gI' vite.config.js
