@@ -18,7 +18,7 @@ jobs:
           node-version: "12.x"
       # - run: cd app && yarn install && yarn prepare && cd ..
       - run: cd worker && ls && pwd
-      - run: cat wrangler.toml
+      - run: cat ./worker/wrangler.toml
       - run: yarn wrangler publish
         env:
           CI: true
