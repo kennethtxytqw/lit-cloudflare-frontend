@@ -1,0 +1,29 @@
+{
+  "name": "demo-lit-streams",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "./debug_false.sh && rm -rf ./dist && yarn build && wrangler publish && ./debug_true.sh"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "dotenv": "^10.0.0",
+    "ethereum-blockies": "^0.1.1",
+    "lit-js-sdk": "^1.1.90",
+    "vue": "^3.2.23",
+    "vue-router": "^4.0.12"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.5",
+    "@vitejs/plugin-vue": "^1.10.2",
+    "autoprefixer": "^10.4.0",
+    "babel-jest": "^27.4.5",
+    "jest": "^27.4.5",
+    "postcss": "^8.4.4",
+    "tailwindcss": "^2.2.19",
+    "ts-jest": "^27.1.2",
+    "vite": "^2.7.0"
+  }
+}

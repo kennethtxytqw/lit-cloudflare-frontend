@@ -1,0 +1,20 @@
+name = "cf-worker"
+type = "webpack"
+account_id = "<CLOUDFLARE_ACCOUNT_ID>"
+route = ''
+zone_id = ''
+usage_model = ''
+compatibility_flags = []
+workers_dev = true
+site = {bucket = "./dist",entry-point = "workers-site"}
+compatibility_date = "2021-12-10"
+kv_namespaces = [ 
+    { binding = "LIT_KV", preview_id = "<CLOUDFLARE_LIT_KV_PREVIEW_ID>", id = "<CLOUDFLARE_LIT_KV_ID>" },
+    { binding = "VIDEOS", id = "<CLOUDFLARE_VIDEOS_PREVIEW_ID>", preview_id = "<CLOUDFLARE_VIDEOS_ID>" }
+]
+
+[vars]
+CF_EMAIL = "<CLOUDFLARE_EMAIL>"
+CF_API_KEY =  "<CLOUDFLARE_GLOBAL_APIL>"
+ACCOUNT_ID="<CLOUDFLARE_ACCOUNT_ID>"
+WHITE_LIST="cf-worker.gtc-lightanson.workers.dev, 127.0.0.1, localhost"

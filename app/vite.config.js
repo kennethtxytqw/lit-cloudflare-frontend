@@ -1,0 +1,26 @@
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+
+// Accessing environment variables
+import dotenv from 'dotenv'
+dotenv.config()
+const ENV = process.env;
+const _string = (v) => JSON.stringify(v);
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [vue()],
+  define:{
+    DEBUG: true, // <==== CHANGE THIS (debug_false.sh, debug_true.sh)
+    ENV: ENV,
+    API_DEV: _string(ENV.API_DEV),
+    NS_VIDEO_DEV: _string(ENV.NS_VIDEO_DEV),
+    API_PROD: _string(ENV.API_PROD),
+    NS_VIDEO_PROD: _string(ENV.NS_VIDEO_PROD),
+    BASE_URL_DEV: _string(ENV.BASE_URL_DEV),
+    BASE_URL_PROD: _string(ENV.BASE_URL_PROD),
+  },
+  jsxInject: [
+    `import LitJsSdk from 'lit-js-sdk' `,
+  ],
+});
