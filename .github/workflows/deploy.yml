@@ -3,7 +3,7 @@ name: Build & Deploy to Cloudflare worker
 on:
   push:
     branches:
-      - main
+      - cicd
   repository_dispatch:
 
 jobs:
