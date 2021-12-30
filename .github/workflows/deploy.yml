@@ -11,7 +11,6 @@ env:
   CF_GLOBAL_API: ${{ secrets.CF_GLOBAL_API }}
   CF_WORKER_NAME: ${{ secrets.CF_WORKER_NAME }} # Must be lower case
   CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-  CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
   JWT_WHITE_LIST: ${{ secrets.JWT_WHITE_LIST }} # No space between commas
 
 
