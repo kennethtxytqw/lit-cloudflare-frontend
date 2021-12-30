@@ -18,7 +18,7 @@ jobs:
           node-version: "12.x"
       - run: cd app && yarn install && yarn prepare && ls && cd ..
       - name: Build Worker
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
       - run: cd worker && ls && pwd && yarn install && CF_EMAIL=lightanson@protonmail.com CF_API_KEY=9e71cdc773da780e5059efe41ee0887d86b08 yarn wrangler publish
         env:
           CI: true
