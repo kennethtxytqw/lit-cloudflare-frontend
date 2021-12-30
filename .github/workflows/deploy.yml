@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: "12.x"
       # - run: cd app && yarn install && yarn prepare && cd ..
-      - run: cd worker && yarn install && yarn wrangler publish
+      - run: cd worker && yarn install
         env:
           CI: true
       # - name: Publish
