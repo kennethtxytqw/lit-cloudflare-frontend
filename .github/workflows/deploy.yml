@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "12.x"
-        run: cd app && yarn install && yarn prepare && ls && cd ..
+      - run: cd app && yarn install && yarn prepare && ls && cd ..
         env:
           CI: true
       # - name: Publish
