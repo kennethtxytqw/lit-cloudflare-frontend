@@ -1,0 +1,19 @@
+{
+    "name": "lit-cloudflare-worker",
+    "private": true,
+    "workspaces": [
+      "app",
+      "worker"
+    ],
+    "version": "1.0.0",
+    "description": "lit-cloudflare-worker",
+    "main": "index.js",
+    "scripts": {
+      "build": "cd ./app && yarn build",
+      "dev": "cd ./worker && wrangler dev"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+  }
+  
