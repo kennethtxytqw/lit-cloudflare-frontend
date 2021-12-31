@@ -7,7 +7,7 @@ export const requestCloudflareDirectUploadAuth = async () => {
 
     // -- prepare
     const debugURL = `${API_DEV}/api/get_direct_upload_auth`;
-    const prodURL = `/api/get_direct_upload_auth`;
+    const prodURL = `${window.location.origin}/api/get_direct_upload_auth`;
     const url = DEBUG ? debugURL : prodURL;
 
     console.log("Direct: ", url);
@@ -35,7 +35,7 @@ export const saveZipToKVDB = async (id, value) => {
     
     // -- prepare
     const debugURL = `${API_DEV}/api/new_video`;
-    const prodURL = `/api/new_video`;
+    const prodURL = `${window.location.origin}/api/new_video`;
 
     const options = {
         method: 'POST',
@@ -64,7 +64,7 @@ export const getCloudFlareVideos = async () => {
     
     // -- prepare
     const debugURL = `${API_DEV}/api/videos`;
-    const prodURL = `/api/videos`;
+    const prodURL = `${window.location.origin}/api/videos`;
     const url = DEBUG ? debugURL : prodURL;
 
     const options = {
@@ -88,7 +88,7 @@ export const getCloudFlareVideos = async () => {
 export const getCloudFlareValueFromKey = async (key) => {
     // -- prepare
     const debugURL = `${API_DEV}/api/videos`;
-    const prodURL = `/api/videos`;
+    const prodURL = `${window.location.origin}/api/videos`;
     const url = DEBUG ? debugURL : prodURL;
 
     const options = {
