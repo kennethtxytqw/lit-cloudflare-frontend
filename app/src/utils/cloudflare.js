@@ -10,6 +10,8 @@ export const requestCloudflareDirectUploadAuth = async () => {
     const prodURL = `/api/get_direct_upload_auth`;
     const url = DEBUG ? debugURL : prodURL;
 
+    console.log("Direct: ", url);
+
     const options = {
         method: 'GET',
         headers: {
