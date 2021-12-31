@@ -9,7 +9,7 @@ workers_dev = true
 site = {bucket = "../app/dist", entry-point = "../worker"}
 compatibility_date = "2021-12-10"
 kv_namespaces = [
-    { binding = "VIDEOS", id = "275790a40a91474d8fea361c8d7820cd", preview_id="c226d6768e4f4670b55c5edd0ff04f4b" }
+    {binding='',id=''}
 ]
 [vars]
 CF_EMAIL="lightanson@protonmail.com"
