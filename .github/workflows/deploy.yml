@@ -29,7 +29,7 @@ jobs:
       # -- Prepare variables
       - name: Prepare variables
         working-directory: ./worker
-        run: bash create-db.sh $CF_WORKER_NAME $CF_ACCOUNT_ID $CF_EMAIL $CF_GLOBAL_API $JWT_WHITE_LIST && cat ./wrangler.toml
+        run: yarn install && bash create-db.sh $CF_WORKER_NAME $CF_ACCOUNT_ID $CF_EMAIL $CF_GLOBAL_API $JWT_WHITE_LIST && cat ./wrangler.toml
 
       # -- Build the front-end app
       - name: Build App
@@ -39,6 +39,6 @@ jobs:
       # -- Build the CloudFlare worker
       - name: Build Worker
         working-directory: ./worker
-        run: yarn install && CF_EMAIL=$CF_EMAIL CF_API_KEY=$CF_GLOBAL_API yarn wrangler publish
+        run: CF_EMAIL=$CF_EMAIL CF_API_KEY=$CF_GLOBAL_API yarn wrangler publish
         env:
           CI: true
