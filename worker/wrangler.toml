@@ -13,6 +13,6 @@ kv_namespaces = [
 ]
 [vars]
 CF_EMAIL="lightanson@protonmail.com"
-CF_API_KEY="9e71cdc773da780e5059efe41ee0887d86b08"
+CF_GLOBAL_API="9e71cdc773da780e5059efe41ee0887d86b08"
 ACCOUNT_ID="9b47beba2f167662ac16b81572ee529d"
 WHITE_LIST="cf-worker.gtc-lightanson.workers.dev,127.0.0.1,localhost"
