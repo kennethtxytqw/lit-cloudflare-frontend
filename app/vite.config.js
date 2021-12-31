@@ -14,9 +14,7 @@ export default defineConfig({
     DEBUG: true, // <==== CHANGE THIS (debug_false.sh, debug_true.sh)
     ENV: ENV,
     API_DEV: _string(ENV.API_DEV),
-    NS_VIDEO_DEV: _string(ENV.NS_VIDEO_DEV),
     API_PROD: _string(ENV.API_PROD),
-    NS_VIDEO_PROD: _string(ENV.NS_VIDEO_PROD),
     BASE_URL_DEV: _string(ENV.BASE_URL_DEV),
     BASE_URL_PROD: _string(ENV.BASE_URL_PROD),
   },

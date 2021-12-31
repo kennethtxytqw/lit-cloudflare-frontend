@@ -258,7 +258,6 @@ export default {
       // const globalAPI = this.globalAPI;
       // const accountId = await getCloudFlareAccountId(email, globalAPI);
       const accessControlConditions = this.acc;
-      const NS_VIDEOS = DEBUG ? NS_VIDEO_DEV : NS_VIDEO_PROD;
       this.updateProgress(`Data Prepared`);
 
       // -- step 3
