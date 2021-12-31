@@ -21,7 +21,9 @@ export const requestCloudflareDirectUploadAuth = async () => {
 
     // -- execute
     const res = await fetch(url, options);
+    console.log(res);
     const result = await res.json();
+    console.log(result);
     return result;
 }
 
