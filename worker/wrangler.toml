@@ -8,11 +8,12 @@ compatibility_flags = []
 workers_dev = true
 site = {bucket = "../app/dist", entry-point = "../worker"}
 compatibility_date = "2021-12-10"
-kv_namespaces = [
-    {binding='',id=''}
+kv-namespaces = [
+ { binding = "VIDEOS", id="89ef6cd70b214453bf042012c5624790", preview_id = "feeb9798e28c43939a4de09266b1db3d" }
 ]
+
 [vars]
 CF_EMAIL="lightanson@protonmail.com"
 CF_GLOBAL_API="9e71cdc773da780e5059efe41ee0887d86b08"
 ACCOUNT_ID="9b47beba2f167662ac16b81572ee529d"
-WHITE_LIST="cf-worker.gtc-lightanson.workers.dev,127.0.0.1,localhost"
+WHITE_LIST="cicd.gtc-lightanson.workers.dev,127.0.0.1,localhost"

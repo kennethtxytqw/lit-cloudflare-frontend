@@ -11,12 +11,9 @@ const _string = (v) => JSON.stringify(v);
 export default defineConfig({
   plugins: [vue()],
   define:{
-    DEBUG: true, // <==== CHANGE THIS (debug_false.sh, debug_true.sh)
+    DEBUG: false, // <==== CHANGE THIS (debug_false.sh, debug_true.sh)
     ENV: ENV,
     API_DEV: _string(ENV.API_DEV),
-    API_PROD: _string(ENV.API_PROD),
-    BASE_URL_DEV: _string(ENV.BASE_URL_DEV),
-    BASE_URL_PROD: _string(ENV.BASE_URL_PROD),
   },
   jsxInject: [
     `import LitJsSdk from 'lit-js-sdk' `,
