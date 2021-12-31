@@ -34,7 +34,7 @@ jobs:
       # -- Build the front-end app
       - name: Build App
         working-directory: ./app
-        run: yarn install && yarn prepare && ls && cd ..
+        run: cp .env.example .env && yarn install && yarn prepare && ls && ls && cat .env && cd ..
 
       # -- Build the CloudFlare worker
       - name: Build Worker
