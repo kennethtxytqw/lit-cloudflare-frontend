@@ -27,3 +27,4 @@ sed -i -e "s/<CLOUDFLARE_WHITE_LIST>/$5/gI" $FILE
 yarn wrangler kv:namespace create "VIDEOS" > temp_binding.txt
 NAMESPACE_BINDING_1=$(sed -n '6p' < temp_binding.txt)
 sed -i -e "s/{binding='',id=''}/$NAMESPACE_BINDING_1/gI" $FILE
+cat temp_binding.txt
