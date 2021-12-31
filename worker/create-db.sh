@@ -24,6 +24,6 @@ sed -i -e "s/<CLOUDFLARE_GLOBAL_API>/$4/gI" $FILE
 sed -i -e "s/<CLOUDFLARE_WHITE_LIST>/$5/gI" $FILE
 
 # -- Create a KV called VIDEOS and save its input to wrangler.toml
-yarn wrangler kv:namespace create "VIDEO6" > temp_binding.txt
+yarn wrangler kv:namespace create "VIDEOS" > temp_binding.txt
 NAMESPACE_BINDING_1=$(sed -n '6p' < temp_binding.txt)
 sed -i -e "s/{binding='',id=''}/$NAMESPACE_BINDING_1/gI" $FILE
