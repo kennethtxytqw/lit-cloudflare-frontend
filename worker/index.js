@@ -227,7 +227,6 @@ async function handleEvent(event) {
     if((path.match(/\/api\/videos$/) || [])[0] === path){
       
       // -- prepare
-      
       const method = event.request['method'];
 
       const header = {
