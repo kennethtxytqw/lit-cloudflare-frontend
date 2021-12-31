@@ -142,6 +142,8 @@ async function handleEvent(event) {
         // -- prepare
         const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/stream/direct_upload`;
         
+        console.log("ACCOUNTID:", url);
+
         const options = {
           method: 'POST',
           headers: {
