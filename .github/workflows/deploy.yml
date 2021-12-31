@@ -69,4 +69,4 @@ jobs:
       # -- Build the CloudFlare worker
       - name: Build Worker
         working-directory: ./worker
-        run: CF_EMAIL=$CF_EMAIL CF_API_KEY=$CF_GLOBAL_API yarn wrangler publish
+        run: cat wrangler.toml && CF_EMAIL=$CF_EMAIL CF_API_KEY=$CF_GLOBAL_API yarn wrangler publish
