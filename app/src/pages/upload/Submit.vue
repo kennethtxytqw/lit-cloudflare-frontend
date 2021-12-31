@@ -275,7 +275,7 @@ export default {
       this.updateProgress(`Video uploaded: ${videoId} `);
 
       // -- step 5
-      const baseUrl = DEBUG ? BASE_URL_DEV : BASE_URL_PROD;
+      const baseUrl = window.location.host;
 
       const resourceId = {
         baseUrl: baseUrl,
