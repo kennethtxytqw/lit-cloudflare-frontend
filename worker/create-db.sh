@@ -28,5 +28,3 @@ sed -i -e "s/<CLOUDFLARE_WHITE_LIST>/$5/gI" $FILE
 CF_EMAIL=$3 CF_API_KEY=$4 yarn wrangler kv:namespace create "VIDEOS" > temp_binding.txt
 
 sh ./set-namespace.sh temp_binding.txt $TITLE $FILE
-
-cat temp_binding.txt
