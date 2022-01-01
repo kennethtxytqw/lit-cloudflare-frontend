@@ -10,6 +10,18 @@ export const injectJS = (path) => {
 }
 
 // 
+// Inject external javascript into component
+// @param { String } path : eg. https://cdn.jquery.com/jquery.min.js
+// @returns { void } 
+//
+export const injectJSWithId = (path, id) => {
+    var tag = document.createElement("script");
+    tag.setAttribute("id", id);
+    tag.setAttribute("src", path);
+    document.head.appendChild(tag);
+}
+
+// 
 // Inject external CSS into component
 // @param { String } path : eg. http://cdn.jqeruy.com/style.css
 // @returns { void } 

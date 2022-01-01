@@ -21,6 +21,7 @@ import {
 import {
   injectCSS,
   injectJS,
+  injectJSWithId,
 } from "../utils/html.js";
 
 //
@@ -114,7 +115,7 @@ export default {
 
       // Add the script at the end of the loop
       if (i == videos.length - 1) {
-        injectJS(ENV.LIT_UNLOCK_JS);
+        injectJSWithId(ENV.LIT_UNLOCK_JS, 'lit-server');
       }
     }
   },

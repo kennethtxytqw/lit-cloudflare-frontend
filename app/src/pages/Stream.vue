@@ -64,7 +64,7 @@
 
 import {
   injectCSS,
-  injectJS,
+  injectJS
 } from "../utils/html.js";
 
 export default {
