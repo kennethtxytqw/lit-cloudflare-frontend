@@ -169,7 +169,7 @@ import { getDecryptedString } from "../../utils/crypto.js";
 import { requestCloudflareDirectUploadAuth, saveZipToKVDB } from "../../utils/cloudflare.js";
 
 const scriptTags = `<!SNIPPET! onload="LitJsSdk.litJsSdkLoadedInALIT()" src="https://jscdn.litgateway.com/index.web.js"></!SNIPPET!>
-<!SNIPPET! src="https://litcdn.wzac.io/0.0.1/lit-unlock.min.js?server=${window.location.origin}"></!SNIPPET!>
+<!SNIPPET! src="https://litcdn.wzac.io/0.0.1/lit-unlock.min.js?server=${window.location.origin}" id="lit-server"></!SNIPPET!>
 <link rel="stylesheet" href="https://litcdn.wzac.io/0.0.1/lit-unlock.min.css"></link>`;
 
 export default {
