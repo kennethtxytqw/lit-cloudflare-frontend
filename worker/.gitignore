@@ -1,2 +1,6 @@
 node_modules
 worker
+wrangler.toml
+temp_binding.txt
+tmp_namespaces.txt
+tmp.txt

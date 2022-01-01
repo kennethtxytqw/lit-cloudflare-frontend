@@ -12,6 +12,7 @@
 
 # -- Create wrangler.toml using the example
 FILE=wrangler.toml
+TITLE="$1-VIDEOS"
 
 # -- Clone example to main
 cp wrangler.example.toml $FILE
@@ -25,6 +26,7 @@ sed -i -e "s/<CLOUDFLARE_WHITE_LIST>/$5/gI" $FILE
 
 # -- Create a KV called VIDEOS and save its input to wrangler.toml
 CF_EMAIL=$3 CF_API_KEY=$4 yarn wrangler kv:namespace create "VIDEOS" > temp_binding.txt
-NAMESPACE_BINDING_1=$(sed -n '6p' < temp_binding.txt)
-sed -i -e "s/{binding='',id=''}/$NAMESPACE_BINDING_1/gI" $FILE
+
+sh ./set-namespace.sh temp_binding.txt $TITLE $FILE
+
 cat temp_binding.txt

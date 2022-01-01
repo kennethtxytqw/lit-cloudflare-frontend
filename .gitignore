@@ -4,5 +4,8 @@ dist
 dist-ssr
 *.local
 .vscode
-wrangler.toml
 .env
+worker/wrangler.toml
+worker/temp_binding.txt
+worker/tmp_namespaces.txt
+worker/tmp.txt
