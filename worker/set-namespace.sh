@@ -22,7 +22,7 @@ else
     # (method) list all namespaces into a file
     echo "👉 ...Get namespace list"
     CF_EMAIL=$4 CF_API_KEY=$5 yarn wrangler kv:namespace list > $FILE_NAMESPACES
-    cat $FILE_NAMESPACES
+    # cat $FILE_NAMESPACES
     
     # (method) get id by title
     echo "👉 ...Get the id by title"
