@@ -17,14 +17,22 @@ if [ $count -gt 0 ]; then
 # If namespace already exist
 else
     echo "👉 Namespace already exist"
-    echo "👉 ...Get the id by title"
+    
 
     # (method) list all namespaces into a file
+    echo "👉 ...Get namespace list"
     yarn wrangler kv:namespace list > $FILE_NAMESPACES
-
+    cat $FILE_NAMESPACES
+    
     # (method) get id by title
+    echo "👉 ...Get the id by title"
     ID=$(sh ./get-id-by-title.sh $NAMESPACE $FILE_NAMESPACES)
+
+    echo "👉 ...ID: $ID" 
     BINDING='{ binding = "VIDEOS", id = "'$ID'"}'
+    echo "👉 ...BINDING: $BINDING" 
+    
     sed -i -e "s/{binding='',id=''}/$BINDING/gI" $FILE
 
+    cat temp_binding.txt
 fi
