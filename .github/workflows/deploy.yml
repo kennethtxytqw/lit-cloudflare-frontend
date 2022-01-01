@@ -64,7 +64,7 @@ jobs:
       # -- Build the front-end app
       - name: Build App
         working-directory: ./app
-        run: cp .env.example .env && yarn install && yarn prepare && ls && cat .env && cat vite.config.js && cd ..
+        run: cp .env.example .env && yarn install && yarn prepare && ls && cat .env && cat vite.config.js
 
       # -- Build the CloudFlare worker
       - name: Build Worker

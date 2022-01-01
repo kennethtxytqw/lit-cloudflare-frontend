@@ -1,2 +1,2 @@
 # Deploy your own Lit-CloudFlare website now!
-[CLICK ME TO DEPLOY NOW](https://lit-deploy.gtc-lightanson.workers.dev/?url=https://github.com/websaam/lit-cloudflare-frontend)
+![https://lit-deploy.websaam.com/?url=https://github.com/websaam/lit-cloudflare-frontend](https://assets.wzac.io/lit-protocol/btn-lit-deploy.png)

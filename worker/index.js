@@ -139,13 +139,10 @@ async function handleEvent(event) {
       // GET Request Handler
       // -------------------
       if(method == 'GET'){
-        console.log("LOG(GET): get_direct_upload_auth");
 
         // -- prepare
         const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/stream/direct_upload`;
-        console.log("LOG(url): get_direct_upload_auth: ", url);
-        console.log(`secrets: ${CF_EMAIL} API: ${CF_GLOBAL_API}`);
-        
+
         const options = {
           method: 'POST',
           headers: {
@@ -161,13 +158,10 @@ async function handleEvent(event) {
 
         // -- execute
         const res = await fetch(url, options);
-        console.log(`res: ${res}`);
 
         const result = await res.json();
-        console.log(`result: ${result}`);
 
         const jsonData = JSON.stringify(result['result']['uploadURL']);
-        console.log(`jsonData: ${jsonData}`);
 
         return new Response(jsonData, header);
       }
