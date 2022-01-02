@@ -1,7 +1,7 @@
 <template>
   <div class="h-screen m-auto" style="max-width: 92.8%; padding-top: 10px">
     <div id="github" class="fixed bottom-0 right-0 z-10 w-12 h-12">
-      <a href="https://github.com/wzac-io" target="_blank">
+      <a href="https://github.com/websaam" target="_blank">
         <img src="./assets/github.svg" alt="Github" />
       </a>
     </div>

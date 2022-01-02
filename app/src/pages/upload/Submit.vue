@@ -16,8 +16,8 @@
     "
   >
     <!-- requirements not met -->
-    <div v-if="video == ''" class="h-48 flex">
-      <p class="m-auto">Please upload a video</p>
+    <div v-if="uploadedData == null" class="h-48 flex">
+      <p class="m-auto">Please upload a stream</p>
     </div>
 
     <div v-else-if="acc == ''" class="h-48 flex">
@@ -26,7 +26,7 @@
 
     <!-- loaded -->
     <div v-else class="flex flex-col w-4/5 my-8">
-      <label class="mt-6">Video and access details</label>
+      <h1 class="mt-6 text-xl mb-2">Video and access details</h1>
 
       <div>
         <p class="font-light">
@@ -35,10 +35,35 @@
         <p class="font-medium">{{ readable }}</p>
       </div>
 
-      <div class="mt-4">
+      <div v-if="uploadedData.streamType == 'Videos'" class="mt-4">
         <p class="font-light">Video preview</p>
-        <video class="w-48" :src="video.previewFileBlob"></video>
+        <video class="w-48" :src="uploadedData.previewFileBlob"></video>
       </div>
+
+      <div v-if="uploadedData.streamType == 'Live Inputs'" class="mt-4">
+        <p class="font-light">
+          Make sure you are prepared for your live stream!
+
+          <table class="table-auto m-auto w-full mt-3">
+            <!-- row -->
+            <tr class="bg-gray-100">
+              <td class="border px-4 py-2">RTMP Url</td>
+              <td class="border px-4 py-2 text-right">
+                <input readonly :value="uploadedData.streamData.url" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="12345678901234567890">
+              </td>
+            </tr>
+
+            <!-- row -->
+            <tr class="bg-gray-100">
+              <td class="border px-4 py-2">RTMP Stream Key</td>
+              <td class="border px-4 py-2 text-right">
+                <input readonly :value="uploadedData.streamData.streamKey" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="12345678901234567890">
+              </td>
+            </tr>
+          </table>
+        </p>
+      </div>
+
     </div>
 
     <!-- progress bar -->
@@ -174,14 +199,12 @@ const scriptTags = `<!SNIPPET! onload="LitJsSdk.litJsSdkLoadedInALIT()" src="htt
 
 export default {
   name: "AccessControl",
-  props: ["acc", "video"],
+  props: ["acc", "uploadedData"],
   data() {
     return {
       readable: null,
-      email: null,
-      globalAPI: null,
       encryptedCredential: null,
-      totalSteps: 7,
+      // totalSteps: 7,
       progressSteps: 0,
       percentage: 0,
       progressText: "",
@@ -199,6 +222,11 @@ export default {
         (this.progressSteps / this.totalSteps) * 100
       );
     },
+  },
+  computed:{
+    totalSteps: function(){
+      return this.uploadedData.streamType == 'Videos' ? 7 : 5;
+    }
   },
   methods: {
     //
@@ -246,6 +274,24 @@ export default {
     async onSubmit() {
       
       this.resetProgress();
+
+      if(this.uploadedData.streamType == 'Videos'){
+        this.runVideosPipeline();
+        return;
+      }
+
+      if(this.uploadedData.streamType == 'Live Inputs'){
+        this.runLiveInputsPipeline();
+        return;
+      }
+    },
+
+    //
+    // Only run this method for stream type == 'Videos'
+    // @returns { void } 
+    //
+    async runVideosPipeline(){
+      
       const chain = "ethereum";
 
       // -- step 1
@@ -253,10 +299,7 @@ export default {
       this.updateProgress("Lit-network authenticated");
 
       // -- step 2
-      const formData = this.video.videoData;
-      // const email = this.email;
-      // const globalAPI = this.globalAPI;
-      // const accountId = await getCloudFlareAccountId(email, globalAPI);
+      const formData = this.uploadedData.videoData;
       const accessControlConditions = this.acc;
       this.updateProgress(`Data Prepared`);
 
@@ -284,6 +327,7 @@ export default {
         role: "",
         extraData: ""
       }
+      console.log("resourceId:", resourceId);
       
       const signedResource = await litNodeClient.saveSigningCondition({
         accessControlConditions, 
@@ -317,6 +361,74 @@ export default {
       this.updateProgress(`Saved to CloudFlare KV Database`);
 
       // -- step 7
+      await new Promise((r) => setTimeout(r, 2000));
+      this.snippet1 = this.getSnippet(this.readable, dataToBeSaved);
+      this.snippet2 = scriptTags.replaceAll('!SNIPPET!', 'script');
+      this.updateProgress(`Done`);
+      this.videoUploaded = true;
+      
+      await new Promise((r) => setTimeout(r, 2000));
+      window.scrollTo(0,document.body.scrollHeight);
+    },
+
+    //
+    // Only run this method for stream type == 'Live Inputs'
+    // @returns { void } 
+    //
+    async runLiveInputsPipeline(){
+      const chain = "ethereum";
+
+      // -- step 1
+      const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain: chain });
+      this.updateProgress(`Lit-network authenticated: ${chain}`);
+
+      // -- step 2
+      const accessControlConditions = this.acc;
+      const live_input_uid = this.uploadedData.streamData['live_input_uid'];
+      this.updateProgress(`Data Prepared: ${live_input_uid}`);
+      
+      // -- step 3
+      const baseUrl = (window.location.host).split(':')[0];
+
+      const resourceId = {
+        baseUrl: baseUrl,
+        path: `/${live_input_uid}`,
+        orgId: "",
+        role: "",
+        extraData: "live"
+      }
+      
+      const signedResource = await litNodeClient.saveSigningCondition({
+        accessControlConditions, 
+        chain, 
+        authSig, 
+        resourceId 
+      })
+
+      this.updateProgress(`Resource signed: ${JSON.stringify(resourceId)}`);
+
+
+      // -- step 4
+      const resourceId_base64 = btoa(JSON.stringify(resourceId));
+      const dataToBeSaved = btoa(
+        JSON.stringify({
+          accessControlConditions: btoa(
+            JSON.stringify(accessControlConditions)
+          ),
+          resourceId_base64
+        })
+      );
+
+      console.log("ResourceId:", resourceId);
+      console.log("ResourceId base64:", resourceId_base64);
+      console.log("dataToBeSaved:", dataToBeSaved);
+
+      const dbKey = window.ethereum.selectedAddress + ":" + makeId(12);
+      const saveVideoResponse = await saveZipToKVDB(dbKey, dataToBeSaved);
+      console.log(saveVideoResponse);
+      this.updateProgress(`Saved to CloudFlare KV Database`);
+
+      // -- step 5
       await new Promise((r) => setTimeout(r, 2000));
       this.snippet1 = this.getSnippet(this.readable, dataToBeSaved);
       this.snippet2 = scriptTags.replaceAll('!SNIPPET!', 'script');

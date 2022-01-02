@@ -47,7 +47,7 @@
 <script>
 export default {
   name: "AccessControl",
-  props: ["video"],
+  props: ["uploadedData"],
   data() {
     return {
       acc: false,
@@ -63,14 +63,72 @@ export default {
     },
   },
   mounted() {
-    if (this.video === "") {
-      alert("Please upload a video.");
-      this.$router.push({ path: "upload" });
-    } else {
+    console.log("---AccessControl---")
+    
+    if(this.uploadedData == null){
+      this.deny("Please select a stream");
+      return;
+    }
+
+    if(this.uploadedData['streamType'] == 'Videos'){
+      this.handleVideosType(this.uploadedData);
+      return;
+    }
+
+    if(this.uploadedData['streamType'] == 'Live Inputs'){
+      this.handleLiveInputsType(this.uploadedData);
+      return;
+    }
+
+  },
+
+  methods:{
+    //
+    // Hadnle if stream type is 'Videos'
+    // @retuns { void } 
+    //
+    handleVideosType(data){
+      if(data['videoData'] == null || data['previewFileBlob'] == null){
+        this.deny("Please upload a video");
+        return;
+      }
+      this.grantNext();
+    },
+
+    // 
+    // Handle if stream type is 'Live Inputs'
+    // @retuns { void } 
+    //
+    handleLiveInputsType(data){
+      if(data['streamData'] == null){
+        this.deny("Please create a live inputs");
+        return;
+      }
+      this.grantNext();
+    },
+
+    //
+    // Deny current step, go back to previous
+    // @param { String } message
+    // @returns { void } 
+    //
+    deny(message){
+      alert(message);
+      this.$router.push({ path: "upload" })
+    },
+
+    //
+    // Grant access to next step
+    // @returns { void } 
+    //
+    grantNext(){
       this.$emit("onOpenShareModal");
       this.acc = true;
     }
-  },
+
+
+  }
+
 };
 </script>
 
