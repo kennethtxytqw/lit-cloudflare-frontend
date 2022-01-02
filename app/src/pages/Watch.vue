@@ -115,7 +115,7 @@ export default {
 
       // Add the script at the end of the loop
       if (i == videos.length - 1) {
-        injectJSWithId(ENV.LIT_UNLOCK_JS, 'lit-server');
+        injectJSWithId(`${ENV.LIT_UNLOCK_JS}?server=${window.location.origin}`, 'lit-server');
       }
     }
   },

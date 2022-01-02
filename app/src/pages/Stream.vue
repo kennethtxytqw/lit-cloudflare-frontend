@@ -13,7 +13,7 @@
           cursor-pointer
         "
       >
-        <p>Upload video</p>
+        <p>Stream</p>
       </router-link>
 
       <!-- tab -->
@@ -49,13 +49,10 @@
 
     <!-- content area -->
     <router-view
-      @onVideoUploaded="saveVideo"
+      @onVideoUploaded="onVideoUploaded"
       @onOpenShareModal="openShareModal"
-      @loginInfo="saveLoginInfo"
       :acc="accessControlConditions"
-      :video="video"
-      :email="email"
-      :global_api="global_api"
+      :uploadedData="uploadedData"
     ></router-view>
   </div>
 </template>
@@ -72,9 +69,11 @@ export default {
   data() {
     return {
       accessControlConditions: "",
-      video: "",
-      email: "",
-      global_api: "",
+
+      // coming from Upload.vue
+      uploadedData: null,
+      streamData: null,
+      streamType: null,
     };
   },
   methods: {
@@ -84,20 +83,9 @@ export default {
     // @param { Object } an event emitted from the child component
     // @returns { void }
     // 
-    saveVideo(e) {
-      console.warn("saveVideo:", e);
-      this.video = e;
-    },
-
-    // 
-    // Save the login info from base64 to the original state to local state
-    // @param { Object } an event emitted from the child component
-    // @param { void } 
-    // 
-    saveLoginInfo(e) {
-      console.log(JSON.parse(atob(e)));
-      this.email = JSON.parse(atob(e)).email;
-      this.global_api = JSON.parse(atob(e)).global_api;
+    onVideoUploaded(e) {
+      console.warn("onVideoUploaded:", e);
+      this.uploadedData = e;
     },
 
     // 

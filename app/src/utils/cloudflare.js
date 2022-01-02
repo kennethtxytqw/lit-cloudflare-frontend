@@ -1,4 +1,31 @@
 //
+// (GET) Start a live stream and get url and stream key
+// @param { String } stream name
+// @returns { Object } 
+// @prop { String } Object.url
+// @prop { String } Object.streamKey
+//
+export const requestUrlStreamKey = async (streamName) => {
+
+    // -- prepare
+    const debugURL = `${API_DEV}/api/live_stream`;
+    const prodURL = `${window.location.origin}/api/live_stream`;
+    const url = (DEBUG ? debugURL : prodURL) + '?streamName=' + streamName;
+
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+    };
+
+    // -- execute
+    const res = await fetch(url, options);
+    const result = await res.json();
+    return result;
+}
+
+//
 // (POST) Request a one-time upload url to upload video
 // accounts/:account_identifier/stream/direct_upload
 // @returns { String } uploadURL

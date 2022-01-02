@@ -48,6 +48,43 @@ async function handleEvent(event) {
     }
 
     // =================================================
+    // Path ./api/live_stream
+    // =================================================
+    
+    if((path.match(/\/api\/live_stream$/) || [])[0] === path){
+      
+      // -- prepare
+      const { _method, _header } = getEssentialHeaders(event);
+      const { searchParams } = new URL(url)
+      const streamName = searchParams.get('streamName')
+
+      console.log("HERE!?", streamName);
+
+
+      // -------------------
+      // GET Request Handler
+      // -------------------
+      if(_method == 'GET'){
+
+        const data = await getUrlAndStreamKey({
+          "meta":{
+            "name": streamName,
+          },
+          "recording":{
+            "mode":"automatic",
+            "timeoutSeconds":10,
+            "requireSignedURLs":true
+          }
+        });
+
+        const jsonData = JSON.stringify(data);
+
+        return new Response(jsonData, _header);
+      }
+    }
+
+
+    // =================================================
     // Path ./api/video_id
     // =================================================
     if((path.match(/\/api\/video_id$/) || [])[0] === path){
@@ -68,14 +105,14 @@ async function handleEvent(event) {
       if(method == 'GET'){
 
         // -- prepare JWT
-        console.log(`request url==> ${url}`);
+        console.log(`👉 request url==> ${url}`);
         let jwt;
 
         // -- check if JWT token exists
         try {
           const { searchParams } = new URL(url)
           jwt = searchParams.get('jwt')
-          console.log('jwt==>', jwt)
+          console.log('👉 jwt==>', jwt)
         } catch (e) {
           console.log(e)
           return new Response('no jwt', { status: 400 })
@@ -85,9 +122,16 @@ async function handleEvent(event) {
         try{
           const { payload, header, signature, verified } = await verifyJwt({ jwt });
           const _WHITE_LIST = WHITE_LIST.replaceAll(' ', '').split(',');
+          const payload_base_url = payload.baseUrl.split(':')[0];
 
+          console.log("👉 payload.baseUrl: ", payload.baseUrl);
+          console.log("👉 payload_base_url: ", payload_base_url);
+          console.log("👉 _WHITE_LIST: ", _WHITE_LIST);
+          console.log("👉 verified: ", verified);
+          
           // -- if it's NOT legit
-          if(!verified || !_WHITE_LIST.includes(payload.baseUrl) || payload.orgId !== '' || payload.role !== '' || payload.extraData !== ''){
+          if(!verified || !_WHITE_LIST.includes(payload_base_url) || payload.orgId !== '' || payload.role !== '' || payload.extraData !== ''){
+            console.log("👉 it's NOT legit");
             // -- Exception:: Unauthorized
             return new Response('Unauthorized', {
               headers: { 'content-type': 'text/plain' },
@@ -96,8 +140,11 @@ async function handleEvent(event) {
           }
 
           // -- if it's legit, get signed url
+          console.log("👉 it's legit");
           const videoID = payload.path.split('/')[1];
           const signedVideoId = await getSignedUrl(videoID);
+          console.log("👉 videoID: ", videoID);
+          console.log("👉 signedVideoId: ", signedVideoId);
           
           // -- compile data
 
@@ -105,12 +152,14 @@ async function handleEvent(event) {
 
 
         }catch (e) {
+          console.log("👉 Caught error");
           console.log('error')
           console.log(JSON.stringify(e, ['message', 'arguments', 'type', 'name']))
           console.log(e.stack)
         }
 
         // -- Exception:: Unauthorized
+        console.log("👉 Finally, unauthorized");
         return new Response('Unauthorized', {
           headers: { 'content-type': 'text/plain' },
           status: 401,
@@ -294,6 +343,7 @@ async function handleEvent(event) {
   }
 }
 
+// ==================== METHODS ====================
 //
 // (POST) Request a signed video url
 // accounts/:account_identifier/stream/direct_upload
@@ -301,12 +351,12 @@ async function handleEvent(event) {
 //
 export const getSignedUrl = async (VIDEO_ID) => {
   
-  console.log("====== VIDEO_ID ======: ", VIDEO_ID);
-
+  console.log("👉 ...getting Signed URL", VIDEO_ID);
+  
   // -- prepare
   const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/stream/${VIDEO_ID}/token`;
 
-  console.log(url);
+  console.log(`👉 getSignedUrl API: ${url}`);
   var signed_url_restrictions = {
     //limit viewing for the next 2 hours
     exp: Math.floor(Date.now() / 1000) + (12*60*60),
@@ -324,10 +374,67 @@ export const getSignedUrl = async (VIDEO_ID) => {
 
   // -- execute
   const res = await fetch(url, options);
+  console.log(`👉 getSignedUrl res: ${JSON.stringify(res)}`);
   const result = await res.json();
+  console.log(`👉 getSignedUrl result: ${JSON.stringify(result)}`);
   const token = result.result.token;
-  console.log("TOKEN!!!");
-  console.log(token);
+  console.log("👉 TOKEN: ", token);
 
   return token;
+}
+
+// 
+// Get URL & Stream key and start a live stream
+// @param { Object } metaData {"meta":{"name":"","foo":"bar"},"recording":{"mode":"automatic","timeoutSeconds":10,"requireSignedURLs":true}}
+// @returns { live_input_uid, url, streamKey } from results
+//
+export const getUrlAndStreamKey = async (config) => {
+
+  // -- prepare
+  const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/stream/live_inputs`;
+  
+  const options = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'X-Auth-Email': CF_EMAIL,
+        'X-Auth-Key': CF_GLOBAL_API,
+    },
+    body: JSON.stringify(config)
+  };
+
+  // -- execute
+  const res = await fetch(url, options);
+  const result = await res.json();
+  const data = result.result;
+
+  const jsonData = {
+    live_input_uid: data['uid'],
+    url: data['rtmps']['url'],
+    streamKey: data['rtmps']['streamKey'],
+  }
+  console.log(jsonData);
+
+  return jsonData;
+}
+
+//
+// Get essential headers for almost all requests
+// @param { Object } e : event
+// @returns { Object, Object } method, header
+// 
+export const getEssentialHeaders = (e) => {
+
+  const _method = e.request['method'];
+
+  const _header = {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
+      "Access-Control-Max-Age": "86400",
+    }
+  };
+
+  return { _method, _header }
+
 }
