@@ -95,8 +95,8 @@ export default {
       // const randomId = data[3];
 
       const result = await getCloudFlareValueFromKey(key);
-
       const videoData = JSON.parse(atob(result.data));
+      console.log("👉 videoData:", JSON.parse(atob(videoData.resourceId_base64)));
 
       const readableAccessControlConditions = (
         await accessControlToReadable(

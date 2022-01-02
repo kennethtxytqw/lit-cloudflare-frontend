@@ -395,7 +395,7 @@ export default {
         path: `/${live_input_uid}`,
         orgId: "",
         role: "",
-        extraData: ""
+        extraData: "live"
       }
       
       const signedResource = await litNodeClient.saveSigningCondition({

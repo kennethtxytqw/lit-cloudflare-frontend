@@ -11,7 +11,7 @@ const _string = (v) => JSON.stringify(v);
 export default defineConfig({
   plugins: [vue()],
   define:{
-    DEBUG: true, // <==== CHANGE THIS (debug_false.sh, debug_true.sh)
+    DEBUG: false, // <==== CHANGE THIS (debug_false.sh, debug_true.sh)
     ENV: ENV,
     API_DEV: _string(ENV.API_DEV),
   },

@@ -126,11 +126,12 @@ async function handleEvent(event) {
 
           console.log("👉 payload.baseUrl: ", payload.baseUrl);
           console.log("👉 payload_base_url: ", payload_base_url);
+          console.log("👉 They are equal: ", payload.baseUrl == payload_base_url);
           console.log("👉 _WHITE_LIST: ", _WHITE_LIST);
           console.log("👉 verified: ", verified);
           
           // -- if it's NOT legit
-          if(!verified || !_WHITE_LIST.includes(payload_base_url) || payload.orgId !== '' || payload.role !== '' || payload.extraData !== ''){
+          if(!verified || !_WHITE_LIST.includes(payload_base_url) || payload.orgId !== '' || payload.role !== ''){
             console.log("👉 it's NOT legit");
             // -- Exception:: Unauthorized
             return new Response('Unauthorized', {

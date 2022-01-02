@@ -19,7 +19,7 @@
 
     <div class="flex">
       <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-4 px-12 rounded-full my-12 m-auto text-2xl ">
-        <a href="https://github.com/wzac-io/lit-cloudflare-browser-extension" target="__blank">Download & Explore Documentation</a>
+        <a href="https://github.com/websaam/lit-cloudflare-browser-extension" target="__blank">Download & Explore Documentation</a>
       </button>
     </div>
 
