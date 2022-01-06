@@ -6,8 +6,9 @@
     <!-- all videos will be injected here -->
     <div id="lit-videos" v-html="HTMLcontent"></div>
     <div class="text-white text-center" v-if="HTMLcontent == ''">
-      ...Oops!<br>
-      It's doesn't seem like you have upload any videos, click <a href="./stream/auth">upload</a> to begin!
+      ...Oops!<br />
+      It seems like you haven't uploaded any videos, click
+      <a href="./stream/auth">upload</a> to begin!
     </div>
   </div>
 </template>
@@ -18,10 +19,8 @@ import {
   getCloudFlareValueFromKey,
 } from "../utils/cloudflare.js";
 
-import {
-  injectCSS,
-  injectJS,
-} from "../utils/html.js";
+import { injectCSS, injectJS } from "../utils/html.js";
+import { getSnippet1 } from "../utils/snippets.js";
 
 //
 // Get readable access control from LitSDK
@@ -41,31 +40,13 @@ export default {
       HTMLcontent: "",
       jsLoaded: false,
       col: 4,
+      selectedVideo: null,
     };
   },
   methods: {
-
-    // 
-    // Create a copy/pastable snippet 
-    // @param { String } readable 
-    // @param { String } data
-    // @returns { String } snippet
-    //
-    getSnippet(readable, data) {
-      return `<div class="lit-video-wrapper">
-    <iframe 
-        src=""
-        class="lit-video"
-        allow="accelerometer; gyroscope; 
-        autoplay; encrypted-media; 
-        picture-in-picture;" 
-        allowfullscreen="true"
-        data-readable-conditions="${readable}"
-        data-lit="${data}">
-    </iframe>
-    <button class="btn-lit-video-unlock">🔥  Unlock with Lit-Protocol</button>
-</div>
-`;
+    setSelectedVideo(video) {
+      console.log("setSelectedVideo", video);
+      this.selectedVideo = video;
     },
   },
 
@@ -73,12 +54,12 @@ export default {
     injectCSS(ENV.LIT_UNLOCK_CSS);
   },
 
-  // 
+  //
   // Get a list of videos, for each video we will use its key and data
   // to fetch the data from CloudFlare. The returned data consists of
-  // encrypted data and access control conditions in readable format which 
-  // are then used to generate the snippet. 
-  // 
+  // encrypted data and access control conditions in readable format which
+  // are then used to generate the snippet.
+  //
   async created() {
     console.log("--- created ---");
     const videos = await getCloudFlareVideos();
@@ -105,10 +86,7 @@ export default {
 
       console.log(readableAccessControlConditions);
 
-      const snippet = this.getSnippet(
-        readableAccessControlConditions,
-        result.data
-      );
+      const snippet = getSnippet1(readableAccessControlConditions, result.data);
 
       this.HTMLcontent += snippet;
 
@@ -121,7 +99,7 @@ export default {
 };
 </script>
 
-<style >
+<style>
 .lit-video-description {
   top: calc(90% - (9% / 16 * 100)) !important;
   display: flex;
@@ -138,24 +116,21 @@ export default {
   gap: 12px;
 }
 
-@media all and (min-width: 1155px) and (max-width: 1522px) { 
+@media all and (min-width: 1155px) and (max-width: 1522px) {
   #lit-videos {
     grid-template-columns: 1fr 1fr 1fr;
   }
-
 }
-@media all and (min-width: 800px) and (max-width: 1154px) { 
+@media all and (min-width: 800px) and (max-width: 1154px) {
   #lit-videos {
     grid-template-columns: 1fr 1fr;
   }
-
 }
 
 .lit-video-wrapper {
   min-width: 343px;
   width: 100%;
   transition: all linear 1s;
-  margin-bottom: 24px
+  margin-bottom: 24px;
 }
-
 </style>
