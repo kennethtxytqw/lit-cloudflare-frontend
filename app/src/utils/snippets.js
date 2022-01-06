@@ -13,6 +13,7 @@ export const getSnippet1 = (readable, data) => {
         autoplay; encrypted-media; 
         picture-in-picture;" 
         allowfullscreen="true"
+        data-server="${window.location.origin}"
         data-readable-conditions="${readable}"
         data-lit="${data}">
     </iframe>
@@ -22,13 +23,7 @@ export const getSnippet1 = (readable, data) => {
 };
 
 const scriptTags = `<!SNIPPET! onload="LitJsSdk.litJsSdkLoadedInALIT()" src="https://jscdn.litgateway.com/index.web.js"></!SNIPPET!>
-<!SNIPPET! src="https://cloudflare-unlock-sdk-js-cdn.litgateway.com/0.0.1/lit-unlock.min.js" id="lit-server"></!SNIPPET!>
+<!SNIPPET! src="https://cloudflare-unlock-sdk-js-cdn.litgateway.com/0.0.1/lit-unlock.min.js"></!SNIPPET!>
 <link rel="stylesheet" href="https://cloudflare-unlock-sdk-js-cdn.litgateway.com/0.0.1/lit-unlock.min.css"></link>`;
 
-export const getSnippet2 = () =>
-  scriptTags
-    .replaceAll("!SNIPPET!", "script")
-    .replaceAll(
-      'src="https://cloudflare-unlock-sdk-js-cdn.litgateway.com/0.0.1/lit-unlock.min.js"',
-      `src="https://cloudflare-unlock-sdk-js-cdn.litgateway.com/0.0.1/lit-unlock.min.js?server=${window.location.origin}"`
-    );
+export const getSnippet2 = () => scriptTags.replaceAll("!SNIPPET!", "script");
