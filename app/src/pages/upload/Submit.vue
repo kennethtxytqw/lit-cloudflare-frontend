@@ -12,7 +12,6 @@
       justify-center
       items-center
       transition-all
-      
     "
   >
     <!-- requirements not met -->
@@ -67,10 +66,7 @@
     </div>
 
     <!-- progress bar -->
-    <div
-      v-if="acc != ''"
-      class="relative pt-1 w-full px-24"
-    >
+    <div v-if="acc != ''" class="relative pt-1 w-full px-24">
       <div class="flex mb-2 items-center justify-between">
         <span
           class="
@@ -175,27 +171,45 @@
     </div>
 
     <!-- Generate Snippet -->
-    <h1 v-if="videoUploaded" class="w-full h-1 border border-dashed mb-6 mt-6"></h1>
+    <h1
+      v-if="videoUploaded"
+      class="w-full h-1 border border-dashed mb-6 mt-6"
+    ></h1>
     <h1 v-if="videoUploaded" class="text-5xl mb-3">Snippets</h1>
-    <div v-if="videoUploaded" class="lit-label">Copy the following snippets and paste it to your website, or anywhere you like!</div>
-    <pre v-if="videoUploaded" id="js-lit-snippet-1" class="lit-snippet">{{ snippet1 }}</pre>
-    <span v-if="videoUploaded" class="btn-copy" @click="copySnippet">Click to copy</span>
-    <div v-if="videoUploaded" class="lit-label">Place the following script tags at the end of the body tag</div>
-    <pre v-if="videoUploaded" id="js-lit-snippet-2" class="lit-snippet">{{ snippet2 }}</pre>
-    <span v-if="videoUploaded" class="btn-copy pb-12" @click="copySnippet">Click to copy</span>
+    <div v-if="videoUploaded" class="lit-label">
+      Copy the following snippets and paste it to your website, or anywhere you
+      like!
+    </div>
+    <pre v-if="videoUploaded" id="js-lit-snippet-1" class="lit-snippet">{{
+      snippet1
+    }}</pre>
+    <span v-if="videoUploaded" class="btn-copy" @click="copySnippet"
+      >Click to copy</span
+    >
+    <div v-if="videoUploaded" class="lit-label">
+      Place the following script tags at the end of the body tag
+    </div>
+    <pre v-if="videoUploaded" id="js-lit-snippet-2" class="lit-snippet">{{
+      snippet2
+    }}</pre>
+    <span v-if="videoUploaded" class="btn-copy pb-12" @click="copySnippet"
+      >Click to copy</span
+    >
   </div>
 </template>
 
 <script>
-
-
-import { blobToDataURI, makeId, proxyObjectToArray } from "../../utils/utils.js";
+import {
+  blobToDataURI,
+  makeId,
+  proxyObjectToArray,
+} from "../../utils/utils.js";
 import { getDecryptedString } from "../../utils/crypto.js";
-import { requestCloudflareDirectUploadAuth, saveZipToKVDB } from "../../utils/cloudflare.js";
-
-const scriptTags = `<!SNIPPET! onload="LitJsSdk.litJsSdkLoadedInALIT()" src="https://jscdn.litgateway.com/index.web.js"></!SNIPPET!>
-<!SNIPPET! src="https://litcdn.wzac.io/0.0.1/lit-unlock.min.js?server=${window.location.origin}" id="lit-server"></!SNIPPET!>
-<link rel="stylesheet" href="https://litcdn.wzac.io/0.0.1/lit-unlock.min.css"></link>`;
+import {
+  requestCloudflareDirectUploadAuth,
+  saveZipToKVDB,
+} from "../../utils/cloudflare.js";
+import { getSnippet1, getSnippet2 } from "../../utils/snippets.js";
 
 export default {
   name: "AccessControl",
@@ -209,8 +223,8 @@ export default {
       percentage: 0,
       progressText: "",
       videoUploaded: false,
-      snippet1: '',
-      snippet2: '',
+      snippet1: "",
+      snippet2: "",
     };
   },
   watch: {
@@ -272,7 +286,6 @@ export default {
     // @returns { void }
     //
     async onSubmit() {
-      
       this.resetProgress();
 
       if(this.uploadedData.streamType == 'Videos'){
@@ -330,15 +343,14 @@ export default {
       console.log("resourceId:", resourceId);
       
       const signedResource = await litNodeClient.saveSigningCondition({
-        accessControlConditions, 
-        chain, 
-        authSig, 
-        resourceId 
-      })
+        accessControlConditions,
+        chain,
+        authSig,
+        resourceId,
+      });
 
       console.log("SignedResource:", signedResource);
       this.updateProgress(`Resource signed`);
-
 
       // -- step 6
       const resourceId_base64 = btoa(JSON.stringify(resourceId));
@@ -347,7 +359,7 @@ export default {
           accessControlConditions: btoa(
             JSON.stringify(accessControlConditions)
           ),
-          resourceId_base64
+          resourceId_base64,
         })
       );
 
@@ -362,13 +374,13 @@ export default {
 
       // -- step 7
       await new Promise((r) => setTimeout(r, 2000));
-      this.snippet1 = this.getSnippet(this.readable, dataToBeSaved);
-      this.snippet2 = scriptTags.replaceAll('!SNIPPET!', 'script');
+      this.snippet1 = getSnippet1(this.readable, dataToBeSaved);
+      this.snippet2 = getSnippet2();
       this.updateProgress(`Done`);
       this.videoUploaded = true;
-      
+
       await new Promise((r) => setTimeout(r, 2000));
-      window.scrollTo(0,document.body.scrollHeight);
+      window.scrollTo(0, document.body.scrollHeight);
     },
 
     //
@@ -440,48 +452,26 @@ export default {
     },
     // 
     // Copy snippet
-    // @returns { void } 
+    // @returns { void }
     //
-    copySnippet(e){
+    copySnippet(e) {
       const snippet = e.target.previousElementSibling.innerText;
-      navigator.clipboard.writeText(snippet).then(() => {
-      console.log('Async: Copying to clipboard was successful!');
+      navigator.clipboard.writeText(snippet).then(
+        () => {
+          console.log("Async: Copying to clipboard was successful!");
 
-          e.target.innerText = 'Copied text to clipboard';
+          e.target.innerText = "Copied text to clipboard";
 
           setTimeout(() => {
-              e.target.innerText = 'Click to copy';
+            e.target.innerText = "Click to copy";
           }, 2000);
-
-      }, (err) => {
-          console.error('Async: Could not copy text: ', err);
-      });
-    },
-
-    // 
-    // Generate a snippet
-    // @param { String } readable of access control conditions
-    // @param { String } data
-    // @returns { String } snippet
-    //
-    getSnippet(readable, data) {
-          return `<div class="lit-video-wrapper">
-        <iframe 
-            src=""
-            class="lit-video"
-            allow="accelerometer; gyroscope; 
-            autoplay; encrypted-media; 
-            picture-in-picture;" 
-            allowfullscreen="true"
-            data-readable-conditions="${readable}"
-            data-lit="${data}">
-        </iframe>
-        <button class="btn-lit-video-unlock">🔥  Unlock with Lit-Protocol</button>
-    </div>
-    `;
         },
+        (err) => {
+          console.error("Async: Could not copy text: ", err);
+        }
+      );
+    },
   },
-
 
   //
   // Set the readable version of the accessControlCondition when component
@@ -501,7 +491,7 @@ export default {
 </script>
 
 <style>
-.lit-snippet{
+.lit-snippet {
   background-color: #f2f2f2;
   border: 1px solid #d9d9d9;
   font-family: monaco, courier, monospace;
@@ -514,7 +504,7 @@ export default {
   overflow: auto;
   padding: 0.5rem;
 }
-.btn-copy{
+.btn-copy {
   font-size: 12px;
   color: rgb(61, 61, 61);
   max-width: 80%;
@@ -522,7 +512,7 @@ export default {
   margin-top: 2px;
   cursor: pointer;
 }
-.lit-label{
+.lit-label {
   display: block;
   font-size: 0.875rem;
   margin-bottom: 0.35938em;
