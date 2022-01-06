@@ -13,7 +13,7 @@ export const getSnippet1 = (readable, data) => {
         autoplay; encrypted-media; 
         picture-in-picture;" 
         allowfullscreen="true"
-        data-server="${window.location.origin}"
+        data-server="${btoa(window.location.origin)}"
         data-readable-conditions="${readable}"
         data-lit="${data}">
     </iframe>
