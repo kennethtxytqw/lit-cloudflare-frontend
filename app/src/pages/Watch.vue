@@ -19,11 +19,7 @@ import {
   getCloudFlareValueFromKey,
 } from "../utils/cloudflare.js";
 
-import {
-  injectCSS,
-  injectJS,
-  injectJSWithId,
-} from "../utils/html.js";
+import { injectCSS, injectJS, injectJSWithId } from "../utils/html.js";
 import { getSnippet1 } from "../utils/snippets.js";
 
 //
@@ -80,13 +76,14 @@ export default {
 
       const result = await getCloudFlareValueFromKey(key);
       const videoData = JSON.parse(atob(result.data));
-      console.log("👉 videoData:", JSON.parse(atob(videoData.resourceId_base64)));
+      console.log(
+        "👉 videoData:",
+        JSON.parse(atob(videoData.resourceId_base64))
+      );
 
-      const readableAccessControlConditions = (
-        await accessControlToReadable(
-          JSON.parse(atob(videoData.accessControlConditions))
-        )
-      ).join();
+      const readableAccessControlConditions = await accessControlToReadable(
+        JSON.parse(atob(videoData.accessControlConditions))
+      );
 
       console.log(readableAccessControlConditions);
 
@@ -96,7 +93,10 @@ export default {
 
       // Add the script at the end of the loop
       if (i == videos.length - 1) {
-        injectJSWithId(`${ENV.LIT_UNLOCK_JS}?server=${window.location.origin}`, 'lit-server');
+        injectJSWithId(
+          `${ENV.LIT_UNLOCK_JS}?server=${window.location.origin}`,
+          "lit-server"
+        );
       }
     }
   },

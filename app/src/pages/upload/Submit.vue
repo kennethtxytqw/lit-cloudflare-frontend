@@ -250,13 +250,16 @@ export default {
     //
     async setReadable(acc) {
       console.log(acc);
-      const proxyReadable = await LitJsSdk.humanizeAccessControlConditions({
+      // const proxyReadable = await LitJsSdk.humanizeAccessControlConditions({
+      //   accessControlConditions: acc,
+      // });
+      // // const proxyReadable = await accessControlToReadable(acc);
+      // const arr = proxyObjectToArray(proxyReadable);
+      // const joinedString = arr.join();
+      // this.readable = joinedString;
+      this.readable = await LitJsSdk.humanizeAccessControlConditions({
         accessControlConditions: acc,
       });
-      // const proxyReadable = await accessControlToReadable(acc);
-      const arr = proxyObjectToArray(proxyReadable);
-      const joinedString = arr.join();
-      this.readable = joinedString;
     },
 
     //
