@@ -7,7 +7,7 @@ import { buf2hex, dataURItoBlob } from "./utils";
 //
 export const getDecryptedString = async (base64EncryptedCredential) => {
     
-    const chain = 'ethereum';
+    const chain = 'solana';
     const authSig = await LitJsSdk.checkAndSignAuthMessage({chain: chain});
 
     const res = JSON.parse(atob(base64EncryptedCredential));

@@ -100,7 +100,7 @@ export default {
     //
     async authMetamask() {
       const authSig = await LitJsSdk.checkAndSignAuthMessage({
-        chain: "ethereum",
+        chain: "solana",
       });
       this.authSig = authSig;
     },

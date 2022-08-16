@@ -308,7 +308,7 @@ export default {
     //
     async runVideosPipeline(){
       
-      const chain = "ethereum";
+      const chain = "solana";
 
       // -- step 1
       const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain: chain });
@@ -370,7 +370,7 @@ export default {
       console.log("ResourceId base64:", resourceId_base64);
       console.log("dataToBeSaved:", dataToBeSaved);
 
-      const dbKey = window.ethereum.selectedAddress + ":" + makeId(12);
+      const dbKey = window.solana.selectedAddress + ":" + makeId(12);
       const saveVideoResponse = await saveZipToKVDB(dbKey, dataToBeSaved);
       console.log(saveVideoResponse);
       this.updateProgress(`Saved to CloudFlare KV Database`);
@@ -391,7 +391,7 @@ export default {
     // @returns { void } 
     //
     async runLiveInputsPipeline(){
-      const chain = "ethereum";
+      const chain = "solana";
 
       // -- step 1
       const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain: chain });
@@ -438,7 +438,7 @@ export default {
       console.log("ResourceId base64:", resourceId_base64);
       console.log("dataToBeSaved:", dataToBeSaved);
 
-      const dbKey = window.ethereum.selectedAddress + ":" + makeId(12);
+      const dbKey = window.solana.selectedAddress + ":" + makeId(12);
       const saveVideoResponse = await saveZipToKVDB(dbKey, dataToBeSaved);
       console.log(saveVideoResponse);
       this.updateProgress(`Saved to CloudFlare KV Database`);
