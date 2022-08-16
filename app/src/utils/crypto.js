@@ -6,25 +6,33 @@ import { buf2hex, dataURItoBlob } from "./utils";
 // @returns { String } "{email:'', globalAPI: ''}"
 //
 export const getDecryptedString = async (base64EncryptedCredential) => {
-    
-    const chain = 'solana';
-    const authSig = await LitJsSdk.checkAndSignAuthMessage({chain: chain});
+  const chain = "solana";
+  const authSig = await LitJsSdk.checkAndSignAuthMessage({ chain: chain });
 
-    const res = JSON.parse(atob(base64EncryptedCredential));
-    const accessControlConditions = res.accessControlConditions;
-    const toDecrypt = buf2hex(new Uint8Array(atob(res.encryptedSymmetricKey).split(',').map((x) => parseInt(x))));
-    const encryptedZip = dataURItoBlob(res.encryptedZip)
+  const res = JSON.parse(atob(base64EncryptedCredential));
+  const solRpcConditions = res.solRpcConditions;
+  const toDecrypt = buf2hex(
+    new Uint8Array(
+      atob(res.encryptedSymmetricKey)
+        .split(",")
+        .map((x) => parseInt(x))
+    )
+  );
+  const encryptedZip = dataURItoBlob(res.encryptedZip);
 
-    await new Promise(r => setTimeout(r, 1000));
-    const decryptedSymmetricKey = await window.litNodeClient.getEncryptionKey({
-        accessControlConditions,
-        toDecrypt,
-        chain,
-        authSig
-    });
+  await new Promise((r) => setTimeout(r, 1000));
+  const decryptedSymmetricKey = await window.litNodeClient.getEncryptionKey({
+    solRpcConditions,
+    toDecrypt,
+    chain,
+    authSig,
+  });
 
-    const decryptedFiles = await LitJsSdk.decryptZip(encryptedZip, decryptedSymmetricKey);
-    const decryptedString = await decryptedFiles["string.txt"].async("text");
+  const decryptedFiles = await LitJsSdk.decryptZip(
+    encryptedZip,
+    decryptedSymmetricKey
+  );
+  const decryptedString = await decryptedFiles["string.txt"].async("text");
 
-    return decryptedString;
-}
+  return decryptedString;
+};

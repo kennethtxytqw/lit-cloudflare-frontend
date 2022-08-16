@@ -245,20 +245,20 @@ export default {
   methods: {
     //
     // set readable access control conditions
-    // @param { Array } a list of accessControlConditions in an array
+    // @param { Array } a list of solRpcConditions in an array
     // @returns { void }
     //
     async setReadable(acc) {
       console.log(acc);
-      // const proxyReadable = await LitJsSdk.humanizeAccessControlConditions({
-      //   accessControlConditions: acc,
+      // const proxyReadable = await LitJsSdk.humanizesolRpcConditions({
+      //   solRpcConditions: acc,
       // });
       // // const proxyReadable = await accessControlToReadable(acc);
       // const arr = proxyObjectToArray(proxyReadable);
       // const joinedString = arr.join();
       // this.readable = joinedString;
-      this.readable = await LitJsSdk.humanizeAccessControlConditions({
-        accessControlConditions: acc,
+      this.readable = await LitJsSdk.humanizesolRpcConditions({
+        solRpcConditions: acc,
       });
     },
 
@@ -316,7 +316,7 @@ export default {
 
       // -- step 2
       const formData = this.uploadedData.videoData;
-      const accessControlConditions = this.acc;
+      const solRpcConditions = this.acc;
       this.updateProgress(`Data Prepared`);
 
       // -- step 3
@@ -346,7 +346,7 @@ export default {
       console.log("resourceId:", resourceId);
       
       const signedResource = await litNodeClient.saveSigningCondition({
-        accessControlConditions,
+        solRpcConditions,
         chain,
         authSig,
         resourceId,
@@ -359,8 +359,8 @@ export default {
       const resourceId_base64 = btoa(JSON.stringify(resourceId));
       const dataToBeSaved = btoa(
         JSON.stringify({
-          accessControlConditions: btoa(
-            JSON.stringify(accessControlConditions)
+          solRpcConditions: btoa(
+            JSON.stringify(solRpcConditions)
           ),
           resourceId_base64,
         })
@@ -398,7 +398,7 @@ export default {
       this.updateProgress(`Lit-network authenticated: ${chain}`);
 
       // -- step 2
-      const accessControlConditions = this.acc;
+      const solRpcConditions = this.acc;
       const live_input_uid = this.uploadedData.streamData['live_input_uid'];
       this.updateProgress(`Data Prepared: ${live_input_uid}`);
       
@@ -414,7 +414,7 @@ export default {
       }
       
       const signedResource = await litNodeClient.saveSigningCondition({
-        accessControlConditions, 
+        solRpcConditions, 
         chain, 
         authSig, 
         resourceId 
@@ -427,8 +427,8 @@ export default {
       const resourceId_base64 = btoa(JSON.stringify(resourceId));
       const dataToBeSaved = btoa(
         JSON.stringify({
-          accessControlConditions: btoa(
-            JSON.stringify(accessControlConditions)
+          solRpcConditions: btoa(
+            JSON.stringify(solRpcConditions)
           ),
           resourceId_base64
         })

@@ -24,12 +24,12 @@ import { getSnippet1 } from "../utils/snippets.js";
 
 //
 // Get readable access control from LitSDK
-// @param { String } accessControlConditions in string
+// @param { String } solRpcConditions in string
 // @returns { String } Humanised access control
 //
 const accessControlToReadable = async (value) => {
-  return await LitJsSdk.humanizeAccessControlConditions({
-    accessControlConditions: value,
+  return await LitJsSdk.humanizesolRpcConditions({
+    solRpcConditions: value,
   });
 };
 
@@ -81,13 +81,13 @@ export default {
         JSON.parse(atob(videoData.resourceId_base64))
       );
 
-      const readableAccessControlConditions = await accessControlToReadable(
-        JSON.parse(atob(videoData.accessControlConditions))
+      const readablesolRpcConditions = await accessControlToReadable(
+        JSON.parse(atob(videoData.solRpcConditions))
       );
 
-      console.log(readableAccessControlConditions);
+      console.log(readablesolRpcConditions);
 
-      const snippet = getSnippet1(readableAccessControlConditions, result.data);
+      const snippet = getSnippet1(readablesolRpcConditions, result.data);
 
       this.HTMLcontent += snippet;
 
